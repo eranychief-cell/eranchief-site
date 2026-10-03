@@ -1,0 +1,11 @@
+.materials {
+  padding-inline: 8vw;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6vw;
+}
+
+@media (max-width: 850px) {
+  .materials { grid-template-columns: 1fr; }
+  .product-dialog { overflow-y: auto; }
+  .product-info { overflow: visible; }
+}

@@ -1,0 +1,61 @@
+.about {
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+  gap: clamp(48px, 7vw, 110px);
+  align-items: center;
+}
+
+.about-portrait { margin: 0; }
+.about-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: grayscale(1);
+}
+.about-portrait figcaption {
+  margin-top: 12px;
+  color: var(--muted, #77736b);
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+.about-copy > p:not(.eyebrow) { font-size: 20px; line-height: 1.7; }
+.about-copy a { color: inherit; }
+.artist-portrait-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 32px;
+}
+.artist-portrait-grid figure { margin: 0; }
+.artist-portrait-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+.artist-portrait-grid figcaption { margin-top: 8px; color: var(--muted, #77736b); font-size: 12px; }
+
+.artist-profile-portrait { margin: 36px 0 42px; max-width: 560px; }
+.artist-profile-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: grayscale(1);
+}
+.artist-profile-portrait figcaption { margin-top: 10px; color: #77736b; font-size: 14px; }
+
+@media (max-width: 850px) {
+  .about { grid-template-columns: 1fr; padding: 90px 7vw; }
+  .about-portrait { max-width: 520px; }
+}
+@media (max-width: 520px) {
+  .artist-portrait-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.artist-profile-en { direction: ltr; text-align: left; }
+.artist-profile-en h1 { font-family: "Cormorant Garamond", serif; line-height: 1.05; }
