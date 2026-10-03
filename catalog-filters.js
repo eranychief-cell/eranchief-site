@@ -56,7 +56,8 @@
     grid.after(empty);
     function apply(){
       let visible=0;
-      cards.forEach(card=>{
+      // Re-read the cards each time: the homepage gallery is rendered by app.js after this script runs.
+      [...grid.querySelectorAll('[data-orientation][data-series][data-start-price]')].forEach(card=>{
         const matches=state.orientation==='all'||card.dataset.orientation===state.orientation;
         const series=state.series==='all'||card.dataset.series===state.series;
         const price=inPrice(state.price,Number(card.dataset.startPrice));

@@ -76,3 +76,9 @@ html[lang="he"] .hero-copy,html[lang="he"] .shop-paths,html[lang="he"] .edition-
 
 /* English pages: the base styles force RTL on these blocks; restore LTR for ?lang=en */
 html[lang="en"] .product-info,html[lang="en"] .hero-copy{direction:ltr;text-align:left}
+
+/* Topic buttons under the artwork search */
+.theme-chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.theme-chips__label{font-size:13px;color:#77736b;margin-inline-end:4px}
+.theme-chips button{background:transparent;border:1px solid var(--line,rgba(18,18,18,.2));border-radius:99px;padding:7px 13px;font:inherit;font-size:13px;color:inherit;cursor:pointer}
+.theme-chips button.active{background:var(--ink,#121212);color:#fff;border-color:var(--ink,#121212)}
