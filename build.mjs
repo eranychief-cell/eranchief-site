@@ -85,8 +85,17 @@ const paperDateEn=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jerusalem',day
 const paperDayMonth=paperDateEn.replace(/ \d{4}$/,'');
 const paperMonthEn=new Intl.DateTimeFormat('en-US',{timeZone:'UTC',month:'long',year:'numeric'}).format(new Date(`${paperOpen}T12:00:00Z`));
 const paperStartingPrices=paperConfig.sizes.map((_,i)=>Math.min(...paperConfig.works.map(w=>w.prices[i])));
+// Speed: serve light WebP versions on the homepage. Hero slides use pre-made WebP files (assets/hero/),
+// and every static artwork <img> that has card previews gets a responsive srcset (original JPEG stays as fallback/SEO).
+const withFastImages=html=>html
+  .replace(/<img class="hero-slide active" src="assets\/(hero_living_room_0\d)\.jpg"/g,(m,n)=>`<img class="hero-slide active" src="assets/hero/${n}-1672.webp" srcset="assets/hero/${n}-828.webp 828w, assets/hero/${n}-1672.webp 1672w" sizes="100vw" fetchpriority="high"`)
+  .replace(/<img class="hero-slide" data-src="assets\/(hero_living_room_0\d)\.jpg"/g,(m,n)=>`<img class="hero-slide" data-src="assets/hero/${n}-${'1672'}.webp" data-srcset="assets/hero/${n}-828.webp 828w, assets/hero/${n}-1672.webp 1672w" sizes="100vw"`)
+  .replace(/<img((?:(?!srcset)[^>])*?)\ssrc="\/?(assets\/[^"]+\.jpg)"((?:(?!srcset)[^>])*)>/g,(m,before,src,after)=>{
+    const v=cardPreviews[src];if(!v||/hero-slide/.test(before+after))return m;
+    return `<img${before} src="/${src}" srcset="${v.map(([w,u])=>`${u} ${w}w`).join(', ')}" sizes="(max-width: 700px) 70vw, 34vw"${after}>`;
+  });
 const indexHtml=await readFile('dist/client/index.html','utf8');
-await writeFile('dist/client/index.html',indexHtml.replaceAll('data-work-count>0</span>',`data-work-count>${allWorks.length}</span>`)
+await writeFile('dist/client/index.html',withFastImages(indexHtml).replaceAll('data-work-count>0</span>',`data-work-count>${allWorks.length}</span>`)
   .replaceAll('15 October 2026',paperDateEn).replaceAll('15 October',paperDayMonth)
   .replaceAll('SEPTEMBER 2026',paperMonthEn.toUpperCase())
   .replaceAll('Thirty days',paperDays===30?'Thirty days':`${paperDays} days`).replaceAll('30 days',`${paperDays} days`)

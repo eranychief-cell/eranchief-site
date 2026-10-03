@@ -291,7 +291,7 @@ const gallery=document.querySelector('#gallery');
 const heroSlides=[...document.querySelectorAll('.hero-slide')];
 let heroSlideIndex=0;
 if(heroSlides.length>1&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-  const loadHero=slide=>{if(slide.dataset.src){slide.src=slide.dataset.src;delete slide.dataset.src}return slide.decode?.().catch(()=>{})||Promise.resolve()};
+  const loadHero=slide=>{if(slide.dataset.srcset){slide.srcset=slide.dataset.srcset;delete slide.dataset.srcset}if(slide.dataset.src){slide.src=slide.dataset.src;delete slide.dataset.src}return slide.decode?.().catch(()=>{})||Promise.resolve()};
   setInterval(async()=>{
     const next=(heroSlideIndex+1)%heroSlides.length;
     await loadHero(heroSlides[next]);
