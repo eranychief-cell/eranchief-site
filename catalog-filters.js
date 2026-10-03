@@ -9,7 +9,7 @@
     const cards=[...grid.querySelectorAll('[data-orientation][data-series][data-start-price]')];
     const state={orientation:'all',series:'all',price:'all'};
     const inPrice=(value,price)=>value==='all'||(value==='low'&&price<=1000)||(value==='mid-low'&&price>1000&&price<=2500)||(value==='mid-high'&&price>2500&&price<=5000)||(value==='high'&&price>5000);
-    const hasOption=(key,value)=>value==='all'||cards.some(card=>key==='price'?inPrice(value,Number(card.dataset.startPrice)):card.dataset[key]===value);
+    const hasOption=(key,value)=>value==='all'||cards.length===0||cards.some(card=>key==='price'?inPrice(value,Number(card.dataset.startPrice)):card.dataset[key]===value);
     const panel=document.createElement('details');
     panel.className='catalog-filters';
     panel.open=matchMedia('(min-width: 701px)').matches;
