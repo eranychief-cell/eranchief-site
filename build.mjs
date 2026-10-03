@@ -402,7 +402,7 @@ await writeFile('dist/client/robots.txt',`User-agent: *\nAllow: /\n\nSitemap: ${
 await writeFile('dist/server/index.js', `import { handleCollectorStories } from './collector-stories-worker.js';
 export default { async fetch(request, env) {
   // www.eranchief.com -> eranchief.com (301, same path + query), exactly like the old host did, to keep SEO intact.
-  { const u = new URL(request.url); if (u.hostname === 'www.eranchief.com') { u.hostname = 'eranchief.com'; return Response.redirect(u.toString(), 301); } }
+  { const u = new URL(request.url); if (u.pathname === '/__build') return new Response(JSON.stringify({ host: 'cloudflare-worker', build: '${new Date().toISOString()}' }), { headers: { 'content-type': 'application/json', 'x-robots-tag': 'noindex', 'cache-control': 'no-store' } }); if (u.hostname === 'www.eranchief.com') { u.hostname = 'eranchief.com'; return Response.redirect(u.toString(), 301); } }
   const storyResponse = await handleCollectorStories(request, env);
   if (storyResponse) return storyResponse;
   const url = new URL(request.url);
