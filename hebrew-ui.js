@@ -58,6 +58,7 @@
   if(allWorksButton){allWorksButton.firstChild.nodeValue='כל ';allWorksButton.lastChild.nodeValue=' העבודות';}
   document.querySelectorAll('[aria-label]').forEach(el=>{if(words.has(el.getAttribute('aria-label')))el.setAttribute('aria-label',words.get(el.getAttribute('aria-label')))});
   const note=document.querySelector('.shipping-form > small');if(note)note.innerHTML='ייפתח נוסח הודעה שתוכלו לשלוח. אין חיוב בשלב זה. קראו את <a href="/shipping-returns/?lang=he" target="_blank">מדיניות המשלוחים וההחזרות</a> לפני התשלום.';
+  document.querySelectorAll('a[href="/paper-edition/"]').forEach(a => a.setAttribute('href', '/he/paper-edition/'));
   const storyNote = document.querySelector('.collector-story-order-note');
   if (storyNote) storyNote.innerHTML = 'כבר יש לכם יצירה של CHIEF? אחרי שהיא מגיעה, <a href="/collector-stories/?lang=he">שתפו את סיפור ה־Collector שלכם</a> עם תמונה מהבית.';
   document.querySelectorAll('[placeholder]').forEach(el => {

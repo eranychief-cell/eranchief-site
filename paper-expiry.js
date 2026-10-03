@@ -7,7 +7,7 @@
   function closeLanding(){
     if(!isClosed())return;
     root.document.querySelectorAll('.paper-seo-room-link,.paper-seo-choose,.paper-seo-footer > a').forEach(link=>{
-      link.outerHTML=notice(false);
+      link.outerHTML=notice(root.document.documentElement.lang==='he');
     });
   }
   if(root.document.readyState==='loading')root.document.addEventListener('DOMContentLoaded',closeLanding);
