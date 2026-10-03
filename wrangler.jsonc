@@ -1,15 +1,13 @@
 {
-  // Cloudflare Workers deployment for eranchief.com (migrated from ChatGPT Sites).
-  // Build: `node build.mjs` produces dist/client (static) and dist/server (Worker).
+  // eranchief.com on Cloudflare Workers (migrated from ChatGPT Sites, October 2026).
+  // `wrangler deploy` runs the build below, then uploads dist/client as static assets
+  // and dist/server/index.js as the Worker (newsletter, collector stories, FX rates, redirects).
   "name": "eranchief",
   "main": "dist/server/index.js",
   "compatibility_date": "2026-09-01",
   "build": { "command": "node build.mjs" },
-  "assets": { "directory": "dist/client", "binding": "ASSETS" },
-  "d1_databases": [
-    { "binding": "DB", "database_name": "eranchief", "migrations_dir": "drizzle" }
-  ],
-  "r2_buckets": [
-    { "binding": "BUCKET", "bucket_name": "eranchief-stories" }
-  ]
+  "assets": { "directory": "dist/client", "binding": "ASSETS" }
+  // Phase 2 (before moving the domain): add the D1 database (binding "DB", migrations in ./drizzle)
+  // for the newsletter and collector stories, and optionally R2 (binding "BUCKET") for story photos.
+  // Until then those forms answer "temporarily unavailable"; every page and URL works.
 }
