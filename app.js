@@ -327,7 +327,7 @@ function renderWorks(filter=selectedFilter){
   gallery.querySelectorAll('.work-card').forEach(c=>{c.dataset.baseHidden=String(!visibleIds.has(Number(c.dataset.id)));c.hidden=c.dataset.baseHidden==='true'});
   const more=document.querySelector('#showMoreWorks');
   more.hidden=showEveryWork||!!query||matches.length<=visible.length;
-  more.textContent=`Show all ${matches.length} works in this selection`;
+  more.textContent=ui(`להצגת כל ${matches.length} העבודות במבחר`,`Show all ${matches.length} works in this selection`);
   window.chiefApplyCatalogFilters?.();
   watchReveals();window.chiefRefreshCurrency?.();
 }
@@ -359,7 +359,7 @@ function renderPaperDrop(){
   scene.addEventListener('pointerup',event=>{const delta=event.clientX-startX;if(Math.abs(delta)>38)selectPaper(current+(delta<0?1:-1))});
   selectPaper(0,false);
   const countdown=document.querySelector('#paperCountdown'),end=paperCloseDate;
-  const updateCountdown=()=>{const diff=Math.max(0,end-Date.now()),days=Math.floor(diff/86400000),hours=Math.floor(diff%86400000/3600000),mins=Math.floor(diff%3600000/60000);countdown.textContent=diff?`${days}d ${hours}h ${mins}m`:'Drop closed';};updateCountdown();setInterval(updateCountdown,60000);
+  const updateCountdown=()=>{const diff=Math.max(0,end-Date.now()),days=Math.floor(diff/86400000),hours=Math.floor(diff%86400000/3600000),mins=Math.floor(diff%3600000/60000);countdown.textContent=diff?ui(`${days} ימים, ${hours} שעות ו־${mins} דקות`,`${days}d ${hours}h ${mins}m`):ui('המהדורה נסגרה','Drop closed');};updateCountdown();setInterval(updateCountdown,60000);
 }
 function refreshPaperState(){
   if(!paperClosed())return;
