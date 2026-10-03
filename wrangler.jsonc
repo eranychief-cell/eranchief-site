@@ -9,8 +9,7 @@
   "assets": { "directory": "dist/client", "binding": "ASSETS", "run_worker_first": ["/*", "!/assets/*"] },
   // D1 database for the newsletter and collector stories. No database_id: Wrangler provisions it
   // automatically on first deploy. Tables are created by the Worker on first use (ensureSchema).
-  "d1_databases": [ { "binding": "DB", "database_name": "eranchief-site-db" } ],
-  // R2 bucket for collector-story photos. No bucket_name: Wrangler provisions it on deploy, like the D1 database.
-  "r2_buckets": [ { "binding": "BUCKET" } ]
+  "d1_databases": [ { "binding": "DB", "database_name": "eranchief-site-db" } ]
   // Custom domains (eranchief.com, www) are attached in the Cloudflare dashboard, not here.
+  // Optional later: R2 bucket (binding "BUCKET") for collector-story photos.
 }
