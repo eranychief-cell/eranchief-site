@@ -2,15 +2,24 @@
 // ChatGPT Sites' proxy; on any other host (e.g. Cloudflare) any visitor can send them and gain owner access.
 // Owner access now requires a secret configured on the host (ADMIN_TOKEN), sent as `Authorization: Bearer …`.
 // Without that secret configured, moderation is simply disabled.
-const owner = (request, env) => {
-  const token = env.ADMIN_TOKEN;
-  if (!token || token.length < 32) return false;
-  const sent = request.headers.get('authorization') || '';
-  const expected = 'Bearer ' + token;
-  if (sent.length !== expected.length) return false;
-  let diff = 0; for (let i = 0; i < sent.length; i++) diff |= sent.charCodeAt(i) ^ expected.charCodeAt(i);
-  return diff === 0;
+const sameText = (a, b) => { if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false; let diff = 0; for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i); return diff === 0; };
+const adminToken = env => (typeof env.ADMIN_TOKEN === 'string' && env.ADMIN_TOKEN.length >= 32) ? env.ADMIN_TOKEN : null;
+// Session cookie value: HMAC of a fixed label with the admin password, so the password itself is never stored in the browser.
+const sessionValue = async token => {
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(token), {name:'HMAC', hash:'SHA-256'}, false, ['sign']);
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode('chief-admin-session-v1'));
+  return [...new Uint8Array(sig)].map(b => b.toString(16).padStart(2, '0')).join('');
 };
+const cookie = (request, name) => (request.headers.get('cookie') || '').split(/;\s*/).map(c => c.split('=')).find(([k]) => k === name)?.slice(1).join('=') || '';
+// Owner = correct `Authorization: Bearer <ADMIN_TOKEN>` header, or a session cookie from the password login page.
+const owner = async (request, env) => {
+  const token = adminToken(env);
+  if (!token) return false;
+  if (sameText(request.headers.get('authorization') || '', 'Bearer ' + token)) return true;
+  const sent = cookie(request, 'chief_admin');
+  return !!sent && sameText(sent, await sessionValue(token));
+};
+const loginPage = (message = '', status = 200) => new Response(`<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>כניסת מנהל · CHIEF</title><style>body{font-family:Assistant,Arial,sans-serif;background:#f5f2ec;color:#22201c;display:grid;place-items:center;min-height:100vh;margin:0;padding:16px}form{background:#fff;padding:28px;max-width:360px;width:100%;border:1px solid #ddd6ca}h1{font-size:22px;margin:0 0 16px}input{width:100%;box-sizing:border-box;padding:12px;font-size:16px;border:1px solid #bbb;margin:6px 0 14px}button{width:100%;padding:13px;font-size:16px;background:#121212;color:#fff;border:0}p{color:#a33;margin:0 0 12px}</style></head><body><form method="post" action="/collector-stories/manage/login"><h1>ניהול סיפורי אספנים</h1>${message ? `<p>${message}</p>` : ''}<label for="password">סיסמת מנהל</label><input id="password" name="password" type="password" autocomplete="current-password" required><button type="submit">כניסה</button></form></body></html>`, {status, headers: {'content-type':'text/html; charset=utf-8','cache-control':'no-store','x-robots-tag':'noindex, nofollow'}});
 const json = (value, status = 200) => Response.json(value, {status, headers: {'cache-control':'no-store'}});
 const db = env => { if (!env.DB) throw new Error('Missing story database'); return env.DB; };
 const maxBytes = 8 * 1024 * 1024;
@@ -37,8 +46,17 @@ export async function handleCollectorStories(request, env) {
   if (path.startsWith('/api/')) { try { await ensureSchema(env); } catch (error) { console.error('Schema setup failed:', error.message); } }
   if (!path.startsWith('/api/collector-stories') && !path.startsWith('/collector-stories/manage')) return null;
   const adminPath = path.startsWith('/collector-stories/manage') || path.startsWith('/api/collector-stories/admin');
-  if (adminPath && !owner(request, env)) return json({error:'Owner access required.'}, 403);
   if (request.method === 'POST' && request.headers.get('origin') !== url.origin) return json({error:'Please submit through the website.'}, 403);
+  if (path === '/collector-stories/manage/login' && request.method === 'POST') {
+    const token = adminToken(env);
+    if (!token) return loginPage('ניהול הסיפורים עוד לא הופעל באתר.', 503);
+    const form = await request.formData().catch(() => null);
+    const password = form && typeof form.get('password') === 'string' ? form.get('password') : '';
+    if (!sameText(password, token)) return loginPage('הסיסמה שגויה. נסו שוב.', 401);
+    return new Response(null, {status: 303, headers: {location: '/collector-stories/manage/', 'cache-control':'no-store', 'set-cookie': `chief_admin=${await sessionValue(token)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=2592000`}});
+  }
+  const isOwner = adminPath ? await owner(request, env) : false;
+  if (adminPath && !isOwner) return path.startsWith('/collector-stories/manage') && request.method === 'GET' ? loginPage() : json({error:'Owner access required.'}, 403);
   try {
     if (path.startsWith('/collector-stories/manage')) {
       const response = await env.ASSETS.fetch(request);
@@ -60,7 +78,7 @@ export async function handleCollectorStories(request, env) {
     const photoMatch = path.match(/^\/api\/collector-stories\/([a-f0-9-]{36})\/photo$/);
     if (photoMatch && request.method === 'GET') {
       const row = await db(env).prepare('SELECT photo_key, photo_type, status, publish_consent FROM collector_stories WHERE id = ?').bind(photoMatch[1]).first();
-      if (!row?.photo_key || (!owner(request, env) && (row.status !== 'approved' || row.publish_consent !== 1))) return json({error:'Photo not found.'},404);
+      if (!row?.photo_key || (!(await owner(request, env)) && (row.status !== 'approved' || row.publish_consent !== 1))) return json({error:'Photo not found.'},404);
       const object = await env.BUCKET?.get(row.photo_key);
       if (!object) return json({error:'Photo unavailable.'},404);
       return new Response(object.body,{headers:{'content-type':row.photo_type,'cache-control':'private, no-store','x-content-type-options':'nosniff','content-disposition':'inline'}});
