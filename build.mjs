@@ -28,9 +28,39 @@ vm.runInContext(await readFile('paper-edition-data.js','utf8'),context);
 vm.runInContext(catalogSource,context);
 const allWorks=context.__works;
 await writeFile('dist/preview-sources.json',JSON.stringify(allWorks.map(({image,category})=>({image,category}))));
-const previewsProcess=spawnSync('python',['generate-previews.py','dist/preview-sources.json'],{encoding:'utf8',maxBuffer:10*1024*1024});
-if(previewsProcess.status!==0)throw Error(`Preview generation failed: ${previewsProcess.stderr||previewsProcess.error}`);
-const cardPreviews=JSON.parse(previewsProcess.stdout);
+// Card previews: reuse committed WebP files from preview-cache/ when the source JPEG is unchanged
+// (content hash), so hosted builds do not need Python/Pillow. Only new or changed images are regenerated.
+const cardPreviews=await (async()=>{
+  const { createHash }=await import('node:crypto');
+  const { copyFile, mkdir }=await import('node:fs/promises');
+  const cacheDir='preview-cache', outDir='dist/client/assets/card-previews';
+  await mkdir(outDir,{recursive:true}); await mkdir(cacheDir,{recursive:true});
+  let cache={}; try{cache=JSON.parse(await readFile(`${cacheDir}/manifest.json`,'utf8'));}catch{}
+  const sources=[...new Map(allWorks.map(({image,category})=>[image,{image,category}])).values()];
+  const hashes={}, missing=[];
+  for(const s of sources){
+    hashes[s.image]=createHash('sha256').update(await readFile(s.image)).digest('hex');
+    if(cache[s.image]?.hash!==hashes[s.image])missing.push(s);
+  }
+  if(missing.length){
+    await writeFile('dist/preview-sources.json',JSON.stringify(missing));
+    const py=spawnSync(process.env.PYTHON||'python3',['generate-previews.py','dist/preview-sources.json'],{encoding:'utf8',maxBuffer:10*1024*1024});
+    if(py.status!==0)throw Error(`Preview generation failed for ${missing.length} image(s): ${py.stderr||py.error}`);
+    const generated=JSON.parse(py.stdout);
+    for(const [image,variants] of Object.entries(generated)){
+      for(const [,url] of variants)await copyFile(`dist/client${url}`,`${cacheDir}/${url.split('/').pop()}`);
+      cache[image]={hash:hashes[image],variants};
+    }
+  }
+  const result={};
+  for(const s of sources){
+    for(const [,url] of cache[s.image].variants)await copyFile(`${cacheDir}/${url.split('/').pop()}`,`dist/client${url}`);
+    result[s.image]=cache[s.image].variants;
+  }
+  const kept=Object.fromEntries(sources.map(s=>[s.image,cache[s.image]]));
+  await writeFile(`${cacheDir}/manifest.json`,JSON.stringify(kept,null,1));
+  return result;
+})();
 for(const variants of Object.values(cardPreviews))for(const [,url] of variants){
   if(!(await stat(`dist/client${url}`)).size)throw Error(`Empty generated preview: ${url}`);
 }
