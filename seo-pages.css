@@ -109,3 +109,8 @@
 .certificate-sample img { width:100%; height:auto; display:block; border:1px solid rgba(18,18,18,.15); box-shadow:0 6px 22px rgba(0,0,0,.08); }
 .certificate-sample figcaption { font-size:14px; line-height:1.5; color:#4a4741; margin-top:10px; }
 .certificate-sample figcaption strong { display:block; color:#121212; font-size:15px; margin-bottom:3px; }
+
+.bio-shop-cta { display:flex; flex-wrap:wrap; gap:8px 10px; align-items:center; margin:18px 0 26px; padding:16px 18px; background:#121212; color:#f4f1ea; max-width:860px; }
+.bio-shop-cta strong { flex-basis:100%; font-size:16px; font-weight:600; margin-bottom:4px; }
+.bio-shop-cta a { color:#121212; background:#f4f1ea; text-decoration:none; padding:9px 13px; font-size:14px; border-radius:2px; }
+.bio-shop-cta a:last-child { background:transparent; color:#f4f1ea; text-decoration:underline; text-underline-offset:3px; }
