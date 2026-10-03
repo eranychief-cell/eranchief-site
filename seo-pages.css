@@ -102,3 +102,5 @@
 /* Informational currency estimates on collection and artwork pages. */
 .fx-seo-note{display:block;font:400 13px/1.4 Assistant,Arial,sans-serif;color:#6d6559;margin:5px 0 12px}
 .fx-seo-note:empty{display:none}
+
+.edition-note { font-size:14px; line-height:1.5; color:#4a4741; border-inline-start:2px solid #b08a4a; padding-inline-start:10px; margin:-6px 0 18px; max-width:470px; }

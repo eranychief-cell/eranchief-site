@@ -93,3 +93,5 @@ body:not(.seo-body) .catalog-filters,body:not(.seo-body) .catalog-filters__count
   html[lang="en"] .hero h1{font-size:clamp(50px,4.6vw,80px)}
   html[lang="en"] .hero-copy{left:4vw}
 }
+
+#productView .edition-note{font-size:14px;line-height:1.5;color:#4a4741;border-inline-start:2px solid #b08a4a;padding-inline-start:10px;margin:8px 0 14px}
