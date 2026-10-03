@@ -401,6 +401,8 @@ await writeFile('dist/client/google-merchant-feed.xml',`<?xml version="1.0" enco
 await writeFile('dist/client/robots.txt',`User-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\nSitemap: ${site}/image-sitemap.xml\nSitemap: ${site}/video-sitemap.xml\n`);
 await writeFile('dist/server/index.js', `import { handleCollectorStories } from './collector-stories-worker.js';
 export default { async fetch(request, env) {
+  // www.eranchief.com -> eranchief.com (301, same path + query), exactly like the old host did, to keep SEO intact.
+  { const u = new URL(request.url); if (u.hostname === 'www.eranchief.com') { u.hostname = 'eranchief.com'; return Response.redirect(u.toString(), 301); } }
   const storyResponse = await handleCollectorStories(request, env);
   if (storyResponse) return storyResponse;
   const url = new URL(request.url);
