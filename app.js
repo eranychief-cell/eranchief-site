@@ -311,10 +311,24 @@ window.addEventListener('load',()=>setTimeout(dismissIntro,350));
 setTimeout(dismissIntro,2200);
 
 let selectedFilter='accessible',showEveryWork=false;
+// Search in English and Hebrew. Hebrew words match whole words (with common prefixes like ה/ב/ל/ו),
+// and are also translated to English keywords, because most artwork titles and descriptions are in English.
+const heSearchTerms={'ים':['sea','beach','ocean','wave','shore','surf','tide'],'חוף':['beach','shore','sand','sea'],'גל':['wave','surf'],'גלים':['wave','waves','surf'],'אור':['light','glow','sun'],'שמש':['sun','sunlight'],'שקיעה':['sunset','dusk'],'זריחה':['sunrise','dawn'],'תל אביב':['tel aviv','jaffa','yafo'],'יפו':['jaffa','yafo'],'עיר':['city','urban','street'],'רחוב':['street','road'],'גשם':['rain','puddle','wet'],'שלולית':['puddle','reflection'],'השתקפות':['reflection','mirror'],'מראה':['mirror','reflection'],'שמיים':['sky','clouds'],'שמים':['sky','clouds'],'ענן':['cloud'],'עננים':['clouds','cloud'],'לילה':['night','midnight','dark'],'שחור לבן':['black and white','monochrome','black-and-white'],'צבע':['color','colour','colors'],'צבעים':['colors','colours','color'],'זהב':['gold','golden'],'ריקוד':['dance','dancer','dancing'],'רקדנית':['dancer','dance'],'פרח':['flower','bloom','blossom'],'פרחים':['flowers','bloom','blossom'],'עץ':['tree'],'עצים':['trees','tree'],'ציפור':['bird'],'ציפורים':['birds','bird'],'כלב':['dog'],'ילדה':['girl','daughter','child'],'אישה':['woman','her'],'בניין':['building','architecture'],'אופניים':['bicycle','bike'],'סערה':['storm'],'אש':['fire','burning'],'מים':['water','sea'],'נמל':['port','harbor','harbour'],'אנשים':['people','crowd'],'בית':['home','house']};
+const heWord=word=>new RegExp('(^|[^\u05D0-\u05EA])[הבלמושכ]{0,2}'+word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=[^\u05D0-\u05EA]|$)');
+function searchMatches(w,query){
+  const english=[w.title,w.discovery?.en,w.discovery?.roomEn,labels[w.category]].join(' ').toLocaleLowerCase();
+  if(english.includes(query))return true;
+  if(!/[\u05D0-\u05EA]/.test(query))return false;
+  const hebrew=[w.discovery?.he,w.discovery?.roomHe,typeof heLabels!=='undefined'?heLabels[w.category]:''].join(' ');
+  if(heWord(query).test(hebrew))return true;
+  const stripped=query.replace(/^[הבלו](?=[\u05D0-\u05EA]{2})/,'');
+  const terms=heSearchTerms[query]||heSearchTerms[stripped]||[];
+  return terms.some(t=>new RegExp('\\b'+t+'\\b').test(english));
+}
 function renderWorks(filter=selectedFilter){
   selectedFilter=filter;
   const query=document.querySelector('#artworkSearch')?.value.trim().toLocaleLowerCase()||'';
-  const matches=works.filter(w=>(filter==='all'||w.category===filter)&&(!query||[w.title,w.discovery?.en,w.discovery?.roomEn,labels[w.category]].join(' ').toLocaleLowerCase().includes(query)));
+  const matches=works.filter(w=>(filter==='all'||w.category===filter)&&(!query||searchMatches(w,query)));
   const visible=showEveryWork||query?matches:matches.slice(0,8);
   if(!gallery.dataset.catalogReady){
     const slugify=s=>s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
@@ -363,6 +377,11 @@ function renderPaperDrop(){
 }
 function refreshPaperState(){
   if(!paperClosed())return;
+  // Homepage entry points to the closed Paper Edition: point visitors to the mailing list / canvas instead.
+  document.querySelectorAll('.shop-path[href="#paper-edition"]').forEach(card=>card.style.display='none');document.querySelectorAll('.shop-path small').forEach(el=>{el.textContent=el.textContent.replace(/^0([2-9])/,(m,n)=>'0'+(n-1))});
+  document.querySelectorAll('a.hero-shop-primary[href="#paper-edition"]').forEach(a=>{a.textContent=ui('מהדורת נייר חדשה בקרוב · הצטרפו לרשימה','New Paper Edition soon · join the list');a.setAttribute('href','#newsletter')});
+  document.querySelectorAll('nav a[href="#paper-edition"]').forEach(a=>a.textContent=ui('מהדורת נייר · בקרוב','Paper Edition · coming soon'));
+  const pathsNote=document.querySelector('.shop-paths-note');if(pathsNote)pathsNote.textContent=ui('מהדורת הנייר הנוכחית נסגרה, ומהדורה חדשה בדרך. Art Edition על קנבס זמינה כל השנה. כל עבודה מגיעה עם תעודת מקוריות, ועלות המשלוח וזמן האספקה מאושרים לפני התשלום.','The current Paper Edition has closed; a new one is on its way. Art Edition canvas is available year-round. Every work includes a Certificate of Authenticity, and shipping is confirmed before payment.');
   document.querySelectorAll('.work-card[data-series="paper"] .work-shop').forEach(button=>button.outerHTML=paperNotice());
   const order=document.querySelector('#paperRoomOrder');if(order)order.outerHTML=paperNotice();
   const dialog=document.querySelector('#productDialog');
