@@ -95,3 +95,4 @@ body:not(.seo-body) .catalog-filters,body:not(.seo-body) .catalog-filters__count
 }
 
 #productView .edition-note{font-size:14px;line-height:1.5;color:#4a4741;border-inline-start:2px solid #b08a4a;padding-inline-start:10px;margin:8px 0 14px}
+#productView .certificate-link{font-size:14px;margin:0 0 14px}#productView .certificate-link a{color:inherit;text-underline-offset:3px}

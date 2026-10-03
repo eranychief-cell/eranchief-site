@@ -104,3 +104,8 @@
 .fx-seo-note:empty{display:none}
 
 .edition-note { font-size:14px; line-height:1.5; color:#4a4741; border-inline-start:2px solid #b08a4a; padding-inline-start:10px; margin:-6px 0 18px; max-width:470px; }
+
+.certificate-sample { max-width:470px; margin:18px 0 22px; }
+.certificate-sample img { width:100%; height:auto; display:block; border:1px solid rgba(18,18,18,.15); box-shadow:0 6px 22px rgba(0,0,0,.08); }
+.certificate-sample figcaption { font-size:14px; line-height:1.5; color:#4a4741; margin-top:10px; }
+.certificate-sample figcaption strong { display:block; color:#121212; font-size:15px; margin-bottom:3px; }
