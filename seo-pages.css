@@ -35,6 +35,12 @@
 .product-details table { width:100%; border-collapse:collapse; margin:30px 0; }
 .product-details td { border-top:1px solid rgba(18,18,18,.18); padding:14px 0; }
 .product-details td:last-child { text-align:right; }
+.price-table th, .price-table td { padding:12px 6px; text-align:start; font-weight:400; white-space:nowrap; }
+.price-table thead th { font-size:13px; letter-spacing:.04em; color:#77736b; border-bottom:1px solid rgba(18,18,18,.25); }
+.price-table tbody th { border-top:1px solid rgba(18,18,18,.18); color:#4a4741; font-size:14px; }
+.price-table td, .product-details .price-table td:last-child { text-align:start; font-variant-numeric:tabular-nums; }
+.room-jump { display:block; margin:-8px 0 18px; padding:10px 14px; border:1px solid currentColor; background:transparent; color:inherit; font:inherit; font-size:15px; cursor:pointer; text-align:start; }
+.room-jump:hover { background:#121212; color:#f4f1ea; }
 .purchase-details { max-width:470px; margin:16px 0 20px; padding:16px 19px; border:1px solid rgba(18,18,18,.2); background:rgba(255,255,255,.4); font-size:15px; line-height:1.5; }
 .purchase-details p { margin:0 0 7px; }
 .purchase-details a { display:inline-block; margin-top:4px; color:inherit; text-underline-offset:3px; }
@@ -92,7 +98,7 @@
 .artist-profile-he h1 { font:500 clamp(50px,7vw,92px)/1 Assistant,sans-serif; max-width:1000px; }
 .artist-profile-he .seo-cta { margin-top:14px; }
 @media(max-width:800px){.seo-guides div{grid-template-columns:1fr 1fr}.collection-cards>a.night-card{grid-column:span 2}.seo-grid{grid-template-columns:1fr 1fr}.product-seo{grid-template-columns:1fr}.seo-header{height:72px;padding:0 5vw}.seo-desktop-nav{display:none!important}.seo-header-actions{display:flex;align-items:center;gap:12px}.seo-bag{border-bottom:1px solid #121212;padding:7px 0;font-size:14px}.seo-mobile-menu{display:block;position:relative}.seo-mobile-menu summary{list-style:none;display:grid;place-items:center;width:40px;height:40px;border:1px solid #121212;cursor:pointer;font-size:21px}.seo-mobile-menu summary::-webkit-details-marker{display:none}.seo-mobile-menu nav{display:grid;position:absolute;right:0;top:calc(100% + 9px);width:min(285px,88vw);padding:10px 0;background:#f4f1eb;border:1px solid #bcb5a9;box-shadow:0 18px 35px rgba(0,0,0,.15);z-index:60}.seo-mobile-menu nav a{padding:13px 17px;color:#121212;font-size:15px}.commercial-guide .guide-works{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.seo-guides div,.seo-grid,.guide-links,.guide-works,.commercial-guide .guide-works,.living-room-previews,.he-home-guides{grid-template-columns:1fr}.collection-cards>a.night-card{grid-column:auto}.seo-main{padding-top:50px}.seo-card img{height:125vw}.guide-he h1{font-size:46px}.guide-intro{font-size:20px!important}.guide-checklist,.guide-assistance{padding:24px}.guide-work{grid-template-columns:96px 1fr}.guide-work img{height:108px;width:96px}.commercial-guide .guide-work img{height:110vw;width:100%}.he-home-actions{align-items:flex-start;flex-direction:column}.he-home-guides h2{grid-column:auto}}
+@media(max-width:520px){.seo-guides div,.seo-grid,.guide-links,.guide-works,.commercial-guide .guide-works,.living-room-previews,.he-home-guides{grid-template-columns:1fr}.collection-cards>a.night-card{grid-column:auto}.seo-main{padding-top:50px}.seo-card img{height:auto;max-height:125vw;aspect-ratio:auto}.guide-he h1{font-size:46px}.guide-intro{font-size:20px!important}.guide-checklist,.guide-assistance{padding:24px}.guide-work{grid-template-columns:96px 1fr}.guide-work img{height:108px;width:96px}.commercial-guide .guide-work img{height:110vw;width:100%}.he-home-actions{align-items:flex-start;flex-direction:column}.he-home-guides h2{grid-column:auto}}
 /* Informational currency estimates on collection and artwork pages. */
 .fx-seo-note{display:block;font:400 13px/1.4 Assistant,Arial,sans-serif;color:#6d6559;margin:5px 0 12px}
 .fx-seo-note:empty{display:none}
