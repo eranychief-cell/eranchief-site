@@ -1,3 +1,12 @@
+// Shrink the collector's photo on their own device (max 1600px, JPEG) so uploads are fast and fit the story database.
+async function shrinkPhoto(file){
+  const bitmap=await createImageBitmap(file,{imageOrientation:'from-image'});
+  const scale=Math.min(1,1600/Math.max(bitmap.width,bitmap.height));
+  const canvas=document.createElement('canvas');canvas.width=Math.round(bitmap.width*scale);canvas.height=Math.round(bitmap.height*scale);
+  canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close?.();
+  for(const q of [0.85,0.75,0.6]){const blob=await new Promise(r=>canvas.toBlob(r,'image/jpeg',q));if(blob&&blob.size<=1400000)return blob;}
+  return null;
+}
 (() => {
   let lang=new URLSearchParams(location.search).get('lang')==='en'?'en':'he',previewUrl;
   const admin=document.body.dataset.admin==='true';
@@ -13,13 +22,13 @@
   document.querySelector('#storyPhoto')?.addEventListener('change',event=>{
     const file=event.target.files[0],preview=document.querySelector('#storyPreview');
     if(previewUrl)URL.revokeObjectURL(previewUrl);preview.hidden=true;
-    if(file?.size>8*1024*1024){event.target.value='';setStatus(lang==='he'?'בחרו תמונה קטנה מ־8 MB.':'Please choose a photo smaller than 8 MB.',true);return}
+    if(file?.size>30*1024*1024){event.target.value='';setStatus(lang==='he'?'בחרו תמונה קטנה מ־30 MB.':'Please choose a photo smaller than 30 MB.',true);return}
     if(file){previewUrl=URL.createObjectURL(file);preview.src=previewUrl;preview.hidden=false;}
   });
   document.querySelector('#storyForm')?.addEventListener('submit',async event=>{
     event.preventDefault();const form=event.currentTarget,button=form.querySelector('button[type=submit]');button.disabled=true;
     setStatus(lang==='he'?'שולחים את הסיפור והתמונה…':'Sending your story and photo…');
-    try{const response=await fetch('/api/collector-stories',{method:'POST',body:new FormData(form)});const result=await response.json();if(!response.ok)throw Error(result.error||'Could not save.');
+    try{const body=new FormData(form);const photo=body.get('photo');if(photo&&typeof photo!=='string'&&photo.size>0){const small=await shrinkPhoto(photo).catch(()=>null);if(small)body.set('photo',small,'photo.jpg');}const response=await fetch('/api/collector-stories',{method:'POST',body});const result=await response.json();if(!response.ok)throw Error(result.error||'Could not save.');
       form.reset();document.querySelector('#storyPreview').hidden=true;if(previewUrl)URL.revokeObjectURL(previewUrl);
       setStatus(lang==='he'?'תודה! הסיפור והתמונה נשלחו לצ׳יף לבדיקה. הם לא יופיעו באתר ללא אישור.':'Thank you! Your story and photo were sent to CHIEF for review. Nothing is published without approval.');
     }catch(error){setStatus(lang==='he'?'השליחה לא הושלמה. הפרטים נשמרו בטופס; נסו שוב. '+error.message:error.message,true)}finally{button.disabled=false}

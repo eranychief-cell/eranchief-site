@@ -35,7 +35,9 @@ export function ensureSchema(env) {
     "CREATE UNIQUE INDEX IF NOT EXISTS idx_newsletter_subscribers_email ON newsletter_subscribers (email)",
     "CREATE TABLE IF NOT EXISTS collector_stories (id text PRIMARY KEY NOT NULL, first_name text NOT NULL, email text NOT NULL, city text DEFAULT '' NOT NULL, artwork text NOT NULL, message text NOT NULL, photo_key text, photo_type text, publish_consent integer DEFAULT 0 NOT NULL, status text DEFAULT 'pending' NOT NULL, ip_hash text NOT NULL, created_at text NOT NULL)",
     "CREATE INDEX IF NOT EXISTS idx_collector_stories_status_created ON collector_stories (status, created_at)",
-    "CREATE INDEX IF NOT EXISTS idx_collector_stories_ip_created ON collector_stories (ip_hash, created_at)"
+    "CREATE INDEX IF NOT EXISTS idx_collector_stories_ip_created ON collector_stories (ip_hash, created_at)",
+    // Photos are kept in D1 when no R2 bucket is bound (photos are resized in the browser to stay well under D1's 2 MB row limit).
+    "CREATE TABLE IF NOT EXISTS collector_story_photos (id text PRIMARY KEY NOT NULL, data blob NOT NULL, type text NOT NULL)"
   ].map(sql => env.DB.prepare(sql))).catch(error => { schemaReady = null; throw error; });
   return schemaReady;
 }
@@ -79,9 +81,11 @@ export async function handleCollectorStories(request, env) {
     if (photoMatch && request.method === 'GET') {
       const row = await db(env).prepare('SELECT photo_key, photo_type, status, publish_consent FROM collector_stories WHERE id = ?').bind(photoMatch[1]).first();
       if (!row?.photo_key || (!(await owner(request, env)) && (row.status !== 'approved' || row.publish_consent !== 1))) return json({error:'Photo not found.'},404);
-      const object = await env.BUCKET?.get(row.photo_key);
-      if (!object) return json({error:'Photo unavailable.'},404);
-      return new Response(object.body,{headers:{'content-type':row.photo_type,'cache-control':'private, no-store','x-content-type-options':'nosniff','content-disposition':'inline'}});
+      let body = null;
+      if (row.photo_key.startsWith('d1:')) { const photo = await db(env).prepare('SELECT data FROM collector_story_photos WHERE id = ?').bind(row.photo_key.slice(3)).first(); if (photo?.data) body = new Uint8Array(photo.data); }
+      else { const object = await env.BUCKET?.get(row.photo_key); if (object) body = object.body; }
+      if (!body) return json({error:'Photo unavailable.'},404);
+      return new Response(body,{headers:{'content-type':row.photo_type,'cache-control':'private, no-store','x-content-type-options':'nosniff','content-disposition':'inline'}});
     }
     if (path === '/api/collector-stories/admin' && request.method === 'POST') {
       const data = await request.json();
@@ -106,19 +110,20 @@ export async function handleCollectorStories(request, env) {
       const id=crypto.randomUUID();let photoKey=null,photoType=null;
       const file=data.get('photo');
       if (file && typeof file !== 'string' && file.size>0) {
-        if (!env.BUCKET) return json({error:'Photo upload is temporarily unavailable. Please send your story without a photo, or try again later.'},503);
         if (file.size>maxBytes) return json({error:'The photo must be smaller than 8 MB.'},413);
+        if (!env.BUCKET && file.size>1500000) return json({error:'Please choose a smaller photo (up to 1.5 MB).'},413);
         const bytes=new Uint8Array(await file.arrayBuffer());
         const jpeg=bytes[0]===255&&bytes[1]===216&&bytes[2]===255;
         const png=bytes.slice(0,8).every((b,i)=>b===[137,80,78,71,13,10,26,10][i])&&bytes.length>8;
         const webp=new TextDecoder().decode(bytes.slice(0,4))==='RIFF'&&new TextDecoder().decode(bytes.slice(8,12))==='WEBP';
         if (!jpeg&&!png&&!webp) return json({error:'Please upload a JPEG, PNG or WebP photo.'},400);
-        photoType=jpeg?'image/jpeg':png?'image/png':'image/webp';photoKey='collector-stories/'+id;
-        await env.BUCKET.put(photoKey,bytes,{httpMetadata:{contentType:photoType}});
+        photoType=jpeg?'image/jpeg':png?'image/png':'image/webp';
+        if (env.BUCKET) { photoKey='collector-stories/'+id; await env.BUCKET.put(photoKey,bytes,{httpMetadata:{contentType:photoType}}); }
+        else { photoKey='d1:'+id; await db(env).prepare('INSERT INTO collector_story_photos (id, data, type) VALUES (?, ?, ?)').bind(id,bytes,photoType).run(); }
       }
       try {
         await db(env).prepare('INSERT INTO collector_stories (id, first_name, email, city, artwork, message, photo_key, photo_type, publish_consent, status, ip_hash, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').bind(id,firstName,email,city,artwork,message,photoKey,photoType,data.get('publishConsent')==='on'?1:0,'pending',ipHash,new Date().toISOString()).run();
-      } catch (error) { if(photoKey) await env.BUCKET.delete(photoKey);throw error; }
+      } catch (error) { if(photoKey?.startsWith('d1:')) await db(env).prepare('DELETE FROM collector_story_photos WHERE id = ?').bind(id).run().catch(()=>{}); else if(photoKey) await env.BUCKET?.delete(photoKey);throw error; }
       return json({ok:true,id},201);
     }
     return json({error:'Not found.'},404);
