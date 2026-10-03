@@ -16,9 +16,25 @@ const db = env => { if (!env.DB) throw new Error('Missing story database'); retu
 const maxBytes = 8 * 1024 * 1024;
 const text = (data, key) => typeof data.get(key) === 'string' ? data.get(key).trim() : '';
 
+// Create the D1 tables on first API use (idempotent), so a fresh database needs no manual migration.
+// Mirrors drizzle/0000 and drizzle/0001.
+let schemaReady = null;
+export function ensureSchema(env) {
+  if (!env.DB) return Promise.resolve();
+  if (!schemaReady) schemaReady = env.DB.batch([
+    "CREATE TABLE IF NOT EXISTS newsletter_subscribers (id integer PRIMARY KEY AUTOINCREMENT NOT NULL, email text NOT NULL, source text DEFAULT 'website' NOT NULL, created_at text NOT NULL)",
+    "CREATE UNIQUE INDEX IF NOT EXISTS idx_newsletter_subscribers_email ON newsletter_subscribers (email)",
+    "CREATE TABLE IF NOT EXISTS collector_stories (id text PRIMARY KEY NOT NULL, first_name text NOT NULL, email text NOT NULL, city text DEFAULT '' NOT NULL, artwork text NOT NULL, message text NOT NULL, photo_key text, photo_type text, publish_consent integer DEFAULT 0 NOT NULL, status text DEFAULT 'pending' NOT NULL, ip_hash text NOT NULL, created_at text NOT NULL)",
+    "CREATE INDEX IF NOT EXISTS idx_collector_stories_status_created ON collector_stories (status, created_at)",
+    "CREATE INDEX IF NOT EXISTS idx_collector_stories_ip_created ON collector_stories (ip_hash, created_at)"
+  ].map(sql => env.DB.prepare(sql))).catch(error => { schemaReady = null; throw error; });
+  return schemaReady;
+}
+
 export async function handleCollectorStories(request, env) {
   const url = new URL(request.url);
   const path = url.pathname;
+  if (path.startsWith('/api/')) { try { await ensureSchema(env); } catch (error) { console.error('Schema setup failed:', error.message); } }
   if (!path.startsWith('/api/collector-stories') && !path.startsWith('/collector-stories/manage')) return null;
   const adminPath = path.startsWith('/collector-stories/manage') || path.startsWith('/api/collector-stories/admin');
   if (adminPath && !owner(request, env)) return json({error:'Owner access required.'}, 403);

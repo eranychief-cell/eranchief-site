@@ -6,8 +6,9 @@
   "main": "dist/server/index.js",
   "compatibility_date": "2026-09-01",
   "build": { "command": "node build.mjs" },
-  "assets": { "directory": "dist/client", "binding": "ASSETS" }
-  // Phase 2 (before moving the domain): add the D1 database (binding "DB", migrations in ./drizzle)
-  // for the newsletter and collector stories, and optionally R2 (binding "BUCKET") for story photos.
-  // Until then those forms answer "temporarily unavailable"; every page and URL works.
+  "assets": { "directory": "dist/client", "binding": "ASSETS", "run_worker_first": ["/*", "!/assets/*"] },
+  // D1 database for the newsletter and collector stories. No database_id: Wrangler provisions it
+  // automatically on first deploy. Tables are created by the Worker on first use (ensureSchema).
+  "d1_databases": [ { "binding": "DB", "database_name": "eranchief-site-db" } ]
+  // Optional later: R2 bucket (binding "BUCKET") for collector-story photos.
 }

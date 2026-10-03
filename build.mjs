@@ -457,5 +457,11 @@ export default { async fetch(request, env) {
     '/he/artworks/rain-check-161/': '/he/artworks/the-rain-left-one-color-behind-161/'
   };
   if (redirects[url.pathname]) return Response.redirect(new URL(redirects[url.pathname], url.origin), 301);
-  return env.ASSETS.fetch(request);
+  const assetResponse = await env.ASSETS.fetch(request);
+  // The *.workers.dev address is a technical/preview address: keep it out of search engines.
+  if (url.hostname.endsWith('.workers.dev')) {
+    const headers = new Headers(assetResponse.headers); headers.set('x-robots-tag', 'noindex, nofollow');
+    return new Response(assetResponse.body, { status: assetResponse.status, statusText: assetResponse.statusText, headers });
+  }
+  return assetResponse;
 } };\n`);
