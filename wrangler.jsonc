@@ -2,7 +2,7 @@
   // eranchief.com on Cloudflare Workers (migrated from ChatGPT Sites, October 2026).
   // `wrangler deploy` runs the build below, then uploads dist/client as static assets
   // and dist/server/index.js as the Worker (newsletter, collector stories, FX rates, redirects).
-  "name": "eranchief",
+  "name": "eranchief-site",
   "main": "dist/server/index.js",
   "compatibility_date": "2026-09-01",
   "build": { "command": "node build.mjs" },
