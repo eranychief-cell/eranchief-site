@@ -1,5 +1,16 @@
-const OWNER_EMAIL = 'eranychief@yahoo.com';
-const owner = request => Boolean(request.headers.get('oai-authenticated-user-id')) && request.headers.get('oai-authenticated-user-email')?.toLowerCase() === OWNER_EMAIL;
+// SECURITY: the previous check trusted `oai-authenticated-user-*` request headers. Those were injected by
+// ChatGPT Sites' proxy; on any other host (e.g. Cloudflare) any visitor can send them and gain owner access.
+// Owner access now requires a secret configured on the host (ADMIN_TOKEN), sent as `Authorization: Bearer …`.
+// Without that secret configured, moderation is simply disabled.
+const owner = (request, env) => {
+  const token = env.ADMIN_TOKEN;
+  if (!token || token.length < 32) return false;
+  const sent = request.headers.get('authorization') || '';
+  const expected = 'Bearer ' + token;
+  if (sent.length !== expected.length) return false;
+  let diff = 0; for (let i = 0; i < sent.length; i++) diff |= sent.charCodeAt(i) ^ expected.charCodeAt(i);
+  return diff === 0;
+};
 const json = (value, status = 200) => Response.json(value, {status, headers: {'cache-control':'no-store'}});
 const db = env => { if (!env.DB) throw new Error('Missing story database'); return env.DB; };
 const maxBytes = 8 * 1024 * 1024;
@@ -10,10 +21,7 @@ export async function handleCollectorStories(request, env) {
   const path = url.pathname;
   if (!path.startsWith('/api/collector-stories') && !path.startsWith('/collector-stories/manage')) return null;
   const adminPath = path.startsWith('/collector-stories/manage') || path.startsWith('/api/collector-stories/admin');
-  if (adminPath && !owner(request)) {
-    if (path.startsWith('/collector-stories/manage') && !request.headers.get('oai-authenticated-user-id')) return Response.redirect(new URL('/signin-with-chatgpt?return_to=%2Fcollector-stories%2Fmanage%2F', url.origin), 302);
-    return json({error:'Owner access required.'}, 403);
-  }
+  if (adminPath && !owner(request, env)) return json({error:'Owner access required.'}, 403);
   if (request.method === 'POST' && request.headers.get('origin') !== url.origin) return json({error:'Please submit through the website.'}, 403);
   try {
     if (path.startsWith('/collector-stories/manage')) {
@@ -36,7 +44,7 @@ export async function handleCollectorStories(request, env) {
     const photoMatch = path.match(/^\/api\/collector-stories\/([a-f0-9-]{36})\/photo$/);
     if (photoMatch && request.method === 'GET') {
       const row = await db(env).prepare('SELECT photo_key, photo_type, status, publish_consent FROM collector_stories WHERE id = ?').bind(photoMatch[1]).first();
-      if (!row?.photo_key || (!owner(request) && (row.status !== 'approved' || row.publish_consent !== 1))) return json({error:'Photo not found.'},404);
+      if (!row?.photo_key || (!owner(request, env) && (row.status !== 'approved' || row.publish_consent !== 1))) return json({error:'Photo not found.'},404);
       const object = await env.BUCKET?.get(row.photo_key);
       if (!object) return json({error:'Photo unavailable.'},404);
       return new Response(object.body,{headers:{'content-type':row.photo_type,'cache-control':'private, no-store','x-content-type-options':'nosniff','content-disposition':'inline'}});
@@ -51,7 +59,6 @@ export async function handleCollectorStories(request, env) {
       return json({ok:true});
     }
     if (path === '/api/collector-stories' && request.method === 'POST') {
-      if (!env.BUCKET) return json({error:'Photo storage is temporarily unavailable. Please try again later.'},503);
       if (Number(request.headers.get('content-length')) > maxBytes + 65536) return json({error:'Please choose a smaller photo.'},413);
       const data = await request.formData();
       if (text(data,'website')) return json({ok:true});
@@ -65,6 +72,7 @@ export async function handleCollectorStories(request, env) {
       const id=crypto.randomUUID();let photoKey=null,photoType=null;
       const file=data.get('photo');
       if (file && typeof file !== 'string' && file.size>0) {
+        if (!env.BUCKET) return json({error:'Photo upload is temporarily unavailable. Please send your story without a photo, or try again later.'},503);
         if (file.size>maxBytes) return json({error:'The photo must be smaller than 8 MB.'},413);
         const bytes=new Uint8Array(await file.arrayBuffer());
         const jpeg=bytes[0]===255&&bytes[1]===216&&bytes[2]===255;
