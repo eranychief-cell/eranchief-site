@@ -20,12 +20,14 @@ jobs:
           sleep 60
       - name: Submit sitemap URLs to IndexNow
         run: |
+          curl -fsS -A "Mozilla/5.0 (IndexNow submitter; eranchief.com)" https://eranchief.com/sitemap.xml -o sitemap.xml
           python3 - <<'PY'
-          import json, re, urllib.request
-          xml = urllib.request.urlopen('https://eranchief.com/sitemap.xml').read().decode()
+          import json, re
+          xml = open('sitemap.xml', encoding='utf-8').read()
           urls = sorted(set(re.findall(r'<loc>(https://eranchief\.com[^<]*)</loc>', xml)))[:10000]
           print(len(urls), 'urls')
-          body = json.dumps({"host": "eranchief.com", "key": "a7d8eb0f35e3bd466bee048ca351acef", "keyLocation": "https://eranchief.com/a7d8eb0f35e3bd466bee048ca351acef.txt", "urlList": urls}).encode()
-          req = urllib.request.Request('https://api.indexnow.org/indexnow', data=body, headers={'Content-Type': 'application/json; charset=utf-8'})
-          with urllib.request.urlopen(req) as r: print('IndexNow status', r.status)
+          json.dump({"host": "eranchief.com", "key": "a7d8eb0f35e3bd466bee048ca351acef", "keyLocation": "https://eranchief.com/a7d8eb0f35e3bd466bee048ca351acef.txt", "urlList": urls}, open('body.json', 'w'))
           PY
+          code=$(curl -sS -o resp.txt -w '%{http_code}' -H 'Content-Type: application/json; charset=utf-8' --data @body.json https://api.indexnow.org/indexnow)
+          echo "IndexNow HTTP $code"; cat resp.txt; echo
+          case "$code" in 200|202) ;; *) exit 1;; esac
