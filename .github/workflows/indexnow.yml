@@ -20,14 +20,15 @@ jobs:
           sleep 60
       - name: Submit sitemap URLs to IndexNow
         run: |
-          curl -fsS -A "Mozilla/5.0 (IndexNow submitter; eranchief.com)" https://eranchief.com/sitemap.xml -o sitemap.xml
+          sc=$(curl -sS -A "Mozilla/5.0 (IndexNow submitter; eranchief.com)" -o sitemap.xml -w '%{http_code}' https://eranchief.com/sitemap.xml || echo curlfail)
+          echo "::notice::sitemap HTTP $sc, $(wc -c < sitemap.xml) bytes"
           python3 - <<'PY'
           import json, re
           xml = open('sitemap.xml', encoding='utf-8').read()
           urls = sorted(set(re.findall(r'<loc>(https://eranchief\.com[^<]*)</loc>', xml)))[:10000]
-          print(len(urls), 'urls')
+          print('::notice::%d urls' % len(urls))
           json.dump({"host": "eranchief.com", "key": "a7d8eb0f35e3bd466bee048ca351acef", "keyLocation": "https://eranchief.com/a7d8eb0f35e3bd466bee048ca351acef.txt", "urlList": urls}, open('body.json', 'w'))
           PY
           code=$(curl -sS -o resp.txt -w '%{http_code}' -H 'Content-Type: application/json; charset=utf-8' --data @body.json https://api.indexnow.org/indexnow)
-          echo "IndexNow HTTP $code"; cat resp.txt; echo
+          echo "::notice::IndexNow HTTP $code $(head -c 300 resp.txt | tr '\n' ' ')"
           case "$code" in 200|202) ;; *) exit 1;; esac
