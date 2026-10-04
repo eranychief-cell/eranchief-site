@@ -13,6 +13,9 @@
         const en = { '#paper-edition': 'Paper Edition · ₪249', '#canvas-edit': 'Canvas from ₪990', '#collectionIndex': 'Collector Editions', '#collection': 'All works', '/press/': 'Press', '/collector-stories/': 'Collector Stories', '/collector-stories/?lang=en': 'Collector Stories' };
         nav.querySelectorAll('a').forEach(a => { const h = a.getAttribute('href'); if (en[h]) a.textContent = en[h]; if (h === '/collector-stories/') a.setAttribute('href', '/collector-stories/?lang=en'); if (h === '/?lang=en') { a.textContent = 'עברית'; a.setAttribute('href', '/'); a.lang = 'he'; a.hreflang = 'he'; } });
       }
+      document.querySelectorAll('[data-theme-nav] a[data-en-href]').forEach(a => { a.setAttribute('href', a.dataset.enHref); a.textContent = a.dataset.enText; });
+      const tn = document.querySelector('[data-theme-nav] strong'); if (tn) tn.textContent = 'Fine art photography by theme';
+      document.querySelector('[data-theme-nav]')?.setAttribute('aria-label', 'Photography by theme');
       const langs = document.querySelector('.language-links');
       if (langs) { langs.setAttribute('aria-label', 'Language'); langs.innerHTML = '<a href="/" lang="he" hreflang="he">עברית</a><span aria-current="page">English</span>'; }
     };

@@ -114,3 +114,13 @@
 .bio-shop-cta strong { flex-basis:100%; font-size:16px; font-weight:600; margin-bottom:4px; }
 .bio-shop-cta a { color:#121212; background:#f4f1ea; text-decoration:none; padding:9px 13px; font-size:14px; border-radius:2px; }
 .bio-shop-cta a:last-child { background:transparent; color:#f4f1ea; text-decoration:underline; text-underline-offset:3px; }
+.theme-page { max-width:900px; }
+.theme-page .guide-intro { font-size:19px; line-height:1.6; }
+.theme-related { display:flex; flex-wrap:wrap; gap:8px 14px; margin:34px 0 10px; padding-top:20px; border-top:1px solid rgba(18,18,18,.18); }
+.theme-related strong { flex-basis:100%; font-size:15px; }
+.theme-related a { color:inherit; text-underline-offset:3px; }
+.theme-page .guide-intent-links a { color:inherit; text-underline-offset:3px; }
+.theme-links { font-size:15px; line-height:1.7; margin:4px 0 18px; max-width:470px; } .theme-links a { color:inherit; text-underline-offset:3px; }
+.theme-nav { display:flex; flex-wrap:wrap; gap:8px 16px; margin:40px auto 10px; padding-top:18px; border-top:1px solid rgba(18,18,18,.18); max-width:900px; direction:rtl; }
+.theme-nav strong { flex-basis:100%; font-size:15px; }
+.theme-nav a { color:inherit; text-underline-offset:3px; }
