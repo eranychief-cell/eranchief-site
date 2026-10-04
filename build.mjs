@@ -482,6 +482,47 @@ for (const [file,he] of [['dist/client/he/eran-yerushalmi-photographer/index.htm
     :`<nav class="bio-shop-cta" aria-label="Buy photographs"><strong>Buy original, signed photographs by CHIEF</strong><a href="/?lang=en#paper-edition">Paper Edition · from ₪249</a><a href="/?lang=en#canvas-edit">Canvas · from ₪990</a><a href="/?lang=en#collectionIndex">Numbered collector editions</a><a href="/?lang=en#collection">All ${allWorks.length} works →</a></nav>`;
   if(!html.includes('bio-shop-cta'))await writeFile(file,html.replace(/(<h1[^>]*>[\s\S]*?<\/h1>)/,`$1${cta}`));
 }
+// "Quick facts" box on both biography pages: short, verifiable statements that search engines and AI overviews quote.
+for (const [file,he] of [['dist/client/he/eran-yerushalmi-photographer/index.html',true],['dist/client/about/index.html',false]]) {
+  let html=await readFile(file,'utf8'); if(html.includes('bio-facts'))continue;
+  const facts=he?[
+    ['שם','ערן ירושלמי, הידוע בשם האמן CHIEF'],
+    ['תחום','צילום Fine Art; מצלם ועורך את כל עבודותיו באייפון בלבד'],
+    ['בסיס','תל אביב, ישראל'],
+    ['נושאים','ים, אור, השתקפויות אחרי גשם, תל אביב, ריקוד ודמות, צילום סוריאליסטי'],
+    ['פרסומים','חדשות 13, Ynet, N12, mako, עיריית תל אביב–יפו, וואלה, ישראל היום, טיים אאוט, כאן ו־Artsy'],
+    ['תערוכות','FANTASEA (2014); Urban Tel Aviv ב־Artsy (2019)'],
+    ['פרס','זוכה תחרות "תמונות העונה" של "האח הגדול"'],
+    ['רכישת עבודות','באתר הרשמי eranchief.com: מהדורת נייר החל מ־₪249, קנבס החל מ־₪990, ומהדורות אספנים ממוספרות (25 או 7 עותקים בסך הכול לכל יצירה) עם תעודת מקוריות חתומה'],
+  ]:[
+    ['Name','Eran Yerushalmi, known professionally as CHIEF'],
+    ['Field','Fine art photography; photographs and edits all his work exclusively on iPhone'],
+    ['Based in','Tel Aviv, Israel'],
+    ['Subjects','Sea, light, after-rain reflections, Tel Aviv, dance and the figure, surreal photography'],
+    ['Featured by','Channel 13, Ynet, N12, Mako, Tel Aviv–Yafo Municipality, Walla, Israel Hayom, Time Out, Kan and Artsy'],
+    ['Exhibitions','FANTASEA (2014); Urban Tel Aviv on Artsy (2019)'],
+    ['Award','Winner, "Photos of the Season" competition, Big Brother Israel'],
+    ['Buy work','On the official website eranchief.com: Paper Edition from ₪249, canvas from ₪990, and numbered collector editions (25 or 7 copies in total per work) with a signed Certificate of Authenticity'],
+  ];
+  const box=`<section class="bio-facts" aria-label="${he?'עובדות בקצרה':'Quick facts'}"><h2>${he?'ערן ירושלמי (CHIEF) בקצרה':'Eran Yerushalmi (CHIEF) at a glance'}</h2><dl>${facts.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></section>`;
+  html=html.replace('</nav>'+'',m=>m); // no-op
+  html=html.replace(/(<nav class="bio-shop-cta"[\s\S]*?<\/nav>)/,`$1${box}`);
+  const faq=he?[
+    ['מי זה ערן ירושלמי הצלם?','ערן ירושלמי, הידוע בשם CHIEF, הוא צלם Fine Art מתל אביב שמצלם ועורך את כל עבודותיו באייפון. עבודותיו עוסקות בים, באור, בהשתקפויות ובמפגשים בלתי צפויים בעיר.'],
+    ['איפה אפשר לקנות צילומים של ערן ירושלמי?','באתר הרשמי eranchief.com. יש מהדורת נייר חתומה החל מ־₪249, קנבס החל מ־₪990 ומהדורות אספנים ממוספרות על אלוקובונד או פרספקס, כולן עם תעודת מקוריות.'],
+    ['מה המשמעות של מהדורה מוגבלת אצל CHIEF?','מהדורת Premium היא 25 עותקים בסך הכול לכל יצירה, בכל הגדלים והחומרים יחד, ומהדורת Super Premium היא 7 עותקים. כל עותק ממוספר, חתום ומגיע עם תעודת מקוריות.'],
+  ]:[
+    ['Who is the photographer Eran Yerushalmi?','Eran Yerushalmi, known as CHIEF, is a Tel Aviv fine art photographer who photographs and edits all his work on iPhone, exploring sea, light, reflections and unexpected encounters in the city.'],
+    ['Where can I buy photographs by Eran Yerushalmi?','On the official website eranchief.com: a signed Paper Edition from ₪249, canvas from ₪990, and numbered collector editions on Alucobond or Perspex, all with a Certificate of Authenticity.'],
+    ['What does a limited edition mean for CHIEF?','A Premium edition is 25 copies in total per work across all sizes and finishes; a Super Premium edition is 7. Each copy is numbered, signed and comes with a Certificate of Authenticity.'],
+  ];
+  const faqSchema={"@context":"https://schema.org","@type":"FAQPage","mainEntity":faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))};
+  const faqHtml=`<section class="bio-faq guide-faq"><h2>${he?'שאלות נפוצות':'Frequently asked questions'}</h2>${faq.map(([q,a])=>`<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</section>`;
+  if(!html.includes('"FAQPage"'))html=html.replace('</head>',`<script type="application/ld+json">${JSON.stringify(faqSchema)}</script></head>`);
+  else html=html.replace(/(<section class="bio-facts")/,'$1'); 
+  html=html.replace('</main>',faqHtml+'</main>');
+  await writeFile(file,html);
+}
 await writeFile('dist/client/video-sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n${videoSitemapEntries.map(v=>`  <url><loc>${v.url}</loc><video:video><video:thumbnail_loc>${v.poster}</video:thumbnail_loc><video:title>${esc(v.title)}</video:title><video:description>${esc(v.description)}</video:description><video:content_loc>${v.content}</video:content_loc><video:duration>${Number(v.duration.match(/\d+/)?.[0]||0)}</video:duration><video:publication_date>${uploadDate}</video:publication_date><video:uploader info="${site}/he/eran-yerushalmi-photographer/">CHIEF</video:uploader></video:video></url>`).join('\n')}\n</urlset>\n`);
 await writeFile('dist/client/google-merchant-feed.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0"><channel><title>CHIEF Fine Art Photography</title><link>${site}/</link><description>Original fine art photography by CHIEF</description>${merchantFeedItems.join('')}</channel></rss>\n`);
 await writeFile('dist/client/robots.txt',`User-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\nSitemap: ${site}/image-sitemap.xml\nSitemap: ${site}/video-sitemap.xml\n`);
