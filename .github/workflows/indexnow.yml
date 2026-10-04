@@ -1,0 +1,31 @@
+name: Notify Bing (IndexNow) after deploy
+# Bing powers much of ChatGPT search. After each push the Cloudflare build deploys the site; this then tells
+# Bing/IndexNow which URLs exist so new and changed pages are picked up quickly. The key file is public by design.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for the new version to be live
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS https://eranchief.com/a7d8eb0f35e3bd466bee048ca351acef.txt | grep -q a7d8eb0f35e3bd466bee048ca351acef; then echo live; break; fi
+            sleep 20
+          done
+          sleep 60
+      - name: Submit sitemap URLs to IndexNow
+        run: |
+          python3 - <<'PY'
+          import json, re, urllib.request
+          xml = urllib.request.urlopen('https://eranchief.com/sitemap.xml').read().decode()
+          urls = sorted(set(re.findall(r'<loc>(https://eranchief\.com[^<]*)</loc>', xml)))[:10000]
+          print(len(urls), 'urls')
+          body = json.dumps({"host": "eranchief.com", "key": "a7d8eb0f35e3bd466bee048ca351acef", "keyLocation": "https://eranchief.com/a7d8eb0f35e3bd466bee048ca351acef.txt", "urlList": urls}).encode()
+          req = urllib.request.Request('https://api.indexnow.org/indexnow', data=body, headers={'Content-Type': 'application/json; charset=utf-8'})
+          with urllib.request.urlopen(req) as r: print('IndexNow status', r.status)
+          PY
