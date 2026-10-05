@@ -119,9 +119,13 @@ export async function handleGrow(request, env) {
 
   if (path === '/order/thanks/') {
     const id = url.searchParams.get('o') || '';
-    const row = env.DB && /^[0-9a-f-]{36}$/.test(id) ? await env.DB.prepare('SELECT status, asmachta, total FROM grow_orders WHERE id = ?').bind(id).first().catch(() => null) : null;
+    const row = env.DB && /^[0-9a-f-]{36}$/.test(id) ? await env.DB.prepare('SELECT status, asmachta, total, items, created_at FROM grow_orders WHERE id = ?').bind(id).first().catch(() => null) : null;
     const done = row?.status === 'paid';
-    return page('תודה על ההזמנה', `<h1>תודה על ההזמנה 🙏</h1><p>${done ? `התשלום התקבל${row.asmachta ? ` · אסמכתא ${esc(row.asmachta)}` : ''}.` : 'התשלום בעיבוד. אישור יישלח אליך במייל.'}</p><p>CHIEF ייצור איתך קשר בקרוב לתיאום ההדפסה והמשלוח. היצירה מגיעה עם תעודת מקוריות חתומה.</p><p>Thank you — CHIEF will contact you shortly to arrange printing and delivery.</p><p><a href="/he/">חזרה לאתר</a> · <a href="https://wa.me/972507123109">WhatsApp</a></p>`);
+    const items = row ? JSON.parse(row.items) : [];
+    const details = row ? `<h2>אישור הזמנה</h2><table>${items.map(x => `<tr><td>${esc(x.title)}</td><td>${esc(x.size)} · ${x.finish === 'perspect' ? 'פרספקס' : 'אלוקובונד'}</td><td>₪${x.price.toLocaleString('en')}</td></tr>`).join('')}<tr><th colspan="2">סה״כ ששולם (משלוח בישראל כלול; עוסק פטור, ללא מע״מ)</th><th>₪${row.total.toLocaleString('en')}</th></tr></table>
+      <p>תאריך הזמנה: ${esc(row.created_at.slice(0, 10))}<br>אספקה: תוך עד 14 ימי עסקים מאישור התשלום, באמצעות שליח.<br>ביטול: ללא עלות ובהחזר מלא תוך 48 שעות מאישור התשלום, אם ההדפסה טרם החלה; זכויות ביטול לפי דין מפורטות ב<a href="/terms/">תקנון</a>.</p>
+      <p>ERANYCHIEF (ערן ירושלמי) · עוסק פטור 025334459 · רחוב וילסון 5, תל אביב 6522012 · <a href="mailto:eranychief@gmail.com">eranychief@gmail.com</a> · 050-712-3109</p><p>מומלץ לשמור עמוד זה. קבלה על התשלום נשלחת בדוא״ל מ־Grow.</p>` : '';
+    return page('תודה על ההזמנה', `<h1>תודה על ההזמנה 🙏</h1><p>${done ? `התשלום התקבל${row.asmachta ? ` · אסמכתא ${esc(row.asmachta)}` : ''}.` : 'התשלום בעיבוד. אישור יישלח אליך במייל.'}</p><p>CHIEF ייצור איתך קשר בקרוב לתיאום ההדפסה והמשלוח. היצירה מגיעה עם תעודת מקוריות חתומה.</p>${details}<p><a href="/he/">חזרה לאתר</a> · <a href="https://wa.me/972507123109">WhatsApp</a></p>`);
   }
 
   if (path.startsWith('/orders/manage')) {
