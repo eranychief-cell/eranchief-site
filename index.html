@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="editorial.css">
+  <link rel="stylesheet" href="editorial.css?v=2">
   <link rel="stylesheet" href="commerce.css?v=2">
   <link rel="stylesheet" href="finish.css">
   <link rel="stylesheet" href="canvas.css">
@@ -145,7 +145,16 @@
     <section class="gallery-grid" id="gallery" data-catalog-grid aria-live="polite"></section>
     <div class="gallery-more"><button type="button" id="showMoreWorks" hidden>Show more works</button></div>
 
-    <section class="statement"><p>“I wait for the familiar world<br>to become something else.”</p><span>CHIEF / CHIEF</span></section>
+    <section class="statement" aria-label="CHIEF">
+      <div class="statement-quotes">
+        <p class="statement-q is-on" data-en="“My iPhone was my real camera.”">״האייפון היה המצלמה האמיתית שלי.״</p>
+        <p class="statement-q" data-en="“Tel Aviv is my studio.”">״תל אביב היא הסטודיו שלי.״</p>
+        <p class="statement-q" data-en="“One puddle can turn the whole city upside down.”">״שלולית אחת יכולה להפוך את כל העיר.״</p>
+        <p class="statement-q" data-en="“I shoot close to the ground and let the light do the rest.”">״אני מצלם קרוב לקרקע, ונותן לאור לעשות את השאר.״</p>
+      </div>
+      <span class="statement-sign" data-en="ERAN YERUSHALMI · CHIEF">ערן ירושלמי · CHIEF</span>
+      <script>(()=>{const s=document.currentScript.closest('.statement');if(new URLSearchParams(location.search).get('lang')==='en')s.querySelectorAll('[data-en]').forEach(e=>{e.textContent=e.dataset.en;e.setAttribute('translate','no')});const q=[...s.querySelectorAll('.statement-q')];if(matchMedia('(prefers-reduced-motion: reduce)').matches){s.classList.add('statement-static');return}let i=0;setInterval(()=>{if(document.hidden)return;q[i].classList.remove('is-on');i=(i+1)%q.length;q[i].classList.add('is-on')},5200)})();</script>
+    </section>
 
     <section class="interiors-showcase" id="interiors">
       <div class="interiors-heading">
