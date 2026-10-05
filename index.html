@@ -43,7 +43,7 @@
   <link rel="stylesheet" href="artist-profile.css">
   <link rel="stylesheet" href="videos.css">
   <link rel="stylesheet" href="paper-edition.css?v=1">
-  <link rel="stylesheet" href="shopping.css?v=8">
+  <link rel="stylesheet" href="shopping.css?v=9">
 </head>
 <body>
   <div class="site-intro" id="siteIntro" aria-hidden="true"><img class="intro-logo notranslate" translate="no" src="assets/chief-logo.jpg" alt=""><small>FINE ART PHOTOGRAPHY</small><i></i></div>
@@ -269,6 +269,11 @@
         <label>City<input name="city" autocomplete="address-level2" required></label>
         <label class="field-wide">Postal code <small>(optional for the initial quote)</small><input name="postalCode" autocomplete="postal-code"></label>
       </div>
+      <div id="onlinePay" class="online-pay" hidden>
+        <label class="field-wide"><span data-op="address">Street address and number</span><input name="address" autocomplete="street-address"></label>
+        <label class="terms-check"><input type="checkbox" name="terms"> <span data-op="terms">I accept the <a href="/terms/" target="_blank">Terms of Sale</a> and confirm I am 18 or older.</span></label>
+        <p id="payError" class="pay-error" role="alert" hidden></p>
+      </div>
       <div class="checkout-summary checkout-pricing"><div><span>Order subtotal</span><strong id="shippingSubtotal">₪0</strong></div><div id="shippingDiscountRow" hidden><span>Private discount</span><strong id="shippingDiscount">−₪0</strong></div><div><span id="shippingTotalLabel">Total before shipping</span><strong id="shippingTotal">₪0</strong></div><small id="shippingApprox" data-ils="0"></small><p class="included-shipping" id="shippingStatus"></p></div>
       <button class="submit-order" type="submit">Continue to WhatsApp with my selection</button>
       <small>This opens a prepared message for you to send. No payment is taken here. Read the <a href="/shipping-returns/" target="_blank">Shipping &amp; Returns Policy</a> before paying.</small>
@@ -286,7 +291,7 @@
   <script src="card-previews.js"></script>
   <script src="paper-edition-data.js" defer></script>
   <script src="paper-expiry.js" defer></script>
-  <script src="app.js?v=31" defer></script>
+  <script src="app.js?v=32" defer></script>
   <script src="catalog-filters.js?v=2"></script>
 </body>
 </html>

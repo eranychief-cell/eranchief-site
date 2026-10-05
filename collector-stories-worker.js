@@ -129,3 +129,4 @@ export async function handleCollectorStories(request, env) {
     return json({error:'Not found.'},404);
   } catch(error) { console.error('Collector story storage failed:',error.message);return json({error:'We could not save your story. Your form has been kept; please try again.'},503); }
 }
+export { owner };

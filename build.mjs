@@ -7,6 +7,7 @@ await mkdir('dist/client/assets', { recursive: true });
 await mkdir('dist/server', { recursive: true });
 await mkdir('dist/.openai', { recursive: true });
 await cp('collector-stories-worker.js', 'dist/server/collector-stories-worker.js');
+await cp('grow-worker.js', 'dist/server/grow-worker.js');
 await cp('collector-stories.css', 'dist/client/collector-stories.css');
 await cp('collector-stories.js', 'dist/client/collector-stories.js');
 await cp('collector-stories', 'dist/client/collector-stories', { recursive: true });
@@ -544,10 +545,24 @@ await writeFile('dist/client/google-merchant-feed.xml',`<?xml version="1.0" enco
 await writeFile('dist/client/a7d8eb0f35e3bd466bee048ca351acef.txt','a7d8eb0f35e3bd466bee048ca351acef');
 await writeFile('dist/client/llms.txt',`# CHIEF — Eran Yerushalmi, Israeli fine-art photographer\n\n> Original fine-art photography from Tel Aviv: sea, light, street reflections and dance, sold as signed limited editions (Premium: 25 copies in total per work; Super Premium: 7) on canvas, Alucobond or Perspex, each with a signed certificate of authenticity. Site in English and Hebrew.\n\n## Shop\n- [All artworks](${site}/): full catalogue with prices, sizes and room previews\n- [Hebrew store](${site}/he/): תמונות לסלון ואמנות ישראלית מקורית\n- [Trade program](${site}/trade/): art for offices, hotels and interior designers\n\n## Guides (Hebrew)\n${guideEntries.map(([slug,g])=>`- [${g.title}](${site}/he/${slug}/): ${g.description}`).join('\n')}\n\n## Topics\n${Object.values(themePages).map(p=>`- [${p.en.title}](${site}/${p.slug}/) · [${p.he.title}](${site}/he/${p.slug}/)`).join('\n')}\n\n## About\n- [Artist page](${site}/he/eran-chief-fine-art-photography/)\n- [Press](${site}/press/)\n`);
 await writeFile('dist/client/robots.txt',`User-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\nSitemap: ${site}/image-sitemap.xml\nSitemap: ${site}/video-sitemap.xml\n`);
+// Server-side price list for Grow online payment (Premium / Super Premium; shipping in Israel included).
+{
+  const perspectPrices=JSON.parse(appSource.match(/const perspectPrices=(\{[^;]*\});/)[1].replace(/([{,])(\w+):/g,'$1"$2":'));
+  const growCatalog={};
+  for(const w of allWorks.filter(x=>x.category==='premium'||x.category==='super')){
+    const p=pricesFor(w),sizes=sizesFor(w);
+    growCatalog[w.id]={id:w.id,title:w.title,category:w.category,sizes,alucobond:p.map(v=>Math.round(v/10)*10),
+      perspect:p.map((v,i)=>Math.round((perspectPrices[w.category]?.[i]??v*1.3)/10)*10),sold:w.soldEditions||0,total:w.category==='super'?7:25};
+  }
+  await writeFile('dist/server/grow-catalog.js',`export const catalog=${JSON.stringify(growCatalog)};\n`);
+}
 await writeFile('dist/server/index.js', `import { handleCollectorStories } from './collector-stories-worker.js';
+import { handleGrow } from './grow-worker.js';
 export default { async fetch(request, env) {
   // www.eranchief.com -> eranchief.com (301, same path + query), exactly like the old host did, to keep SEO intact.
   { const u = new URL(request.url); if (u.pathname === '/__build') return new Response(JSON.stringify({ host: 'cloudflare-worker', build: '${new Date().toISOString()}' }), { headers: { 'content-type': 'application/json', 'x-robots-tag': 'noindex', 'cache-control': 'no-store' } }); if (u.hostname === 'www.eranchief.com') { u.hostname = 'eranchief.com'; return Response.redirect(u.toString(), 301); } }
+  const growResponse = await handleGrow(request, env);
+  if (growResponse) return growResponse;
   const storyResponse = await handleCollectorStories(request, env);
   if (storyResponse) return storyResponse;
   const url = new URL(request.url);

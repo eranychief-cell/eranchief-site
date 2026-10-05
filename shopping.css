@@ -97,3 +97,10 @@ body:not(.seo-body) .catalog-filters,body:not(.seo-body) .catalog-filters__count
 #productView .edition-note{font-size:14px;line-height:1.5;color:#4a4741;border-inline-start:2px solid #b08a4a;padding-inline-start:10px;margin:8px 0 14px}
 #productView .certificate-link{font-size:14px;margin:0 0 14px}#productView .certificate-link a{color:inherit;text-underline-offset:3px}
 .theme-nav{display:flex;flex-wrap:wrap;gap:8px 16px;margin:28px clamp(16px,5vw,80px) 8px;padding-top:18px;border-top:1px solid rgba(18,18,18,.18)}.theme-nav strong{flex-basis:100%;font-size:15px}.theme-nav a{color:inherit;text-underline-offset:3px;font-size:15px}
+
+/* Grow online payment (shown only when the total is final) */
+.online-pay{display:grid;gap:12px;margin:14px 0 4px}
+.online-pay input[name="address"]{width:100%}
+.terms-check{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5}
+.terms-check input{margin-top:4px;flex:0 0 auto;width:18px;height:18px}
+.pay-error{color:#a3271d;font-size:14px;margin:0}
