@@ -83,7 +83,8 @@ export async function handleGrow(request, env) {
     });
     if (String(result.status) !== '1' || !result.data?.url) {
       console.error('Grow createPaymentProcess failed', JSON.stringify(result.err || result).slice(0, 300));
-      return json({ error: 'The secure payment page is unavailable right now. Please use WhatsApp and CHIEF will send a payment link.', fallback: 'whatsapp' }, 502);
+      const growError = plain(result.err?.message || result.err?.raw || result.message || JSON.stringify(result.err || result), 160);
+      return json({ error: 'The secure payment page is unavailable right now. Please use WhatsApp and CHIEF will send a payment link.', fallback: 'whatsapp', growError }, 502);
     }
     await env.DB.prepare(`INSERT INTO grow_orders (id, items, subtotal, discount, total, coupon, full_name, phone, email, city, address, postal_code, status, process_id, process_token, created_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?)`).bind(id, JSON.stringify(order.lines), order.subtotal, order.discount, order.total, order.coupon,

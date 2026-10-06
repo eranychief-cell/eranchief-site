@@ -530,6 +530,7 @@ document.querySelector('#shippingForm').onsubmit=async e=>{
       const result=await response.json().catch(()=>({}));
       if(result.url){location.href=result.url;return}
       if(!result.fallback){err.textContent=result.error||ui('לא ניתן לפתוח את דף התשלום. נסו שוב.','The payment page could not be opened. Please try again.');err.hidden=false;button.disabled=false;return}
+      if(result.growError){growEnabled=false;updateShippingUi();err.textContent=ui('התשלום המקוון אינו זמין כרגע. לחצו שוב כדי לשלוח את ההזמנה בוואטסאפ, ו־CHIEF ישלח לינק לתשלום.','Online payment is unavailable right now. Tap again to send your order on WhatsApp and CHIEF will send a payment link.')+' ('+result.growError+')';err.hidden=false;button.disabled=false;return}
     }catch{}
     button.disabled=false;
   }
