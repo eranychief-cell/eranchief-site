@@ -40,16 +40,20 @@ function priceOrder(items, couponCode) {
     if (!work) throw new Error('One of the artworks is not available for online payment.');
     const si = work.sizes.indexOf(String(item.size || '').replace(/\s*[×x]\s*/gi, ' × ').trim());
     if (si < 0) throw new Error('Unknown size for ' + work.title + '.');
-    const finish = item.finish === 'perspect' ? 'perspect' : item.finish === 'alucobond' ? 'alucobond' : null;
-    if (!finish) throw new Error('Unknown finish for ' + work.title + '.');
+    const finish = ['alucobond', 'perspect', 'canvas', 'paper'].includes(item.finish) ? item.finish : null;
+    if (!finish || !Array.isArray(work[finish])) throw new Error('Unknown finish for ' + work.title + '.');
+    if (work.closesAt && Date.now() > Date.parse(work.closesAt)) throw new Error(work.title + ' is no longer available.');
     if (work.total && work.sold >= work.total) throw new Error(work.title + ' is sold out.');
-    return { id: work.id, title: work.title, size: work.sizes[si], finish, price: work[finish][si] };
+    return { id: work.id, title: work.title, size: work.sizes[si], finish, price: Math.round(work[finish][si]) };
   });
   const subtotal = lines.reduce((a, x) => a + x.price, 0);
+  const eligible = lines.filter(x => x.finish !== 'paper').reduce((a, x) => a + x.price, 0);
   const code = String(couponCode || '').trim().toUpperCase();
   const percent = COUPONS[code] || 0;
-  const discount = percent ? Math.round(subtotal * percent / 100 / 10) * 10 : 0;
-  return { lines, subtotal, discount, total: subtotal - discount, coupon: percent ? code : null };
+  const discount = percent ? Math.round(eligible * percent / 100 / 10) * 10 : 0;
+  // Shipping in Israel: Alucobond / Perspex free; Canvas 69, Paper 39 — once per order (the highest). Mirrors app.js SHIP_FEE.
+  const shipping = lines.reduce((m, x) => Math.max(m, ({ canvas: 69, paper: 39 })[x.finish] || 0), 0);
+  return { lines, subtotal, discount, shipping, total: subtotal - discount + shipping, coupon: percent ? code : null };
 }
 
 const page = (title, body) => new Response(`<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${esc(title)} | CHIEF</title><style>body{font-family:system-ui,Arial;background:#f4f1ea;color:#1d1c1a;margin:0;padding:40px 18px}main{max-width:640px;margin:auto;background:#fff;padding:28px;border:1px solid #e3ddd0}h1{font-weight:500}a{color:#1d1c1a}table{width:100%;border-collapse:collapse;font-size:14px}td,th{border-bottom:1px solid #eee;padding:8px;text-align:right;vertical-align:top}</style></head><body><main>${body}</main></body></html>`, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } });
@@ -78,7 +82,7 @@ export async function handleGrow(request, env) {
     let order; try { order = priceOrder(body.items, body.coupon); } catch (e) { return json({ error: e.message }, 400); }
     await ensureOrders(env);
     const id = crypto.randomUUID();
-    const description = plain('CHIEF ' + order.lines.map(x => `${x.title} ${x.size}`).join(' + '), 150);
+    const description = plain('CHIEF ' + order.lines.map(x => `${x.title} ${x.size}`).join(' + ') + (order.shipping ? ` + משלוח ${order.shipping}` : ''), 150);
     const result = await grow(env, 'createPaymentProcess', {
       pageCode: env.GROW_PAGE_CODE, userId: env.GROW_USER_ID, chargeType: 1, sum: order.total.toFixed(2),
       successUrl: `${SITE}/order/thanks/?o=${id}`, cancelUrl: `${SITE}/?bag=1`, notifyUrl: `${SITE}/api/grow/webhook`,
@@ -87,7 +91,7 @@ export async function handleGrow(request, env) {
     if (String(result.status) !== '1' || !(result.data?.url || result.data?.authCode)) {
       console.error('Grow createPaymentProcess failed', JSON.stringify(result.err || result).slice(0, 300));
       const growError = plain(result.err?.message || result.err?.raw || result.message || JSON.stringify(result.err || result), 160);
-      return json({ error: 'The secure payment page is unavailable right now. Please use WhatsApp and CHIEF will send a payment link.', fallback: 'whatsapp', growError }, 502);
+      return json({ error: 'The secure payment page is unavailable right now. Please try again in a few minutes.', fallback: 'whatsapp', growError }, 502);
     }
     await env.DB.prepare(`INSERT INTO grow_orders (id, items, subtotal, discount, total, coupon, full_name, phone, email, city, address, postal_code, status, process_id, process_token, created_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?)`).bind(id, JSON.stringify(order.lines), order.subtotal, order.discount, order.total, order.coupon,
@@ -128,7 +132,7 @@ export async function handleGrow(request, env) {
     const row = env.DB && /^[0-9a-f-]{36}$/.test(id) ? await env.DB.prepare('SELECT status, asmachta, total, items, created_at FROM grow_orders WHERE id = ?').bind(id).first().catch(() => null) : null;
     const done = row?.status === 'paid';
     const items = row ? JSON.parse(row.items) : [];
-    const details = row ? `<h2>אישור הזמנה</h2><table>${items.map(x => `<tr><td>${esc(x.title)}</td><td>${esc(x.size)} · ${x.finish === 'perspect' ? 'פרספקס' : 'אלוקובונד'}</td><td>₪${x.price.toLocaleString('en')}</td></tr>`).join('')}<tr><th colspan="2">סה״כ ששולם (משלוח בישראל כלול; עוסק פטור, ללא מע״מ)</th><th>₪${row.total.toLocaleString('en')}</th></tr></table>
+    const details = row ? `<h2>אישור הזמנה</h2><table>${items.map(x => `<tr><td>${esc(x.title)}</td><td>${esc(x.size)} · ${({ perspect: 'פרספקס', canvas: 'קנבס', paper: 'נייר אמנותי', alucobond: 'אלוקובונד' })[x.finish] || ''}</td><td>₪${x.price.toLocaleString('en')}</td></tr>`).join('')}<tr><th colspan="2">סה״כ ששולם (משלוח בישראל כלול; עוסק פטור, ללא מע״מ)</th><th>₪${row.total.toLocaleString('en')}</th></tr></table>
       <p>תאריך הזמנה: ${esc(row.created_at.slice(0, 10))}<br>אספקה: תוך עד 14 ימי עסקים מאישור התשלום, באמצעות שליח.<br>ביטול: ללא עלות ובהחזר מלא תוך 48 שעות מאישור התשלום, אם ההדפסה טרם החלה; זכויות ביטול לפי דין מפורטות ב<a href="/terms/">תקנון</a>.</p>
       <p>ERANYCHIEF (ערן ירושלמי) · עוסק פטור 025334459 · רחוב וילסון 5, תל אביב 6522012 · <a href="mailto:eranychief@gmail.com">eranychief@gmail.com</a> · 050-712-3109</p><p>מומלץ לשמור עמוד זה. קבלה על התשלום נשלחת בדוא״ל מ־Grow.</p>` : '';
     return page('תודה על ההזמנה', `<h1>תודה על ההזמנה 🙏</h1><p>${done ? `התשלום התקבל${row.asmachta ? ` · אסמכתא ${esc(row.asmachta)}` : ''}.` : 'התשלום בעיבוד. אישור יישלח אליך במייל.'}</p><p>CHIEF ייצור איתך קשר בקרוב לתיאום ההדפסה והמשלוח. היצירה מגיעה עם תעודת מקוריות חתומה.</p>${details}<p><a href="/he/">חזרה לאתר</a> · <a href="https://wa.me/972507123109">WhatsApp</a></p>`);
@@ -139,7 +143,7 @@ export async function handleGrow(request, env) {
     await ensureOrders(env);
     const rows = (await env.DB.prepare('SELECT * FROM grow_orders ORDER BY created_at DESC LIMIT 100').all()).results;
     const label = { paid: 'שולם ✅', pending: 'ממתין לתשלום', check: 'לבדיקה ⚠️' };
-    return page('הזמנות', `<h1>הזמנות אונליין</h1><p>${enabled(env) ? `תשלומים פעילים (${base(env).includes('sandbox') ? 'סביבת בדיקות' : 'אמיתי'})` : 'תשלומים כבויים — חסרים מפתחות Grow'}</p><table><tr><th>תאריך</th><th>סטטוס</th><th>לקוח</th><th>יצירות</th><th>סכום</th></tr>${rows.map(r => `<tr><td>${esc(r.created_at.slice(0, 16).replace('T', ' '))}</td><td>${label[r.status] || esc(r.status)}${r.asmachta ? `<br>אסמכתא ${esc(r.asmachta)}` : ''}</td><td>${esc(r.full_name)}<br>${esc(r.phone)}<br>${esc(r.email)}<br>${esc(r.address)}, ${esc(r.city)}</td><td>${JSON.parse(r.items).map(x => `${esc(x.title)} · ${esc(x.size)} · ${x.finish === 'perspect' ? 'פרספקס' : 'אלוקובונד'}`).join('<br>')}</td><td>₪${r.total.toLocaleString('en')}${r.coupon ? `<br>${esc(r.coupon)}` : ''}</td></tr>`).join('') || '<tr><td colspan="5">אין עדיין הזמנות</td></tr>'}</table>`);
+    return page('הזמנות', `<h1>הזמנות אונליין</h1><p>${enabled(env) ? `תשלומים פעילים (${base(env).includes('sandbox') ? 'סביבת בדיקות' : 'אמיתי'})` : 'תשלומים כבויים — חסרים מפתחות Grow'}</p><table><tr><th>תאריך</th><th>סטטוס</th><th>לקוח</th><th>יצירות</th><th>סכום</th></tr>${rows.map(r => `<tr><td>${esc(r.created_at.slice(0, 16).replace('T', ' '))}</td><td>${label[r.status] || esc(r.status)}${r.asmachta ? `<br>אסמכתא ${esc(r.asmachta)}` : ''}</td><td>${esc(r.full_name)}<br>${esc(r.phone)}<br>${esc(r.email)}<br>${esc(r.address)}, ${esc(r.city)}</td><td>${JSON.parse(r.items).map(x => `${esc(x.title)} · ${esc(x.size)} · ${({ perspect: 'פרספקס', canvas: 'קנבס', paper: 'נייר אמנותי', alucobond: 'אלוקובונד' })[x.finish] || ''}`).join('<br>')}</td><td>₪${r.total.toLocaleString('en')}${r.coupon ? `<br>${esc(r.coupon)}` : ''}</td></tr>`).join('') || '<tr><td colspan="5">אין עדיין הזמנות</td></tr>'}</table>`);
   }
   return null;
 }

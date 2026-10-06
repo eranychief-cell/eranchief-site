@@ -550,14 +550,20 @@ await writeFile('dist/client/google-merchant-feed.xml',`<?xml version="1.0" enco
 await writeFile('dist/client/a7d8eb0f35e3bd466bee048ca351acef.txt','a7d8eb0f35e3bd466bee048ca351acef');
 await writeFile('dist/client/llms.txt',`# CHIEF — Eran Yerushalmi, Israeli fine-art photographer\n\n> Original fine-art photography from Tel Aviv: sea, light, street reflections and dance, sold as signed limited editions (Premium: 25 copies in total per work; Super Premium: 7) on canvas, Alucobond or Perspex, each with a signed certificate of authenticity. Site in English and Hebrew.\n\n## Shop\n- [All artworks](${site}/): full catalogue with prices, sizes and room previews\n- [Hebrew store](${site}/he/): תמונות לסלון ואמנות ישראלית מקורית\n- [Trade program](${site}/trade/): art for offices, hotels and interior designers\n\n## Guides (Hebrew)\n${guideEntries.map(([slug,g])=>`- [${g.title}](${site}/he/${slug}/): ${g.description}`).join('\n')}\n\n## Topics\n${Object.values(themePages).map(p=>`- [${p.en.title}](${site}/${p.slug}/) · [${p.he.title}](${site}/he/${p.slug}/)`).join('\n')}\n\n## About\n- [Artist page](${site}/he/eran-chief-fine-art-photography/)\n- [Press](${site}/press/)\n`);
 await writeFile('dist/client/robots.txt',`User-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\nSitemap: ${site}/image-sitemap.xml\nSitemap: ${site}/video-sitemap.xml\n`);
-// Server-side price list for Grow online payment (Premium / Super Premium; shipping in Israel included).
+// Server-side price list for Grow online payment: every artwork, finish and Paper Edition (shipping in Israel included).
 {
   const perspectPrices=JSON.parse(appSource.match(/const perspectPrices=(\{[^;]*\});/)[1].replace(/([{,])(\w+):/g,'$1"$2":'));
   const growCatalog={};
-  for(const w of allWorks.filter(x=>x.category==='premium'||x.category==='super')){
+  const canvasPrices=JSON.parse(appSource.match(/canvasPrices=(\[[^\]]*\])/)[1]);
+  for(const w of allWorks){
+    if(w.category==='paper')continue;
     const p=pricesFor(w),sizes=sizesFor(w);
     growCatalog[w.id]={id:w.id,title:w.title,category:w.category,sizes,alucobond:p.map(v=>Math.round(v/10)*10),
-      perspect:p.map((v,i)=>Math.round((perspectPrices[w.category]?.[i]??v*1.3)/10)*10),sold:w.soldEditions||0,total:w.category==='super'?7:25};
+      perspect:p.map((v,i)=>Math.round((perspectPrices[w.category]?.[i]??v*1.3)/10)*10),canvas:sizes.length===3?canvasPrices:null,sold:w.soldEditions||0,total:w.category==='super'?7:w.category==='premium'?25:0};
+  }
+  // Paper Edition (open edition, sold until its closing date).
+  for(const w of paperConfig.works){
+    growCatalog[w.id]={id:w.id,title:w.title,category:'paper',sizes:paperConfig.sizes.map(formatSize),paper:w.prices,closesAt:paperConfig.closesAt,sold:0,total:0};
   }
   await writeFile('dist/server/grow-catalog.js',`export const catalog=${JSON.stringify(growCatalog)};\n`);
 }
