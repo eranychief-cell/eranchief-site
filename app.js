@@ -476,6 +476,22 @@ function shippingSummary(he=heProductRoute){
 }
 // null = not checked yet / check failed: still offer online payment; the server falls back to WhatsApp if it is really off.
 let growEnabled=null;
+// Grow wallet SDK (credit card, Bit, Apple/Google Pay) — loaded only when the customer starts paying.
+let growOrderId='',growSdkPromise=null;
+function loadGrowSdk(){
+  if(window.growPayment?.renderPaymentOptions&&growSdkPromise)return growSdkPromise;
+  growSdkPromise=new Promise((resolve,reject)=>{
+    const s=document.createElement('script');s.src='https://cdn.meshulam.co.il/sdk/gs.min.js';s.async=true;
+    s.onload=()=>{try{window.growPayment.init({environment:'PRODUCTION',version:1,events:{
+      onSuccess:()=>{location.href='/order/thanks/?o='+encodeURIComponent(growOrderId)},
+      onFailure:r=>{const e=document.querySelector('#payError');if(e){e.textContent=(r&&r.message)||ui('התשלום לא הושלם. אפשר לנסות שוב.','The payment was not completed. You can try again.');e.hidden=false}},
+      onError:r=>{const e=document.querySelector('#payError');if(e){e.textContent=(r&&r.message)||ui('אירעה שגיאה בתשלום. אפשר לנסות שוב.','A payment error occurred. You can try again.');e.hidden=false}},
+      onTimeout:()=>{},onWalletChange:()=>{},onPaymentStart:()=>{},onPaymentCancel:()=>{}}});resolve()}catch(e){growSdkPromise=null;reject(e)}};
+    s.onerror=()=>{growSdkPromise=null;reject(new Error('sdk'))};
+    document.head.appendChild(s);
+  });
+  return growSdkPromise;
+}
 const checkGrow=()=>fetch('/api/grow/status',{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(d=>{if(typeof d.enabled==='boolean')growEnabled=d.enabled;if(document.querySelector('#checkoutDialog')?.open)updateShippingUi()}).catch(()=>{});checkGrow();
 // Re-check when a tab is restored from the back/forward cache and whenever checkout opens, so a page loaded earlier still offers online payment.
 window.addEventListener('pageshow',e=>{if(e.persisted)checkGrow()});
@@ -529,6 +545,10 @@ document.querySelector('#shippingForm').onsubmit=async e=>{
       const response=await fetch('/api/grow/checkout',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({items:cart.map(x=>({id:x.id,size:x.size,finish:x.finish})),coupon:appliedCoupon?.code||'',terms:!!data.terms,customer:{fullName:data.fullName,phone:data.phone,email:data.email,country:data.country,city:data.city,address:data.address,postalCode:data.postalCode}})});
       const result=await response.json().catch(()=>({}));
       if(result.url){location.href=result.url;return}
+      if(result.authCode){
+        try{await loadGrowSdk();growOrderId=result.orderId;window.growPayment.renderPaymentOptions(result.authCode);button.disabled=false;return}
+        catch(sdkError){err.textContent=ui('לא ניתן לפתוח את חלון התשלום. נסו שוב בעוד רגע.','The payment window could not be opened. Please try again in a moment.');err.hidden=false;button.disabled=false;return}
+      }
       if(!result.fallback){err.textContent=result.error||ui('לא ניתן לפתוח את דף התשלום. נסו שוב.','The payment page could not be opened. Please try again.');err.hidden=false;button.disabled=false;return}
       if(result.growError){growEnabled=false;updateShippingUi();err.textContent=ui('התשלום המקוון אינו זמין כרגע. לחצו שוב כדי לשלוח את ההזמנה בוואטסאפ, ו־CHIEF ישלח לינק לתשלום.','Online payment is unavailable right now. Tap again to send your order on WhatsApp and CHIEF will send a payment link.')+' ('+result.growError+')';err.hidden=false;button.disabled=false;return}
     }catch{}

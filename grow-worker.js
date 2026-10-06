@@ -81,7 +81,7 @@ export async function handleGrow(request, env) {
       successUrl: `${SITE}/order/thanks/?o=${id}`, cancelUrl: `${SITE}/?bag=1`, notifyUrl: `${SITE}/api/grow/webhook`,
       description, 'pageField[fullName]': fullName, 'pageField[phone]': phone, 'pageField[email]': email, cField1: id,
     });
-    if (String(result.status) !== '1' || !result.data?.url) {
+    if (String(result.status) !== '1' || !(result.data?.url || result.data?.authCode)) {
       console.error('Grow createPaymentProcess failed', JSON.stringify(result.err || result).slice(0, 300));
       const growError = plain(result.err?.message || result.err?.raw || result.message || JSON.stringify(result.err || result), 160);
       return json({ error: 'The secure payment page is unavailable right now. Please use WhatsApp and CHIEF will send a payment link.', fallback: 'whatsapp', growError }, 502);
@@ -89,7 +89,8 @@ export async function handleGrow(request, env) {
     await env.DB.prepare(`INSERT INTO grow_orders (id, items, subtotal, discount, total, coupon, full_name, phone, email, city, address, postal_code, status, process_id, process_token, created_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?)`).bind(id, JSON.stringify(order.lines), order.subtotal, order.discount, order.total, order.coupon,
       fullName, phone, email, city, address, postal, String(result.data.processId), String(result.data.processToken), new Date().toISOString()).run();
-    return json({ url: result.data.url });
+    // A wallet pageCode returns authCode (opened in the page by Grow's SDK); a regular payment page returns url.
+    return json(result.data.url ? { url: result.data.url } : { authCode: result.data.authCode, orderId: id });
   }
 
   // Server-to-server update from Grow (form POST). Verify against our stored process, then acknowledge with approveTransaction.
