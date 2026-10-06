@@ -486,8 +486,8 @@ function loadGrowSdk(env='PRODUCTION'){
     const s=document.createElement('script');s.src='https://cdn.meshulam.co.il/sdk/gs.min.js';s.async=true;
     s.onload=()=>{try{window.growPayment.init({environment:env,version:1,events:{
       onSuccess:()=>{location.href='/order/thanks/?o='+encodeURIComponent(growOrderId)},
-      onFailure:r=>{const e=document.querySelector('#payError');if(e){e.textContent=(r&&r.message)||ui('התשלום לא הושלם. אפשר לנסות שוב.','The payment was not completed. You can try again.');e.hidden=false}},
-      onError:r=>{const e=document.querySelector('#payError');if(e){e.textContent=(r&&r.message)||ui('אירעה שגיאה בתשלום. אפשר לנסות שוב.','A payment error occurred. You can try again.');e.hidden=false}},
+      onFailure:r=>{console.warn('Grow onFailure',r);const e=document.querySelector('#payError');if(e){e.textContent=((r&&(r.message||r.data?.message))||'')+' ['+JSON.stringify(r||{}).slice(0,220)+']'||ui('התשלום לא הושלם. אפשר לנסות שוב.','The payment was not completed. You can try again.');e.hidden=false}},
+      onError:r=>{console.warn('Grow onError',r);const e=document.querySelector('#payError');if(e){e.textContent=((r&&(r.message||r.data?.message))||'')+' ['+JSON.stringify(r||{}).slice(0,220)+']'||ui('אירעה שגיאה בתשלום. אפשר לנסות שוב.','A payment error occurred. You can try again.');e.hidden=false}},
       onTimeout:()=>{},onWalletChange:()=>{},onPaymentStart:()=>{},onPaymentCancel:()=>{}}});resolve()}catch(e){growSdkPromise=null;reject(e)}};
     s.onerror=()=>{growSdkPromise=null;reject(new Error('sdk'))};
     document.head.appendChild(s);
