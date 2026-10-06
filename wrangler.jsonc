@@ -9,7 +9,9 @@
   "assets": { "directory": "dist/client", "binding": "ASSETS", "run_worker_first": ["/*", "!/assets/*"] },
   // D1 database for the newsletter and collector stories. No database_id: Wrangler provisions it
   // automatically on first deploy. Tables are created by the Worker on first use (ensureSchema).
-  "d1_databases": [ { "binding": "DB", "database_name": "eranchief-site-db" } ]
+  "d1_databases": [ { "binding": "DB", "database_name": "eranchief-site-db" } ],
+  // Grow live endpoint (not a secret). The keys GROW_USER_ID and GROW_PAGE_CODE are Secrets set in the dashboard.
+  "vars": { "GROW_API_BASE": "https://secure.meshulam.co.il/api/light/server/1.0" }
   // Custom domains (eranchief.com, www) are attached in the Cloudflare dashboard, not here.
   // Optional later: R2 bucket (binding "BUCKET") for collector-story photos.
 }
