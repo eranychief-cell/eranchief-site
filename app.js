@@ -474,12 +474,13 @@ function shippingSummary(he=heProductRoute){
   if(he&&eligible&&(!country||isIsraelShipping(country)))return 'משלוחים לכל הארץ חינם לעבודות Premium ו־Super Premium. משלוח סדרות אחרות ומשלוח לחו״ל יתומחרו לפני התשלום.';
   return he?'עלות המשלוח תאושר לפני התשלום. משלוח לחו״ל בתשלום.':'Shipping costs are confirmed before payment. International shipping is charged separately.';
 }
-let growEnabled=false;
-const checkGrow=()=>fetch('/api/grow/status',{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(d=>{growEnabled=!!d.enabled;if(document.querySelector('#checkoutDialog')?.open)updateShippingUi()}).catch(()=>{});checkGrow();
+// null = not checked yet / check failed: still offer online payment; the server falls back to WhatsApp if it is really off.
+let growEnabled=null;
+const checkGrow=()=>fetch('/api/grow/status',{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(d=>{if(typeof d.enabled==='boolean')growEnabled=d.enabled;if(document.querySelector('#checkoutDialog')?.open)updateShippingUi()}).catch(()=>{});checkGrow();
 // Re-check when a tab is restored from the back/forward cache and whenever checkout opens, so a page loaded earlier still offers online payment.
 window.addEventListener('pageshow',e=>{if(e.persisted)checkGrow()});
 // Online payment only when the total is final: delivery in Israel, Premium / Super Premium (shipping included).
-function onlinePayAvailable(){return growEnabled&&cartShippingIncluded()&&!hasClosedPaper()}
+function onlinePayAvailable(){return growEnabled!==false&&cartShippingIncluded()&&!hasClosedPaper()}
 function updateOnlinePay(){const box=document.querySelector('#onlinePay');if(!box)return;const on=onlinePayAvailable();box.hidden=!on;box.querySelector('[name="address"]').required=on;box.querySelector('[name="terms"]').required=on;
   box.querySelector('[data-op="address"]').textContent=ui('רחוב ומספר בית','Street address and number');
   box.querySelector('[data-op="terms"]').innerHTML=ui('קראתי ואני מאשר/ת את <a href="/terms/" target="_blank">תנאי הרכישה</a>, ואני בן/בת 18 ומעלה.','I accept the <a href="/terms/" target="_blank">Terms of Sale</a> and confirm I am 18 or older.');
