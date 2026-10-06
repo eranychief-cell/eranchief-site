@@ -475,7 +475,9 @@ function shippingSummary(he=heProductRoute){
   return he?'עלות המשלוח תאושר לפני התשלום. משלוח לחו״ל בתשלום.':'Shipping costs are confirmed before payment. International shipping is charged separately.';
 }
 let growEnabled=false;
-fetch('/api/grow/status').then(r=>r.ok?r.json():{}).then(d=>{growEnabled=!!d.enabled;if(document.querySelector('#checkoutDialog')?.open)updateShippingUi()}).catch(()=>{});
+const checkGrow=()=>fetch('/api/grow/status',{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(d=>{growEnabled=!!d.enabled;if(document.querySelector('#checkoutDialog')?.open)updateShippingUi()}).catch(()=>{});checkGrow();
+// Re-check when a tab is restored from the back/forward cache and whenever checkout opens, so a page loaded earlier still offers online payment.
+window.addEventListener('pageshow',e=>{if(e.persisted)checkGrow()});
 // Online payment only when the total is final: delivery in Israel, Premium / Super Premium (shipping included).
 function onlinePayAvailable(){return growEnabled&&cartShippingIncluded()&&!hasClosedPaper()}
 function updateOnlinePay(){const box=document.querySelector('#onlinePay');if(!box)return;const on=onlinePayAvailable();box.hidden=!on;box.querySelector('[name="address"]').required=on;box.querySelector('[name="terms"]').required=on;
@@ -507,7 +509,7 @@ document.querySelector('#checkoutButton').onclick=()=>{
   if(!cart.length||hasClosedPaper()){renderCart();return}
   closeCart();
   const pricing=orderPricing();document.querySelector('#shippingSubtotal').textContent=money(pricing.subtotal);document.querySelector('#shippingDiscount').textContent=`−${money(pricing.discount)}`;document.querySelector('#shippingDiscountRow').hidden=!appliedCoupon;document.querySelector('#shippingTotal').textContent=money(pricing.total);document.querySelector('#shippingApprox').dataset.ils=String(pricing.total);window.chiefRefreshCurrency?.();
-  updateShippingUi();checkoutDialog.showModal();
+  updateShippingUi();checkoutDialog.showModal();checkGrow();
 };
 function selectionMessage(){
   const items=cart.map((x,i)=>`${i+1}. ${x.title} | ${x.size} | ${finishText(x.finish)} | ${money(x.price)}`).join('\n');
