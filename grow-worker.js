@@ -59,10 +59,13 @@ export async function handleGrow(request, env) {
   const path = url.pathname;
   if (!path.startsWith('/api/grow') && !path.startsWith('/order/') && !path.startsWith('/orders/manage')) return null;
 
-  if (path === '/api/grow/status') return json({ enabled: enabled(env) });
+  // While on Grow's sandbox, online payment is offered only on test visits (?growtest=1) so real customers never meet a test wallet.
+  const sandbox = base(env).includes('sandbox');
+  const testVisit = url.searchParams.get('test') === '1';
+  if (path === '/api/grow/status') return json({ enabled: enabled(env) && (!sandbox || testVisit), sandbox });
 
   if (path === '/api/grow/checkout' && request.method === 'POST') {
-    if (!enabled(env)) return json({ fallback: 'whatsapp' }, 503);
+    if (!enabled(env) || (sandbox && !testVisit)) return json({ fallback: 'whatsapp' }, 503);
     let body; try { body = await request.json(); } catch { return json({ error: 'Invalid request.' }, 400); }
     const c = body.customer || {};
     const fullName = plain(c.fullName, 80), phone = String(c.phone || '').replace(/[^\d]/g, ''), email = String(c.email || '').trim().toLowerCase();
@@ -90,7 +93,7 @@ export async function handleGrow(request, env) {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?)`).bind(id, JSON.stringify(order.lines), order.subtotal, order.discount, order.total, order.coupon,
       fullName, phone, email, city, address, postal, String(result.data.processId), String(result.data.processToken), new Date().toISOString()).run();
     // A wallet pageCode returns authCode (opened in the page by Grow's SDK); a regular payment page returns url.
-    return json(result.data.url ? { url: result.data.url } : { authCode: result.data.authCode, orderId: id });
+    return json(result.data.url ? { url: result.data.url } : { authCode: result.data.authCode, orderId: id, sdkEnv: base(env).includes('sandbox') ? 'DEV' : 'PRODUCTION' });
   }
 
   // Server-to-server update from Grow (form POST). Verify against our stored process, then acknowledge with approveTransaction.
