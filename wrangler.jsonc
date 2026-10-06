@@ -11,6 +11,8 @@
   // automatically on first deploy. Tables are created by the Worker on first use (ensureSchema).
   "d1_databases": [ { "binding": "DB", "database_name": "eranchief-site-db" } ],
   // Grow live endpoint (not a secret). The keys GROW_USER_ID and GROW_PAGE_CODE are Secrets set in the dashboard.
+  // Keep variables added in the Cloudflare dashboard when deploying from git.
+  "keep_vars": true,
   "vars": { "GROW_API_BASE": "https://secure.meshulam.co.il/api/light/server/1.0" }
   // Custom domains (eranchief.com, www) are attached in the Cloudflare dashboard, not here.
   // Optional later: R2 bucket (binding "BUCKET") for collector-story photos.
