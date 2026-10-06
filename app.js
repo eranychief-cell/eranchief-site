@@ -466,7 +466,7 @@ function openProduct(id,preferredFinish){
 }
 const orderPricing=()=>{const subtotal=cart.reduce((a,x)=>a+x.price,0),eligible=cart.filter(x=>x.category!=='paper').reduce((a,x)=>a+x.price,0),discount=appliedCoupon?Math.round(eligible*appliedCoupon.percent/100/10)*10:0;return{subtotal,discount,total:subtotal-discount}};
 function shippingCountry(){return document.querySelector('#shippingForm [name="country"]')?.value.trim()||''}
-function isIsraelShipping(country){return ['israel','ישראל','il','isr','מדינת ישראל'].includes(country.trim().toLowerCase())}
+function isIsraelShipping(country){const c=String(country||'').trim().toLowerCase().replace(/[.\s]+/g,' ').replace(/^(the )?(state of )?/,'');if(['il','isr'].includes(c)||c.includes('ישראל'))return true;const w=c.replace(/ /g,'');if(w.length<4||w.length>9)return false;const t='israel',d=[...Array(t.length+1).keys()];for(let i=1;i<=w.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=t.length;j++){const q=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(w[i-1]===t[j-1]?0:1));p=q}}return d[t.length]<=2}
 function cartShippingIncluded(country=shippingCountry()){return isIsraelShipping(country)&&cart.length>0&&cart.every(x=>shippingIncluded(x.category))}
 function shippingSummary(he=heProductRoute){
   const country=shippingCountry(),eligible=cart.some(x=>shippingIncluded(x.category));

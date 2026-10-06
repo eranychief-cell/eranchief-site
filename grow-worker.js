@@ -14,7 +14,8 @@ const base = env => (env.GROW_API_BASE || SANDBOX).replace(/\/$/, '');
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 // Grow asks for no special characters in parameters.
 const plain = (s, max = 120) => String(s ?? '').replace(/[^\p{L}\p{N} .,@+\-]/gu, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
-const israel = c => /^(israel|il|ישראל)$/i.test(String(c || '').trim());
+// Accepts common spellings and small typos ("Isarel", "Isreal", "מדינת ישראל").
+function israel(country){const c=String(country||'').trim().toLowerCase().replace(/[.\s]+/g,' ').replace(/^(the )?(state of )?/,'');if(['il','isr'].includes(c)||c.includes('ישראל'))return true;const w=c.replace(/ /g,'');if(w.length<4||w.length>9)return false;const t='israel',d=[...Array(t.length+1).keys()];for(let i=1;i<=w.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=t.length;j++){const q=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(w[i-1]===t[j-1]?0:1));p=q}}return d[t.length]<=2}
 
 async function ensureOrders(env) {
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS grow_orders (id text PRIMARY KEY NOT NULL, items text NOT NULL, subtotal integer NOT NULL,
