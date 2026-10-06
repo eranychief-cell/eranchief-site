@@ -612,6 +612,8 @@ export default { async fetch(request, env) {
     '/press': '/press/',
     '/artworks/premium-05-59/': '/artworks/walking-the-edge-of-reflection-59/',
     '/he/artworks/premium-05-59/': '/he/artworks/walking-the-edge-of-reflection-59/',
+    '/artworks/premium-12-65/': '/artworks/are-you-talking-to-me-65/',
+    '/he/artworks/premium-12-65/': '/he/artworks/are-you-talking-to-me-65/',
     '/artworks/premium-26-78/': '/artworks/it-dreamed-the-city-awake-78/',
     '/he/artworks/premium-26-78/': '/he/artworks/it-dreamed-the-city-awake-78/',
     '/artworks/tel-aviv-rolled-twice-100/': '/artworks/three-versions-of-the-same-city-100/',
