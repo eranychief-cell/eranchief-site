@@ -58,7 +58,7 @@
 }
 
 .artist-profile-en { direction: ltr; text-align: left; }
-.artist-profile-en h1 { font-family: "Inter Tight",Heebo,sans-serif; line-height: 1.05; }
+.artist-profile-en h1 { font-family: "Inter Tight",Rubik,sans-serif; line-height: 1.05; }
 
 /* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
 h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}

@@ -1,5 +1,5 @@
 .product-room { max-width:1000px; margin:56px auto 0; }
-.product-room__reveal { width:100%; padding:16px 20px; border:1px solid #121212; background:transparent; color:#121212; font:600 16px Heebo,Arial,sans-serif; cursor:pointer; text-align:center; }
+.product-room__reveal { width:100%; padding:16px 20px; border:1px solid #121212; background:transparent; color:#121212; font:600 16px Rubik,Arial,sans-serif; cursor:pointer; text-align:center; }
 .product-room__reveal:hover,.product-room__reveal:focus-visible { background:#121212; color:#fff; }
 .product-room__content { margin-top:18px; }
 .product-room__content[hidden] { display:none; }
@@ -9,7 +9,7 @@
 .product-room__print img { width:100%; height:100%; object-fit:contain; display:block; }
 .product-room__sizes { border:0; padding:0; margin:18px 0 0; display:flex; align-items:center; flex-wrap:wrap; gap:9px; }
 .product-room__sizes legend { padding:0 0 10px; font-weight:600; font-size:16px; }
-.product-room__sizes button { padding:10px 14px; min-height:44px; border:1px solid #7f7970; background:transparent; color:#121212; font:500 15px Heebo,Arial,sans-serif; cursor:pointer; }
+.product-room__sizes button { padding:10px 14px; min-height:44px; border:1px solid #7f7970; background:transparent; color:#121212; font:500 15px Rubik,Arial,sans-serif; cursor:pointer; }
 .product-room__sizes button[aria-pressed="true"] { color:#fff; background:#121212; border-color:#121212; }
 .product-room__note { font-size:14px; line-height:1.5; color:#655f56; margin:13px 0 0; }
 @media(max-width:700px) { .product-room { margin-top:36px; } .product-room__reveal { text-align:center; } .product-room__sizes { gap:7px; } .product-room__sizes button { flex:1 1 auto; } }
