@@ -279,7 +279,7 @@
         <label>Email<input name="email" type="email" autocomplete="email" required></label>
         <label>Country<input name="country" autocomplete="country-name" required></label>
         <label>City<input name="city" autocomplete="address-level2" required></label>
-        <label class="field-wide">Postal code <small>(optional for the initial quote)</small><input name="postalCode" autocomplete="postal-code"></label>
+        <label class="field-wide">Postal code <small>(optional)</small><input name="postalCode" autocomplete="postal-code"></label>
       </div>
       <div id="onlinePay" class="online-pay" hidden>
         <label class="field-wide"><span data-op="address">Street address and number</span><input name="address" autocomplete="street-address"></label>
@@ -288,7 +288,7 @@
       <p id="payError" class="pay-error" role="alert" hidden></p>
       <div class="checkout-summary checkout-pricing"><div><span>Order subtotal</span><strong id="shippingSubtotal">₪0</strong></div><div id="shippingDiscountRow" hidden><span>Private discount</span><strong id="shippingDiscount">−₪0</strong></div><div><span id="shippingTotalLabel">Total before shipping</span><strong id="shippingTotal">₪0</strong></div><small id="shippingApprox" data-ils="0"></small><p class="included-shipping" id="shippingStatus"></p></div>
       <button class="submit-order" type="submit">Pay securely by card</button>
-      <small>Payment is completed on Grow’s secure page. CHIEF does not store card details. <a href="/shipping-returns/" target="_blank">Shipping &amp; Returns Policy</a>.</small>
+      <small>Payment is completed on Grow’s secure page. CHIEF does not store card details. <a href="/terms/" target="_blank">Terms of Sale</a> · <a href="/shipping-returns/" target="_blank">Shipping &amp; Returns Policy</a>.</small>
       <p class="collector-story-order-note">Already own a CHIEF artwork? After it arrives, <a href="/collector-stories/">share your Collector Story</a> and a photo from your home.</p>
     </form>
   </dialog>
@@ -298,12 +298,12 @@
   <script>function chiefTranslateInit(){new google.translate.TranslateElement({pageLanguage:'en',includedLanguages:'he,ar,fr,es,de,it,pt,ru,zh-CN,ja,ko,nl,pl,tr,el,hi',layout:google.translate.TranslateElement.InlineLayout.SIMPLE,autoDisplay:false},'google_translate_element')}</script>
   <script src="https://translate.google.com/translate_a/element.js?cb=chiefTranslateInit" async></script>
   <script src="currency.js?v=1"></script>
-  <script src="hebrew-ui.js?v=10"></script>
+  <script src="hebrew-ui.js?v=11"></script>
   <script src="filter-orientations.js"></script>
   <script src="card-previews.js"></script>
   <script src="paper-edition-data.js" defer></script>
   <script src="paper-expiry.js" defer></script>
-  <script src="app.js?v=48" defer></script>
+  <script src="app.js?v=49" defer></script>
   <script src="catalog-filters.js?v=2"></script>
 </body>
 </html>
