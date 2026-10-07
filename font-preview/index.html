@@ -1,0 +1,47 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>CHIEF Font Options</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&family=Cormorant+Garamond:wght@500&family=Instrument+Serif:ital@0;1&family=Frank+Ruhl+Libre:wght@400;500&family=Inter:wght@300;400;600&family=Inter+Tight:wght@500;700&family=IBM+Plex+Sans+Hebrew:wght@300;400;600&family=Heebo:wght@300;400;700&display=swap">
+<style>
+/* Layout: three stacked specimen cards, each a mini site hero, so the options compare top to bottom on a phone */
+:root{--bg:#f4f1eb;--ink:#121212;--muted:#77736b;--gold:#ad8a47;--card:#fbf9f5;--line:rgba(18,18,18,.14)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151412;--ink:#f2efe8;--muted:#a59f94;--gold:#d1ab64;--card:#1d1c19;--line:rgba(242,239,232,.16);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#151412;--ink:#f2efe8;--muted:#a59f94;--gold:#d1ab64;--card:#1d1c19;--line:rgba(242,239,232,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:Assistant,Arial,sans-serif;direction:rtl}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:24px 40px;display:flex;flex-direction:column;gap:22px}
+header h1{font:600 24px Assistant,sans-serif;margin:0}
+header p{color:var(--muted);margin:6px 0 0}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.tag{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);font:600 15px Assistant,sans-serif;flex-wrap:wrap}
+.tag small{color:var(--muted);font-weight:400;font-size:12.5px;direction:ltr}
+.hero{display:grid;grid-template-columns:42% 1fr;min-height:260px}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.copy{padding:22px 18px;display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0}
+.eb{font-size:10.5px;letter-spacing:.22em;color:var(--gold);direction:ltr;text-align:left}
+.h{direction:ltr;text-align:left;margin:0;line-height:.95}
+.he{margin:0;line-height:1.25}
+.p{margin:0;font-size:14px;line-height:1.6;color:var(--muted)}
+.price{direction:ltr;text-align:left;font-size:13px}
+/* A — current */
+.a .h{font:500 46px Cormorant Garamond,serif}.a .he{font:600 22px Assistant}.a .p,.a .price{font-family:Assistant;font-weight:300}
+/* B — contemporary serif */
+.b .h{font:400 50px 'Instrument Serif',serif;letter-spacing:-.01em}.b .h em{font-style:italic}.b .he{font:500 24px 'Frank Ruhl Libre',serif}.b .p{font-family:'IBM Plex Sans Hebrew',sans-serif;font-weight:300}.b .price{font-family:Inter;font-weight:400}.b .eb{font-family:Inter}
+/* C — gallery sans */
+.c .h{font:700 40px 'Inter Tight',sans-serif;letter-spacing:-.035em;line-height:.98;text-transform:none}.c .h em{font-style:normal;color:var(--muted)}.c .he{font:700 22px Heebo,sans-serif;letter-spacing:-.01em}.c .p{font-family:Heebo;font-weight:300}.c .price{font-family:Inter;font-weight:600}.c .eb{font-family:Inter;font-weight:600}
+.note{font-size:13.5px;line-height:1.6;padding:12px 16px;border-top:1px solid var(--line);margin:0}
+@media(max-width:520px){.hero{grid-template-columns:1fr}.hero img{height:220px}.a .h{font-size:40px}.b .h{font-size:44px}.c .h{font-size:34px}}
+</style></head><body>
+<div class="wrap">
+<header><h1>איזה פונט לאתר?</h1><p>אותה תמונה ואותו טקסט, בשלושה סגנונות. גלול והשווה.</p></header>
+
+<section class="opt a"><div class="tag">א · הנוכחי <small>Cormorant Garamond + Assistant</small></div>
+<div class="hero"><img alt="Sisters of the Sun" src="/assets/site_work_02.jpg"><div class="copy"><div class="eb">CHIEF · TEL AVIV</div><h2 class="h">Reality<br><em>transformed.</em></h2><p class="he">צילום אמנותי מתל אביב, באייפון בלבד</p><p class="p">מהדורות מוגבלות, חתומות וממוספרות. אלוקובונד, פרספקס וקנבס.</p><div class="price">from ₪2,490</div></div></div>
+<p class="note">קלאסי ועדין, אבל מזכיר הזמנות לחתונה ואתרים של לפני עשור. זה כנראה מה שקיבלת עליו תגובות.</p></section>
+
+<section class="opt b"><div class="tag">ב · סריף עכשווי <small>Instrument Serif + Frank Ruhl Libre</small></div>
+<div class="hero"><img alt="Sisters of the Sun" src="/assets/site_work_02.jpg"><div class="copy"><div class="eb">CHIEF · TEL AVIV</div><h2 class="h">Reality<br><em>transformed.</em></h2><p class="he">צילום אמנותי מתל אביב, באייפון בלבד</p><p class="p">מהדורות מוגבלות, חתומות וממוספרות. אלוקובונד, פרספקס וקנבס.</p><div class="price">from ₪2,490</div></div></div>
+<p class="note">הסגנון של גלריות ומגזיני אמנות היום. שומר על האלגנטיות, אבל נראה עכשווי. השינוי הכי עדין.</p></section>
+
+<section class="opt c"><div class="tag">ג · גלריה מודרנית <small>Inter Tight + Heebo</small></div>
+<div class="hero"><img alt="Sisters of the Sun" src="/assets/site_work_02.jpg"><div class="copy"><div class="eb">CHIEF · TEL AVIV</div><h2 class="h">Reality<br><em>transformed.</em></h2><p class="he">צילום אמנותי מתל אביב, באייפון בלבד</p><p class="p">מהדורות מוגבלות, חתומות וממוספרות. אלוקובונד, פרספקס וקנבס.</p><div class="price">from ₪2,490</div></div></div>
+<p class="note">נקי, חד ומודרני, כמו אתרי עיצוב ואופנה. נותן לתמונות לדבר. הכי רחוק מהסגנון הנוכחי.</p></section>
+</div>
+</body></html>

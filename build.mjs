@@ -20,6 +20,9 @@ for (const page of ['terms','privacy','shipping-returns','licensing','accessibil
 await cp('born-and-raised-on-iphone', 'dist/client/born-and-raised-on-iphone', { recursive: true, filter: src => !src.endsWith('he.html') });
 await mkdir('dist/client/he/born-and-raised-on-iphone', { recursive: true });
 await cp('born-and-raised-on-iphone/he.html', 'dist/client/he/born-and-raised-on-iphone/index.html');
+// Temporary font comparison page for the owner (noindex, not in sitemap).
+await mkdir('dist/client/font-preview', { recursive: true });
+await cp('font-preview/index.html', 'dist/client/font-preview/index.html');
 const storyHePath='dist/client/stories/tel-aviv-through-chief/index.html';
 const storyHeSource=await readFile(storyHePath,'utf8');
 await writeFile(storyHePath,storyHeSource.replace('{"@type":"Person","@id":"https://eranchief.com/#artist","name":"CHIEF","alternateName":["CHIEF","CHIEF","CHIEF"],"sameAs":["https://www.instagram.com/eranychief/","https://www.facebook.com/chieferanyerushalmi/"]}','{"@type":"Person","@id":"https://eranchief.com/#artist","name":"Eran Yerushalmi","alternateName":["CHIEF","ERANYCHIEF","ערן צ׳יף","ערן ירושלמי"],"image":{"@id":"https://eranchief.com/#artist-portrait"},"sameAs":["https://www.instagram.com/eranychief/","https://www.facebook.com/chieferanyerushalmi/"]}'));
