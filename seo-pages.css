@@ -136,3 +136,5 @@ h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 
 /* Tablet (iPad) layout: stack product pages, keep image large */
 @media(min-width:801px) and (max-width:1100px){.product-seo{grid-template-columns:1fr;gap:32px}.product-seo>img{max-height:72vh}.product-details{max-width:680px}.seo-grid{grid-template-columns:1fr 1fr}.commercial-guide .guide-works{grid-template-columns:1fr 1fr}}
+.collection-film { margin:8px auto 36px; max-width:380px; }
+.collection-film video { display:block; width:100%; aspect-ratio:9/16; object-fit:cover; border-radius:6px; background:#111; box-shadow:0 18px 40px rgba(0,0,0,.18); }
