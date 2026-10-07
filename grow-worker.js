@@ -86,11 +86,14 @@ export async function handleGrow(request, env) {
     let order; try { order = priceOrder(body.items, body.coupon, abroad); } catch (e) { return json({ error: e.message }, 400); }
     await ensureOrders(env);
     const id = crypto.randomUUID();
-    const description = plain('CHIEF ' + order.lines.map(x => `${x.title} ${x.size}`).join(' + ') + (order.shipping ? ` + משלוח ${order.shipping}` : '') + (abroad ? ` · ${plain(c.country, 30)}` : ''), 150);
+    const description = plain('CHIEF ' + order.lines.map(x => `${x.title} ${x.size}`).join(' + ') + (order.shipping ? ` + משלוח ${order.shipping}` : '') + (abroad ? ` · ${plain(c.country, 30)} · טל ${phone}` : ''), 150);
+    // Grow accepts only Israeli mobile numbers (05XXXXXXXX). Israeli numbers are normalised; for buyers abroad
+    // the business number is sent to Grow, while the buyer's real number is kept in the order record and description.
+    const growPhone = abroad ? '0507123109' : '0' + phone.replace(/^972/, '').replace(/^0/, '');
     const result = await grow(env, 'createPaymentProcess', {
       pageCode: env.GROW_PAGE_CODE, userId: env.GROW_USER_ID, chargeType: 1, sum: order.total.toFixed(2),
       successUrl: `${SITE}/order/thanks/?o=${id}`, cancelUrl: `${SITE}/?bag=1`, notifyUrl: `${SITE}/api/grow/webhook`,
-      description, 'pageField[fullName]': fullName, 'pageField[phone]': phone, 'pageField[email]': email, cField1: id,
+      description, 'pageField[fullName]': fullName, 'pageField[phone]': growPhone, 'pageField[email]': email, cField1: id,
     });
     if (String(result.status) !== '1' || !(result.data?.url || result.data?.authCode)) {
       console.error('Grow createPaymentProcess failed', JSON.stringify(result.err || result).slice(0, 300));
