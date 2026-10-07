@@ -494,8 +494,8 @@ function loadGrowSdk(env='PRODUCTION'){
     const s=document.createElement('script');s.src='https://cdn.meshulam.co.il/sdk/gs.min.js';s.async=true;
     s.onload=()=>{try{window.growPayment.init({environment:env,version:1,events:{
       onSuccess:()=>{location.href='/order/thanks/?o='+encodeURIComponent(growOrderId)},
-      onFailure:r=>{console.warn('Grow onFailure',r);const e=document.querySelector('#payError');if(e){e.textContent=((r&&(r.message||r.data?.message))||'')+' ['+JSON.stringify(r||{}).slice(0,220)+']'||ui('התשלום לא הושלם. אפשר לנסות שוב.','The payment was not completed. You can try again.');e.hidden=false}},
-      onError:r=>{console.warn('Grow onError',r);const e=document.querySelector('#payError');if(e){e.textContent=((r&&(r.message||r.data?.message))||'')+' ['+JSON.stringify(r||{}).slice(0,220)+']'||ui('אירעה שגיאה בתשלום. אפשר לנסות שוב.','A payment error occurred. You can try again.');e.hidden=false}},
+      onFailure:r=>{console.warn('Grow onFailure',r);const d=document.querySelector('#checkoutDialog');if(d&&!d.open)d.showModal();const e=document.querySelector('#payError');if(e){e.textContent=((r&&(r.message||r.data?.message))||'')+' ['+JSON.stringify(r||{}).slice(0,220)+']'||ui('התשלום לא הושלם. אפשר לנסות שוב.','The payment was not completed. You can try again.');e.hidden=false}},
+      onError:r=>{console.warn('Grow onError',r);const d=document.querySelector('#checkoutDialog');if(d&&!d.open)d.showModal();const e=document.querySelector('#payError');if(e){e.textContent=((r&&(r.message||r.data?.message))||'')+' ['+JSON.stringify(r||{}).slice(0,220)+']'||ui('אירעה שגיאה בתשלום. אפשר לנסות שוב.','A payment error occurred. You can try again.');e.hidden=false}},
       onTimeout:()=>{},onWalletChange:()=>{},onPaymentStart:()=>{},onPaymentCancel:()=>{}}});resolve()}catch(e){growSdkPromise=null;reject(e)}};
     s.onerror=()=>{growSdkPromise=null;reject(new Error('sdk'))};
     document.head.appendChild(s);
@@ -553,13 +553,13 @@ document.querySelector('#shippingForm').onsubmit=async e=>{
   if(appliedCoupon){const response=await fetch('/api/coupon',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code:appliedCoupon.code})});if(!response.ok){appliedCoupon=null;localStorage.removeItem('chiefCoupon');renderCart();checkoutDialog.close();openCart();const status=document.querySelector('#couponStatus');status.textContent=ui('יש להחיל שוב את קוד ההנחה.','The discount code must be applied again.');status.className='error';return}const verified=await response.json();appliedCoupon={code:verified.code,percent:verified.percent};localStorage.setItem('chiefCoupon',JSON.stringify(appliedCoupon))}
   const data=Object.fromEntries(new FormData(e.currentTarget));
   if(onlinePayAvailable()){
-    const button=e.currentTarget.querySelector('.submit-order'),err=document.querySelector('#payError');err.hidden=true;button.disabled=true;
+    const button=e.currentTarget.querySelector('.submit-order'),err=document.querySelector('#payError');err.hidden=true;button.disabled=true;const label=button.textContent;button.textContent=ui('פותח תשלום מאובטח…','Opening secure payment…');setTimeout(()=>{button.textContent=label},8000);
     try{
       const response=await fetch('/api/grow/checkout'+growTestQuery,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({items:cart.map(x=>({id:x.id,size:x.size,finish:x.finish})),coupon:appliedCoupon?.code||'',terms:!!data.terms,customer:{fullName:data.fullName,phone:data.phone,email:data.email,country:data.country,city:data.city,address:data.address,postalCode:data.postalCode}})});
       const result=await response.json().catch(()=>({}));
       if(result.url){location.href=result.url;return}
       if(result.authCode){
-        try{await loadGrowSdk(result.sdkEnv||'PRODUCTION');growOrderId=result.orderId;window.growPayment.renderPaymentOptions(result.authCode);button.disabled=false;return}
+        try{await loadGrowSdk(result.sdkEnv||'PRODUCTION');growOrderId=result.orderId;checkoutDialog.close();window.growPayment.renderPaymentOptions(result.authCode);button.disabled=false;return}
         catch(sdkError){err.textContent=ui('לא ניתן לפתוח את חלון התשלום. נסו שוב בעוד רגע.','The payment window could not be opened. Please try again in a moment.');err.hidden=false;button.disabled=false;return}
       }
       err.textContent=(result.error||ui('לא ניתן לפתוח את דף התשלום. נסו שוב.','The payment page could not be opened. Please try again.'))+(result.growError?' ('+result.growError+')':'');err.hidden=false;button.disabled=false;return
