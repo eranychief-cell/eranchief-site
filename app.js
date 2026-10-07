@@ -375,7 +375,9 @@ function renderPaperDrop(){
   const buttons=[...strip.querySelectorAll('.paper-room__thumb')];let current=0,scrollTimer,startX=0;
   const selectPaper=(index,move=true)=>{
     current=(index+paperWorks.length)%paperWorks.length;const work=paperWorks[current];
-    art.style.opacity='.15';setTimeout(()=>{art.src=work.image;art.alt=`${work.title} displayed full-frame without a frame in a living room`;art.classList.toggle('is-portrait',portraitIndexes.has(current));art.style.opacity='1'},90);
+    /* Preload, then swap. The build adds a responsive srcset to this <img> for work 01; it must be removed, or the browser keeps showing 01 whatever src is set. */
+    const token=current,show=()=>{if(token!==current)return;art.removeAttribute('loading');art.removeAttribute('srcset');art.removeAttribute('sizes');art.src=work.image;art.alt=`${work.title} displayed full-frame without a frame in a living room`;art.classList.toggle('is-portrait',portraitIndexes.has(current));art.style.opacity='1'};
+    art.style.opacity='.15';const pre=new Image();pre.onload=pre.onerror=show;pre.src=work.image;setTimeout(show,1200);
     title.textContent=`${String(current+1).padStart(2,'0')} · ${work.title}`;
     buttons.forEach((button,i)=>{button.classList.toggle('is-selected',i===current);button.setAttribute('aria-pressed',i===current?'true':'false')});
     if(move)buttons[current].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
