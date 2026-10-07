@@ -489,10 +489,10 @@ const growTestQuery=(()=>{try{if(new URLSearchParams(location.search).get('growt
 // Grow wallet SDK (credit card, Bit, Apple/Google Pay) — loaded only when the customer starts paying.
 let growOrderId='',growSdkPromise=null;
 function loadGrowSdk(env='PRODUCTION'){
-  if(window.growPayment?.renderPaymentOptions&&growSdkPromise)return growSdkPromise;
+  if(growSdkPromise)return growSdkPromise;
   growSdkPromise=new Promise((resolve,reject)=>{
     const s=document.createElement('script');s.src='https://cdn.meshulam.co.il/sdk/gs.min.js';s.async=true;
-    s.onload=()=>{try{window.growPayment.init({environment:env,version:1,events:{
+    s.onload=()=>{try{window.__growInitAt=Date.now();window.growPayment.init({environment:env,version:1,events:{
       onSuccess:()=>{location.href='/order/thanks/?o='+encodeURIComponent(growOrderId)},
       onFailure:r=>{console.warn('Grow onFailure',r);const d=document.querySelector('#checkoutDialog');if(d&&!d.open)d.showModal();const e=document.querySelector('#payError');if(e){e.textContent=((r&&(r.message||r.data?.message))||'')+' ['+JSON.stringify(r||{}).slice(0,220)+']'||ui('התשלום לא הושלם. אפשר לנסות שוב.','The payment was not completed. You can try again.');e.hidden=false}},
       onError:r=>{console.warn('Grow onError',r);const d=document.querySelector('#checkoutDialog');if(d&&!d.open)d.showModal();const e=document.querySelector('#payError');if(e){e.textContent=((r&&(r.message||r.data?.message))||'')+' ['+JSON.stringify(r||{}).slice(0,220)+']'||ui('אירעה שגיאה בתשלום. אפשר לנסות שוב.','A payment error occurred. You can try again.');e.hidden=false}},
@@ -502,7 +502,7 @@ function loadGrowSdk(env='PRODUCTION'){
   });
   return growSdkPromise;
 }
-const checkGrow=()=>fetch('/api/grow/status'+growTestQuery,{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(d=>{if(typeof d.enabled==='boolean')growEnabled=d.enabled;if(document.querySelector('#checkoutDialog')?.open)updateShippingUi()}).catch(()=>{});checkGrow();
+const checkGrow=()=>fetch('/api/grow/status'+growTestQuery,{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(d=>{if(typeof d.enabled==='boolean')growEnabled=d.enabled;if(d.enabled)loadGrowSdk(d.sandbox?'DEV':'PRODUCTION').catch(()=>{});if(document.querySelector('#checkoutDialog')?.open)updateShippingUi()}).catch(()=>{});checkGrow();
 // Re-check when a tab is restored from the back/forward cache and whenever checkout opens, so a page loaded earlier still offers online payment.
 window.addEventListener('pageshow',e=>{if(e.persisted)checkGrow()});
 // Card payment for every delivery in Israel; shipping is added per SHIP_FEE.
@@ -559,7 +559,7 @@ document.querySelector('#shippingForm').onsubmit=async e=>{
       const result=await response.json().catch(()=>({}));
       if(result.url){location.href=result.url;return}
       if(result.authCode){
-        try{await loadGrowSdk(result.sdkEnv||'PRODUCTION');growOrderId=result.orderId;checkoutDialog.close();window.growPayment.renderPaymentOptions(result.authCode);button.disabled=false;return}
+        try{await loadGrowSdk(result.sdkEnv||'PRODUCTION');const wait=(window.__growInitAt||0)+2500-Date.now();if(wait>0)await new Promise(r=>setTimeout(r,wait));growOrderId=result.orderId;checkoutDialog.close();window.growPayment.renderPaymentOptions(result.authCode);button.disabled=false;return}
         catch(sdkError){err.textContent=ui('לא ניתן לפתוח את חלון התשלום. נסו שוב בעוד רגע.','The payment window could not be opened. Please try again in a moment.');err.hidden=false;button.disabled=false;return}
       }
       err.textContent=(result.error||ui('לא ניתן לפתוח את דף התשלום. נסו שוב.','The payment page could not be opened. Please try again.'))+(result.growError?' ('+result.growError+')':'');err.hidden=false;button.disabled=false;return
