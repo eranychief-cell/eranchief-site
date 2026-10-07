@@ -147,6 +147,14 @@
     <section class="gallery-grid" id="gallery" data-catalog-grid aria-live="polite"></section>
     <div class="gallery-more"><button type="button" id="showMoreWorks" hidden>Show more works</button></div>
 
+    <section class="home-film" aria-label="Super Premium" style="padding:8px 16px 56px;text-align:center">
+      <a href="/collections/super-premium/" style="display:block;max-width:380px;margin:0 auto;text-decoration:none;color:inherit">
+        <video id="homeFilm" data-src="/assets/super-premium-film.mp4" poster="/assets/super-premium-film-poster.jpg" muted loop playsinline webkit-playsinline preload="none" style="display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:6px;background:#111;box-shadow:0 18px 40px rgba(0,0,0,.18)"></video>
+        <span style="display:block;margin-top:14px;font-size:13px;letter-spacing:.18em">SUPER PREMIUM · EDITION OF 7</span>
+      </a>
+      <script>(()=>{const v=document.getElementById('homeFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){const t=v.currentTime;v.load();v.currentTime=t;go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
+    </section>
+
     <section class="statement" aria-label="CHIEF">
       <div class="statement-quotes">
         <p class="statement-q is-on" data-en="“My iPhone was my real camera.”">״האייפון היה המצלמה האמיתית שלי.״</p>
