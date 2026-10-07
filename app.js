@@ -381,15 +381,15 @@ function renderPaperDrop(){
     if(move)buttons[current].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
   };
   buttons.forEach((button,i)=>button.addEventListener('click',()=>selectPaper(i)));
-  strip.addEventListener('scroll',()=>{clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{const box=strip.getBoundingClientRect(),center=box.left+box.width/2;let best=0,distance=Infinity;buttons.forEach((button,i)=>{const rect=button.getBoundingClientRect(),nextDistance=Math.abs(rect.left+rect.width/2-center);if(nextDistance<distance){distance=nextDistance;best=i}});selectPaper(best,false)},140)});
+  /* Selection follows taps/arrows/swipes only: auto-selecting the thumbnail nearest the centre while the strip scrolls overrode taps on the first/last works on phones. */
   const requestedPaper=Number(new URLSearchParams(location.search).get('paper'));
-  if(requestedPaper>=1&&requestedPaper<=paperWorks.length){selectPaper(requestedPaper-1);setTimeout(()=>document.querySelector('#paper-edition')?.scrollIntoView({block:'start'}),300);}
   document.querySelector('#paperRoomPrev').onclick=()=>selectPaper(current-1);
   document.querySelector('#paperRoomNext').onclick=()=>selectPaper(current+1);
   document.querySelector('#paperRoomOrder').onclick=()=>{if(!paperClosed())openProduct(paperWorks[current].id);else refreshPaperState()};
   scene.addEventListener('pointerdown',event=>{startX=event.clientX});
   scene.addEventListener('pointerup',event=>{const delta=event.clientX-startX;if(Math.abs(delta)>38)selectPaper(current+(delta<0?1:-1))});
-  selectPaper(0,false);
+  /* A link like /?paper=6 opens on that work (the default selection used to run after it and reset it to 01). */
+  if(requestedPaper>=1&&requestedPaper<=paperWorks.length){selectPaper(requestedPaper-1);setTimeout(()=>document.querySelector('#paper-edition')?.scrollIntoView({block:'start'}),300);}else selectPaper(0,false);
   const countdown=document.querySelector('#paperCountdown'),end=paperCloseDate;
   const updateCountdown=()=>{const diff=Math.max(0,end-Date.now()),days=Math.floor(diff/86400000),hours=Math.floor(diff%86400000/3600000),mins=Math.floor(diff%3600000/60000);countdown.textContent=diff?ui(`${days} ימים, ${hours} שעות ו־${mins} דקות`,`${days}d ${hours}h ${mins}m`):ui('המהדורה נסגרה','Drop closed');};updateCountdown();setInterval(updateCountdown,60000);
 }
