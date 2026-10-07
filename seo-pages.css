@@ -133,3 +133,6 @@
 
 /* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
 h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
+
+/* Tablet (iPad) layout: stack product pages, keep image large */
+@media(min-width:801px) and (max-width:1100px){.product-seo{grid-template-columns:1fr;gap:32px}.product-seo>img{max-height:72vh}.product-details{max-width:680px}.seo-grid{grid-template-columns:1fr 1fr}.commercial-guide .guide-works{grid-template-columns:1fr 1fr}}
