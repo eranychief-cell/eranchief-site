@@ -578,11 +578,13 @@ await writeFile('dist/client/robots.txt',`User-agent: *\nAllow: /\n\nSitemap: ${
   }
   await writeFile('dist/server/grow-catalog.js',`export const catalog=${JSON.stringify(growCatalog)};\n`);
 }
+const applePayDomainFile = await readFile('well-known/apple-developer-merchantid-domain-association', 'utf8');
 await writeFile('dist/server/index.js', `import { handleCollectorStories } from './collector-stories-worker.js';
 import { handleGrow } from './grow-worker.js';
 export default { async fetch(request, env) {
   // www.eranchief.com -> eranchief.com (301, same path + query), exactly like the old host did, to keep SEO intact.
   { const u = new URL(request.url); if (u.pathname === '/__build') return new Response(JSON.stringify({ host: 'cloudflare-worker', build: '${new Date().toISOString()}' }), { headers: { 'content-type': 'application/json', 'x-robots-tag': 'noindex', 'cache-control': 'no-store' } }); if (u.hostname === 'www.eranchief.com') { u.hostname = 'eranchief.com'; return Response.redirect(u.toString(), 301); } }
+  if (new URL(request.url).pathname === '/.well-known/apple-developer-merchantid-domain-association') return new Response(${JSON.stringify(applePayDomainFile)}, { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600', 'access-control-allow-origin': '*' } });
   const growResponse = await handleGrow(request, env);
   if (growResponse) return growResponse;
   const storyResponse = await handleCollectorStories(request, env);
