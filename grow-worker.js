@@ -86,7 +86,8 @@ export async function handleGrow(request, env) {
     let order; try { order = priceOrder(body.items, body.coupon, abroad); } catch (e) { return json({ error: e.message }, 400); }
     await ensureOrders(env);
     const id = crypto.randomUUID();
-    const description = plain('CHIEF ' + order.lines.map(x => `${x.title} ${x.size}`).join(' + ') + (order.shipping ? ` + משלוח ${order.shipping}` : '') + (abroad ? ` · ${plain(c.country, 30)} · טל ${phone}` : ''), 150);
+    // Plain ASCII-style description (no Hebrew, no '+'): Paper Edition orders with a shipping line in Hebrew made the wallet fail with error (4).
+    const description = plain('CHIEF ' + order.lines.map(x => `${x.title} ${x.size}`).join(', ') + (order.shipping ? `, shipping ${order.shipping} ILS` : '') + (abroad ? `, ${plain(c.country, 30)}, tel ${phone}` : ''), 150).replace(/[^\x20-\x7E]/g, '').replace(/\s+/g, ' ').trim();
     // Grow accepts only Israeli mobile numbers (05XXXXXXXX). Israeli numbers are normalised; for buyers abroad
     // the business number is sent to Grow, while the buyer's real number is kept in the order record and description.
     const growPhone = abroad ? '0507123109' : '0' + phone.replace(/^972/, '').replace(/^0/, '');
