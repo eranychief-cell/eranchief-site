@@ -105,12 +105,16 @@
         <div class="paper-drop__copy"><p>Start with an original CHIEF photograph. Ten works on archival Fine Art paper, signed by the artist and accompanied by a Certificate of Authenticity. This selection is available only through 15 October; Art Edition canvas remains available year-round.</p><strong>30 × 40 cm · ₪249 &nbsp; / &nbsp; 50 × 70 cm · ₪399</strong><p>Unframed · Shipping cost and delivery estimate are confirmed before payment.</p><a class="paper-page-link" href="/paper-edition/">Explore all ten works →</a><div class="paper-countdown">Available until 15 October 2026 · <b id="paperCountdown">30 days</b> remaining</div></div>
       </div>
       <div class="paper-room" id="paperRoom" aria-live="polite">
-        <div class="paper-room__scene" id="paperRoomScene">
+        <div class="paper-film" style="max-width:540px;margin:0 auto 18px">
+          <video id="paperFilm" data-src="/assets/paper-edition-film.mp4" poster="/assets/paper-edition-film-poster.jpg" muted loop playsinline webkit-playsinline preload="none" aria-label="The ten Paper Edition works shown in living rooms" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:#ece8e0"></video>
+          <script>(()=>{const v=document.getElementById('paperFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){const t=v.currentTime;v.load();v.currentTime=t;go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
+        </div>
+        <div class="paper-room__scene" id="paperRoomScene" style="display:none">
           <img class="paper-room__art" id="paperRoomArt" src="assets/paper-1-the-building-that-learned-to-fly.jpg" alt="The Building That Learned to Fly displayed full-frame without a frame in a living room">
         </div>
         <div class="paper-room__bar">
           <p class="paper-room__title notranslate" id="paperRoomTitle" translate="no">01 · The Building That Learned to Fly</p>
-          <div class="paper-room__controls">
+          <div class="paper-room__controls" style="display:none">
             <button type="button" id="paperRoomPrev" aria-label="Previous photograph">‹</button>
             <button type="button" id="paperRoomNext" aria-label="Next photograph">›</button>
           </div>
