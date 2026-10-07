@@ -33,7 +33,9 @@ async function grow(env, method, fields) {
 }
 
 // Recompute every price on the server — the browser total is never trusted.
-function priceOrder(items, couponCode) {
+// International air express (HS Shipping quote, Oct 2026), per artwork by longest side.
+const intlFee = size => { const n = String(size).match(/\d+/g)?.map(Number) || [0]; const l = Math.max(...n); return l <= 80 ? 1500 : l <= 110 ? 2100 : 4900; };
+function priceOrder(items, couponCode, abroad = false) {
   if (!Array.isArray(items) || !items.length || items.length > 10) throw new Error('Your bag is empty or too large.');
   const lines = items.map(item => {
     const work = catalog[Number(item.id)];
@@ -52,7 +54,8 @@ function priceOrder(items, couponCode) {
   const percent = COUPONS[code] || 0;
   const discount = percent ? Math.round(eligible * percent / 100 / 10) * 10 : 0;
   // Shipping in Israel: Alucobond / Perspex free; Canvas 69, Paper 39 — once per order (the highest). Mirrors app.js SHIP_FEE.
-  const shipping = lines.reduce((m, x) => Math.max(m, ({ canvas: 69, paper: 39 })[x.finish] || 0), 0);
+  if (abroad && lines.some(x => x.finish === 'paper')) throw new Error('Paper Edition ships within Israel only.');
+  const shipping = abroad ? lines.reduce((a, x) => a + intlFee(x.size), 0) : lines.reduce((m, x) => Math.max(m, ({ canvas: 69, paper: 39 })[x.finish] || 0), 0);
   return { lines, subtotal, discount, shipping, total: subtotal - discount + shipping, coupon: percent ? code : null };
 }
 
@@ -75,14 +78,15 @@ export async function handleGrow(request, env) {
     const fullName = plain(c.fullName, 80), phone = String(c.phone || '').replace(/[^\d]/g, ''), email = String(c.email || '').trim().toLowerCase();
     const city = plain(c.city, 60), address = plain(c.address, 120), postal = plain(c.postalCode, 12);
     if (fullName.split(' ').filter(Boolean).length < 2) return json({ error: 'Please enter first and last name.' }, 400);
-    if (!/^05\d{8}$/.test(phone)) return json({ error: 'Please enter an Israeli mobile number (05XXXXXXXX).' }, 400);
+    const abroad = !israel(c.country);
+    if (abroad ? !/^\d{7,15}$/.test(phone) : !/^0?5\d{8}$|^9725\d{8}$/.test(phone)) return json({ error: 'Please enter a valid phone number.' }, 400);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: 'Please enter a valid email address.' }, 400);
-    if (!israel(c.country) || !city || !address) return json({ error: 'Online payment is available for delivery in Israel. Please fill in city and street address.' }, 400);
+    if (!plain(c.country, 60) || !city || !address) return json({ error: 'Please fill in country, city and street address.' }, 400);
     if (body.terms !== true) return json({ error: 'Please accept the terms of sale.' }, 400);
-    let order; try { order = priceOrder(body.items, body.coupon); } catch (e) { return json({ error: e.message }, 400); }
+    let order; try { order = priceOrder(body.items, body.coupon, abroad); } catch (e) { return json({ error: e.message }, 400); }
     await ensureOrders(env);
     const id = crypto.randomUUID();
-    const description = plain('CHIEF ' + order.lines.map(x => `${x.title} ${x.size}`).join(' + ') + (order.shipping ? ` + משלוח ${order.shipping}` : ''), 150);
+    const description = plain('CHIEF ' + order.lines.map(x => `${x.title} ${x.size}`).join(' + ') + (order.shipping ? ` + משלוח ${order.shipping}` : '') + (abroad ? ` · ${plain(c.country, 30)}` : ''), 150);
     const result = await grow(env, 'createPaymentProcess', {
       pageCode: env.GROW_PAGE_CODE, userId: env.GROW_USER_ID, chargeType: 1, sum: order.total.toFixed(2),
       successUrl: `${SITE}/order/thanks/?o=${id}`, cancelUrl: `${SITE}/?bag=1`, notifyUrl: `${SITE}/api/grow/webhook`,
