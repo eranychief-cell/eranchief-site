@@ -13,27 +13,27 @@
 .hero-copy .currency-hero{font-size:13px!important;color:#e8e2d8;margin:10px 0 0;line-height:1.4}
 .currency-hero [data-ils]:empty{display:none}
 .currency-hero:has([data-ils]:empty){display:none}
-.language-links{display:flex;align-items:center;gap:8px;white-space:nowrap;font:600 13px Assistant,Arial,sans-serif}
+.language-links{display:flex;align-items:center;gap:8px;white-space:nowrap;font:600 13px Heebo,Arial,sans-serif}
 .language-links span{color:#666}.language-links a{color:inherit;text-decoration:none}
 .language-links a:hover{text-decoration:underline}
 .mobile-menu{display:none}
 .edition-guide{padding:50px 5vw 58px;background:#e9e4d9;color:#1d1c19}
 .edition-guide>*{max-width:1250px;margin-left:auto;margin-right:auto}
-.edition-guide h2{font:500 clamp(30px,4vw,52px)/1.05 Cormorant Garamond,serif;margin-top:8px;margin-bottom:24px}
+.edition-guide h2{font:600 clamp(30px,4vw,52px)/1.05 "Inter Tight",Heebo,sans-serif;margin-top:8px;margin-bottom:24px}
 .edition-guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .edition-guide-grid a{display:grid;align-content:start;gap:10px;padding:23px;background:#f7f4ee;border:1px solid #cec5b5;color:inherit;text-decoration:none;min-height:170px}
 .edition-guide-grid a:hover{border-color:#927346}
-.edition-guide-grid strong{font:500 29px Cormorant Garamond,serif}
+.edition-guide-grid strong{font:600 29px "Inter Tight",Heebo,sans-serif}
 .edition-guide-grid span{font-size:15px;line-height:1.35}
-.edition-guide-grid small,.collection-index [data-ils],.work-meta [data-ils],.product-info [data-ils],.cart-footer [data-ils],.checkout-pricing [data-ils]{font:400 13px Assistant,Arial,sans-serif;color:#6d6559;line-height:1.3}
+.edition-guide-grid small,.collection-index [data-ils],.work-meta [data-ils],.product-info [data-ils],.cart-footer [data-ils],.checkout-pricing [data-ils]{font:400 13px Heebo,Arial,sans-serif;color:#6d6559;line-height:1.3}
 .edition-guide>p:last-child{font-size:13px;line-height:1.45;margin-top:18px}
 .more-languages{font-size:13px}.more-languages summary{cursor:pointer}.more-languages #google_translate_element{padding:12px 0}
 .currency-disclaimer{display:block;margin-top:8px}
-.included-shipping{display:block;font:600 14px/1.4 Assistant,Arial,sans-serif;color:#67502e;margin:8px 0}
-.collector-stories-callout{padding:55px 5vw;text-align:center;background:#e9e4d9}.collector-stories-callout h2{font:500 clamp(35px,4vw,54px) Cormorant Garamond,serif;margin:10px 0}.collector-stories-callout p:not(.eyebrow){font-size:17px;line-height:1.5}.collector-stories-callout a{display:inline-block;border:1px solid #22201c;padding:13px 22px;color:#22201c;text-decoration:none;font-size:16px;margin-top:10px}
+.included-shipping{display:block;font:600 14px/1.4 Heebo,Arial,sans-serif;color:#67502e;margin:8px 0}
+.collector-stories-callout{padding:55px 5vw;text-align:center;background:#e9e4d9}.collector-stories-callout h2{font:600 clamp(35px,4vw,54px) "Inter Tight",Heebo,sans-serif;margin:10px 0}.collector-stories-callout p:not(.eyebrow){font-size:17px;line-height:1.5}.collector-stories-callout a{display:inline-block;border:1px solid #22201c;padding:13px 22px;color:#22201c;text-decoration:none;font-size:16px;margin-top:10px}
 .shop-paths{padding:clamp(60px,8vw,120px) 5vw;background:#f4f1eb}
 .shop-paths-heading{max-width:1250px;margin:0 auto 32px}
-.shop-paths h2,.canvas-edit h2{font:500 clamp(43px,5.4vw,78px)/.96 Cormorant Garamond,serif;letter-spacing:-.025em;margin:10px 0}
+.shop-paths h2,.canvas-edit h2{font:600 clamp(43px,5.4vw,78px)/.96 "Inter Tight",Heebo,sans-serif;letter-spacing:-.025em;margin:10px 0}
 .shop-paths h2 em,.canvas-edit h2 em{font-weight:400;color:#976f3b}
 .shop-path-grid{max-width:1250px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .shop-path{display:block;color:#191815;text-decoration:none;background:#fff;border:1px solid #d6d0c5;transition:transform .25s,box-shadow .25s}
@@ -41,7 +41,7 @@
 .shop-path>img{display:block;width:100%;height:clamp(210px,23vw,315px);object-fit:cover}
 .shop-path>span{display:grid;gap:7px;padding:23px}
 .shop-path small{font-size:12px;letter-spacing:.15em;color:#8c744b}
-.shop-path strong{font:500 clamp(27px,2.7vw,37px) Cormorant Garamond,serif}
+.shop-path strong{font:600 clamp(27px,2.7vw,37px) "Inter Tight",Heebo,sans-serif}
 .shop-path span span{font-size:16px;line-height:1.35}
 .shop-path em{font-size:14px;font-style:normal;text-decoration:underline;text-underline-offset:5px;margin-top:13px}
 .shop-paths-note{max-width:1250px;margin:22px auto 0;color:#625c52;font-size:14px}
@@ -54,23 +54,23 @@
 .intro h2{font-size:clamp(48px,6vw,82px)}
 .shop-controls{max-width:1100px;margin:28px auto 0;display:grid;gap:14px}
 .shop-controls>label{display:grid;gap:8px;text-align:left;font-size:14px;font-weight:600}
-.shop-controls input{width:100%;padding:14px 17px;border:1px solid #bcb5a9;background:#fff;color:#171716;font:400 16px Assistant,Arial,sans-serif}
+.shop-controls input{width:100%;padding:14px 17px;border:1px solid #bcb5a9;background:#fff;color:#171716;font:400 16px Heebo,Arial,sans-serif}
 .shop-controls .filters{margin-top:0;justify-content:flex-start}
 .work-meta span{font-weight:600}
-.work-shop{border:1px solid #1d1c19;background:transparent;color:#1d1c19;padding:11px 15px;margin-top:14px;min-height:43px;font:600 14px Assistant,Arial,sans-serif;cursor:pointer}
+.work-shop{border:1px solid #1d1c19;background:transparent;color:#1d1c19;padding:11px 15px;margin-top:14px;min-height:43px;font:600 14px Heebo,Arial,sans-serif;cursor:pointer}
 .work-shop:hover,.gallery-more button:hover{background:#1d1c19;color:#fff}
 .gallery-grid{padding-bottom:25px}
 .gallery-more{text-align:center;padding:25px 20px 85px}
-.gallery-more button{border:1px solid #1d1c19;background:transparent;padding:15px 26px;font:600 15px Assistant,Arial,sans-serif;cursor:pointer}
+.gallery-more button{border:1px solid #1d1c19;background:transparent;padding:15px 26px;font:600 15px Heebo,Arial,sans-serif;cursor:pointer}
 .gallery-more button[hidden]{display:none}
-.cart-quick-request{display:block;width:100%;padding:12px;margin-top:10px;border:1px solid #121212;background:transparent;color:#121212;font:600 14px Assistant,Arial,sans-serif;cursor:pointer}
+.cart-quick-request{display:block;width:100%;padding:12px;margin-top:10px;border:1px solid #121212;background:transparent;color:#121212;font:600 14px Heebo,Arial,sans-serif;cursor:pointer}
 .product-next-step{font-size:13px;line-height:1.4;color:#625c52;margin:12px 0 0}
 .finish-option-group{display:block!important}.finish-choices{display:grid!important;visibility:visible!important;max-height:none!important;opacity:1!important}
 .collector-story-product-note,.collector-story-order-note{font-size:13px;line-height:1.45;color:#625c52;margin:14px 0 0}.collector-story-product-note a,.collector-story-order-note a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 .shipping-form>small a{color:inherit}
 @media(max-width:980px){.shop-path-grid{gap:10px}.site-header nav{gap:.7rem}.site-header nav a{font-size:12px}}
 @media(max-width:850px){.hero-copy{max-width:86vw;bottom:8vh}.hero{min-height:680px}.shop-path-grid{grid-template-columns:1fr 1fr}.shop-path:last-child{grid-column:1/-1}.shop-path:last-child>img{height:260px}.edition-guide-grid{grid-template-columns:1fr}.edition-guide-grid a{min-height:0}.canvas-edit{grid-template-columns:1fr}.canvas-edit img{height:360px;grid-row:1}.canvas-edit>div{padding:48px 6vw}}
-@media(max-width:850px){.site-header{padding:0 5vw}.site-header>nav{display:none}.language-links{display:none}.header-actions{gap:12px}.mobile-menu{display:block;position:relative}.mobile-menu summary{list-style:none;display:grid;place-items:center;width:40px;height:40px;border:1px solid #1d1c19;cursor:pointer;font-size:21px}.mobile-menu summary::-webkit-details-marker{display:none}.mobile-menu nav{display:grid;position:absolute;right:0;top:calc(100% + 9px);width:min(285px,88vw);padding:10px 0;background:#f4f1eb;border:1px solid #bcb5a9;box-shadow:0 18px 35px rgba(0,0,0,.15);z-index:60}.mobile-menu nav a{padding:13px 17px;color:#171716;text-decoration:none;font:500 15px Assistant,Arial,sans-serif}.mobile-menu nav a:hover{background:#e9e4d9}}
+@media(max-width:850px){.site-header{padding:0 5vw}.site-header>nav{display:none}.language-links{display:none}.header-actions{gap:12px}.mobile-menu{display:block;position:relative}.mobile-menu summary{list-style:none;display:grid;place-items:center;width:40px;height:40px;border:1px solid #1d1c19;cursor:pointer;font-size:21px}.mobile-menu summary::-webkit-details-marker{display:none}.mobile-menu nav{display:grid;position:absolute;right:0;top:calc(100% + 9px);width:min(285px,88vw);padding:10px 0;background:#f4f1eb;border:1px solid #bcb5a9;box-shadow:0 18px 35px rgba(0,0,0,.15);z-index:60}.mobile-menu nav a{padding:13px 17px;color:#171716;text-decoration:none;font:500 15px Heebo,Arial,sans-serif}.mobile-menu nav a:hover{background:#e9e4d9}}
 html[lang="he"] .hero-copy,html[lang="he"] .shop-paths,html[lang="he"] .edition-guide,html[lang="he"] .collection-index,html[lang="he"] .intro,html[lang="he"] .interiors-heading,html[lang="he"] .about-copy,html[lang="he"] .newsletter-copy,html[lang="he"] .faq{direction:rtl;text-align:right}html[lang="he"] .hero h1{direction:rtl;text-align:right}html[lang="he"] .shop-controls>label{text-align:right}
 @media(max-width:560px){.hero{height:calc(100svh - 72px);min-height:580px}.hero-shade{background:linear-gradient(0deg,rgba(0,0,0,.82),rgba(0,0,0,.16) 74%)}.hero-copy{left:5vw;right:5vw;bottom:5vh;max-width:none}.hero h1{font-size:clamp(53px,12vw,72px);margin:14px 0}.hero-copy>p:not(.eyebrow){font-size:16px}.hero-actions{display:grid;gap:9px;margin-top:17px}.hero-actions a{min-height:45px;font-size:13px}.hero-copy .hero-reassurance{font-size:12px!important;margin-top:13px}.hero-edition{display:none}.shop-paths{padding:54px 5vw}.shop-path-grid{grid-template-columns:1fr}.shop-path:last-child{grid-column:auto}.shop-path>img,.shop-path:last-child>img{height:230px}.shop-path>span{padding:17px}.canvas-edit img{height:260px}.canvas-edit>div{padding:45px 5vw}.shop-controls .filters{gap:7px}.shop-controls .filters button{font-size:13px;padding:9px 12px}.intro{padding:65px 5vw 28px}.intro h2{font-size:50px}}
 
@@ -104,3 +104,6 @@ body:not(.seo-body) .catalog-filters,body:not(.seo-body) .catalog-filters__count
 .terms-check{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5}
 .terms-check input{margin-top:4px;flex:0 0 auto;width:18px;height:18px}
 .pay-error{color:#a3271d;font-size:14px;margin:0}
+
+/* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
+h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}

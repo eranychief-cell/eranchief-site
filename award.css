@@ -46,7 +46,7 @@
 
 .award-evidence strong {
   margin: 20px 0;
-  font: 500 27px/1.05 "Cormorant Garamond", serif;
+  font: 600 27px/1.05 "Inter Tight",Heebo,sans-serif;
 }
 
 .award-evidence a:hover {
@@ -69,3 +69,6 @@
     gap: 6px;
   }
 }
+
+/* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
+h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}

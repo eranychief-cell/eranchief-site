@@ -20,7 +20,7 @@
 }
 
 .pair-heading strong {
-  font: 500 30px Cormorant Garamond, serif;
+  font: 600 30px "Inter Tight",Heebo,sans-serif;
 }
 
 .pair-heading small {
@@ -58,3 +58,6 @@
   .pair-cards .work-meta > span { font-size: 11px; }
   .pair-cards .work-meta p { font-size: 10px; }
 }
+
+/* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
+h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
