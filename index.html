@@ -190,6 +190,14 @@
         </button>
       </div>
       <p class="interiors-note">Interior visualization for scale and presentation. Actual appearance may vary according to size, finish and lighting.</p>
+      <div class="kids-film" style="max-width:540px;margin:48px auto 0;text-align:center">
+        <p class="eyebrow">KIDS &amp; TEEN ROOMS</p>
+        <h3 style="margin:6px 0 18px">Art that grows with them.</h3>
+        <video id="kidsFilm" data-src="/assets/kids-rooms-film.mp4" poster="/assets/kids-rooms-film-poster.jpg" muted loop playsinline webkit-playsinline preload="none" aria-label="CHIEF works shown in children's and teens' rooms" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;background:#ece8e0"></video>
+        <p style="margin:18px auto 10px;max-width:460px">Many CHIEF works — beach dogs, colourful toys, the sea — feel right at home in children's and teens' rooms. Looking for a work for a kids' room? Send a message and we'll choose the right piece and size together.</p>
+        <a href="https://wa.me/972507123109" target="_blank" rel="noopener">Ask about a kids' room →</a>
+        <script>(()=>{const v=document.getElementById('kidsFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){const t=v.currentTime;v.load();v.currentTime=t;go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
+      </div>
     </section>
 
     <section class="materials" id="materials">
@@ -310,7 +318,7 @@
   <script>function chiefTranslateInit(){new google.translate.TranslateElement({pageLanguage:'en',includedLanguages:'he,ar,fr,es,de,it,pt,ru,zh-CN,ja,ko,nl,pl,tr,el,hi',layout:google.translate.TranslateElement.InlineLayout.SIMPLE,autoDisplay:false},'google_translate_element')}</script>
   <script src="https://translate.google.com/translate_a/element.js?cb=chiefTranslateInit" async></script>
   <script src="currency.js?v=1"></script>
-  <script src="hebrew-ui.js?v=11"></script>
+  <script src="hebrew-ui.js?v=12"></script>
   <script src="filter-orientations.js"></script>
   <script src="card-previews.js"></script>
   <script src="paper-edition-data.js" defer></script>
