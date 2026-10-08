@@ -138,3 +138,8 @@ h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 @media(min-width:801px) and (max-width:1100px){.product-seo{grid-template-columns:1fr;gap:32px}.product-seo>img{max-height:72vh}.product-details{max-width:680px}.seo-grid{grid-template-columns:1fr 1fr}.commercial-guide .guide-works{grid-template-columns:1fr 1fr}}
 .collection-film { margin:8px auto 36px; max-width:380px; }
 .collection-film video { display:block; width:100%; aspect-ratio:9/16; object-fit:cover; border-radius:6px; background:#111; box-shadow:0 18px 40px rgba(0,0,0,.18); }
+
+.mockup-offer { margin-top:12px; }
+.mockup-cta { display:inline-block; border:1.5px solid #121212; color:#121212; background:transparent; padding:14px 22px; text-decoration:none; font-weight:600; }
+.mockup-cta:hover, .mockup-cta:focus-visible { background:#121212; color:#fff; }
+.mockup-note { font-size:14px; color:#6b665e; margin:6px 0 0; line-height:1.5; }
