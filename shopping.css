@@ -107,3 +107,8 @@ body:not(.seo-body) .catalog-filters,body:not(.seo-body) .catalog-filters__count
 
 /* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
 h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
+
+/* Hero on phones: artwork on top, text below it (no overlap in short in-app browsers like Instagram) */
+.hero-actions .hero-preview{border-style:dashed}
+@media(max-width:560px){.hero{height:auto;min-height:0;display:flex;flex-direction:column}.hero-slideshow{position:relative;inset:auto;height:44vh;min-height:260px;max-height:460px;overflow:hidden}.hero .hero-slideshow .hero-slide{height:100%}.hero-shade{display:none}.hero-copy{position:relative;left:auto;right:auto;bottom:auto;padding:22px 5vw 34px;max-width:none}}
+html[lang="he"] .hero-copy .currency-hero{display:none}
