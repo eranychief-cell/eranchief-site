@@ -106,8 +106,8 @@
       </div>
       <div class="paper-room" id="paperRoom" aria-live="polite">
         <div class="paper-film" style="max-width:540px;margin:0 auto 18px">
-          <video id="paperFilm" data-src="/assets/paper-edition-film.mp4" poster="/assets/paper-edition-film-poster.jpg" muted loop playsinline webkit-playsinline preload="none" aria-label="The ten Paper Edition works shown in living rooms" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:#ece8e0"></video>
-          <script>(()=>{const v=document.getElementById('paperFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){const t=v.currentTime;v.load();v.currentTime=t;go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
+          <video id="paperFilm" data-src="/assets/paper-edition-film-lite.mp4" poster="/assets/paper-edition-film-poster.jpg" muted loop playsinline webkit-playsinline preload="none" aria-label="The ten Paper Edition works shown in living rooms" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:#ece8e0"></video>
+          <script>(()=>{const v=document.getElementById('paperFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
         </div>
         <div class="paper-room__scene" id="paperRoomScene" style="display:none">
           <img class="paper-room__art" id="paperRoomArt" src="assets/paper-1-the-building-that-learned-to-fly.jpg" alt="The Building That Learned to Fly displayed full-frame without a frame in a living room">
@@ -153,10 +153,10 @@
 
     <section class="home-film" aria-label="Super Premium" style="padding:8px 16px 56px;text-align:center">
       <a href="/collections/super-premium/" style="display:block;max-width:540px;margin:0 auto;text-decoration:none;color:inherit">
-        <video id="homeFilm" data-src="/assets/super-premium-film-post.mp4" poster="/assets/super-premium-film-post-poster.jpg" muted loop playsinline webkit-playsinline preload="none" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;background:#111;box-shadow:0 18px 40px rgba(0,0,0,.18)"></video>
+        <video id="homeFilm" data-src="/assets/super-premium-film-post-lite.mp4" poster="/assets/super-premium-film-post-poster.jpg" muted loop playsinline webkit-playsinline preload="none" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;background:#111;box-shadow:0 18px 40px rgba(0,0,0,.18)"></video>
         <span style="display:block;margin-top:14px;font-size:13px;letter-spacing:.18em">SUPER PREMIUM · EDITION OF 7</span>
       </a>
-      <script>(()=>{const v=document.getElementById('homeFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){const t=v.currentTime;v.load();v.currentTime=t;go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
+      <script>(()=>{const v=document.getElementById('homeFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
     </section>
 
     <section class="statement" aria-label="CHIEF">
@@ -193,10 +193,18 @@
       <div class="kids-film" style="max-width:540px;margin:48px auto 0;text-align:center">
         <p class="eyebrow">KIDS &amp; TEEN ROOMS</p>
         <h3 style="margin:6px 0 18px">Art that grows with them.</h3>
-        <video id="kidsFilm" data-src="/assets/kids-rooms-film.mp4" poster="/assets/kids-rooms-film-poster.jpg" muted loop playsinline webkit-playsinline preload="none" aria-label="CHIEF works shown in children's and teens' rooms" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;background:#ece8e0"></video>
+        <video id="kidsFilm" data-src="/assets/kids-rooms-film-lite.mp4" poster="/assets/kids-rooms-film-poster.jpg" muted loop playsinline webkit-playsinline preload="none" aria-label="CHIEF works shown in children's and teens' rooms" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;background:#ece8e0"></video>
         <p style="margin:18px auto 10px;max-width:460px">Many CHIEF works — beach dogs, colourful toys, the sea — feel right at home in children's and teens' rooms. Looking for a work for a kids' room? Send a message and we'll choose the right piece and size together.</p>
         <a href="https://wa.me/972507123109" target="_blank" rel="noopener">Ask about a kids' room →</a>
-        <script>(()=>{const v=document.getElementById('kidsFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){const t=v.currentTime;v.load();v.currentTime=t;go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
+        <script>(()=>{const v=document.getElementById('kidsFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
+      </div>
+      <div class="lobby-film" style="max-width:540px;margin:56px auto 0;text-align:center">
+        <p class="eyebrow">BUILDING LOBBIES</p>
+        <h3 style="margin:6px 0 18px">The first room everyone walks into.</h3>
+        <video id="lobbyFilm" data-src="/assets/lobbies-film-lite.mp4" poster="/assets/lobbies-film-poster.jpg" muted loop playsinline webkit-playsinline preload="none" aria-label="Large-format CHIEF works shown in residential building lobbies" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;background:#ece8e0"></video>
+        <p style="margin:18px auto 10px;max-width:470px">A lobby sets the tone for an entire building. Large-format CHIEF works on Alucobond or Perspex bring colour, light and a sense of place to residential lobbies and shared spaces. For house committees, developers and interior designers: we'll help you choose the right work, size and finish for your space.</p>
+        <a href="https://wa.me/972507123109" target="_blank" rel="noopener">Ask about art for your lobby →</a>
+        <script>(()=>{const v=document.getElementById('lobbyFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
       </div>
     </section>
 
@@ -318,7 +326,7 @@
   <script>function chiefTranslateInit(){new google.translate.TranslateElement({pageLanguage:'en',includedLanguages:'he,ar,fr,es,de,it,pt,ru,zh-CN,ja,ko,nl,pl,tr,el,hi',layout:google.translate.TranslateElement.InlineLayout.SIMPLE,autoDisplay:false},'google_translate_element')}</script>
   <script src="https://translate.google.com/translate_a/element.js?cb=chiefTranslateInit" async></script>
   <script src="currency.js?v=1"></script>
-  <script src="hebrew-ui.js?v=12"></script>
+  <script src="hebrew-ui.js?v=13"></script>
   <script src="filter-orientations.js"></script>
   <script src="card-previews.js"></script>
   <script src="paper-edition-data.js" defer></script>
