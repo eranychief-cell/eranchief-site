@@ -3288,5 +3288,39 @@
     "/assets/card-previews/work_192_the_rain_dreamed_of_being_inside-1151.webp"
    ]
   ]
+ },
+ "assets/work_204_marbles_of_the_sun.jpg": {
+  "hash": "19439f6161c82a88e1d22d0cc73a46f2104d5fb45790d00f0e342e9f138e14b4",
+  "variants": [
+   [
+    480,
+    "/assets/card-previews/work_204_marbles_of_the_sun-480.webp"
+   ],
+   [
+    960,
+    "/assets/card-previews/work_204_marbles_of_the_sun-960.webp"
+   ],
+   [
+    1440,
+    "/assets/card-previews/work_204_marbles_of_the_sun-1440.webp"
+   ]
+  ]
+ },
+ "assets/work_205_color_before_the_storm.jpg": {
+  "hash": "a1ffb76c632da8c2089ec6fe30359a040235e7ebc657d8c981dc22a6f5656101",
+  "variants": [
+   [
+    480,
+    "/assets/card-previews/work_205_color_before_the_storm-480.webp"
+   ],
+   [
+    960,
+    "/assets/card-previews/work_205_color_before_the_storm-960.webp"
+   ],
+   [
+    1366,
+    "/assets/card-previews/work_205_color_before_the_storm-1366.webp"
+   ]
+  ]
  }
 }
