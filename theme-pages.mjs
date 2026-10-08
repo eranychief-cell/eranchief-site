@@ -1,6 +1,34 @@
 // Topic landing pages (Oct 2026): one Hebrew + one English page per photographic topic, built from the
 // hand-tagged topics in app.js (workThemes). New URLs only — no existing page or address is changed.
 export const themePages = {
+  lobby: {
+    slug: 'lobby-art',
+    video: '/assets/lobbies-film-lite.mp4',
+    poster: '/assets/lobbies-film-poster.jpg',
+    he: {
+      title: 'תמונות ללובי בניין — אמנות לוועד הבית ולחללים משותפים',
+      seoTitle: 'תמונות ללובי בניין | אמנות לוועד בית ולובי מגורים | CHIEF',
+      description: 'תמונות ללובי בניין מגורים: צילום אמנותי מקורי של CHIEF בפורמט גדול, לוועדי בתים, יזמים ומעצבי פנים. החל מקנבס ועד אלוקובונד ופרספקס, עם תעודת מקוריות.',
+      intro: 'הלובי הוא החדר הראשון שכל דייר ואורח נכנס אליו, והוא קובע את האווירה של הבניין כולו. כאן ריכזנו עבודות של CHIEF שנראות במיטבן בגדול: צבע, אור והשתקפויות של תל אביב, שמכניסים חיים לקיר גבוה ולחלל משותף. אפשר להתחיל בקנבס במחיר נגיש, ולשדרג לאלוקובונד או לפרספקס לגימור עמיד ויוקרתי. לוועדי בתים, ליזמים ולמעצבי פנים: שלחו צילום של הקיר והמידות שלו, ונעזור לבחור את היצירה, הגודל והגימור.',
+      faqs: [
+        ['איזה גודל תמונה מתאים ללובי?', 'בלובי עם תקרה גבוהה מומלץ פורמט גדול, 100 × 150 ס״מ ומעלה, כדי שהיצירה תחזיק את הקיר. אפשר לשלוח צילום של הקיר ומידות, ונציע גודל מדויק.'],
+        ['מה החומר המתאים ללובי?', 'קנבס הוא נקודת פתיחה נגישה. ללובי עם תנועה רבה מומלץ אלוקובונד מט או פרספקס, שהם עמידים, קלים לניקוי ונראים יוקרתיים לאורך שנים.'],
+        ['אפשר להזמין דרך ועד הבית ולקבל קבלה?', 'כן. ההזמנה יכולה להיות על שם ועד הבית או החברה, ועל כל תשלום מופקת קבלה.'],
+        ['אפשר לראות איך זה ייראה אצלנו לפני ההזמנה?', 'כן. שלחו צילום של הלובי, ונכין הדמיה של היצירה על הקיר שלכם.'],
+      ],
+    },
+    en: {
+      title: 'Lobby Wall Art — Art for Residential Buildings and Shared Spaces',
+      seoTitle: 'Lobby Wall Art for Residential Buildings | CHIEF Fine Art Photography',
+      description: 'Large-format lobby wall art for residential buildings: original fine art photography by CHIEF for house committees, developers and interior designers. From canvas to Alucobond and Perspex, with a Certificate of Authenticity.',
+      intro: 'A lobby is the first room every resident and guest walks into, and it sets the tone for the whole building. These CHIEF works are made to be seen big: colour, light and Tel Aviv reflections that bring a tall wall and a shared space to life. Start with canvas at an accessible price, or upgrade to Alucobond or Perspex for a durable, premium finish. House committees, developers and interior designers: send a photo of the wall and its measurements, and we will help you choose the work, size and finish.',
+      faqs: [
+        ['What size works best for a lobby?', 'For a lobby with a high ceiling, a large format of 100 × 150 cm or more lets the work hold the wall. Send a photo and measurements and we will suggest an exact size.'],
+        ['Which finish suits a lobby?', 'Canvas is an accessible starting point. For busy lobbies, matte Alucobond or Perspex are durable, easy to clean and look premium for years.'],
+        ['Can we see it in our lobby before ordering?', 'Yes. Send a photo of your lobby and we will prepare a visualisation of the work on your wall.'],
+      ],
+    },
+  },
   telaviv: {
     slug: 'tel-aviv-wall-art',
     he: {
