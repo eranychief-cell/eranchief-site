@@ -112,3 +112,8 @@ h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 .hero-actions .hero-preview{border-style:dashed}
 @media(max-width:560px){.hero{height:auto;min-height:0;display:flex;flex-direction:column}.hero-slideshow{position:relative;inset:auto;height:44vh;min-height:260px;max-height:460px;overflow:hidden}.hero .hero-slideshow .hero-slide{height:100%}.hero-shade{display:none}.hero-copy{position:relative;left:auto;right:auto;bottom:auto;padding:22px 5vw 34px;max-width:none}}
 html[lang="he"] .hero-copy .currency-hero{display:none}
+
+.shop-path em,.edition-guide-grid .guide-cta{display:inline-flex;align-items:center;gap:8px;align-self:start;justify-self:start;width:max-content;margin-top:14px;padding:11px 18px;background:#1c1b19;color:#fff;font:500 14px Rubik,Arial,sans-serif;font-style:normal;text-decoration:none;border-radius:999px}
+.shop-path em::after,.edition-guide-grid .guide-cta::after{content:"→"}
+html[lang="he"] .shop-path em::after,html[lang="he"] .edition-guide-grid .guide-cta::after{content:"←"}
+.shop-path:hover em,.edition-guide-grid a:hover .guide-cta{background:#927346}
