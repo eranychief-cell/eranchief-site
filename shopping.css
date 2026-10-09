@@ -117,3 +117,12 @@ html[lang="he"] .hero-copy .currency-hero{display:none}
 .shop-path em::after,.edition-guide-grid .guide-cta::after{content:"→"}
 html[lang="he"] .shop-path em::after,html[lang="he"] .edition-guide-grid .guide-cta::after{content:"←"}
 .shop-path:hover em,.edition-guide-grid a:hover .guide-cta{background:#927346}
+
+.collection-cards>a{display:flex;flex-direction:column}
+.collection-cards .guide-cta{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:14px;padding:11px 18px;background:#1c1b19;color:#fff;font:500 14px Rubik,Arial,sans-serif;font-style:normal;border-radius:999px}
+html[lang="he"] .collection-cards .guide-cta{align-self:flex-end}
+.collection-cards .guide-cta::after{content:"→"}
+html[lang="he"] .collection-cards .guide-cta::after{content:"←"}
+.collection-cards>a.night-card .guide-cta,.collection-cards>a:hover .guide-cta{background:#fff;color:#111}
+.theme-chips button{border-color:#77736b;font-weight:500;padding:9px 15px;font-size:14px}
+.theme-chips__label{color:#1c1b19;font-weight:600}
