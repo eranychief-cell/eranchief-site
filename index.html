@@ -43,7 +43,7 @@
   <link rel="stylesheet" href="artist-profile.css">
   <link rel="stylesheet" href="videos.css">
   <link rel="stylesheet" href="paper-edition.css?v=1">
-  <link rel="stylesheet" href="shopping.css?v=13">
+  <link rel="stylesheet" href="shopping.css?v=14">
   <!-- Grow: Apple Pay domain SDK (must be in <head> of the page that starts payment) -->
   <!-- Apple Pay SDK (Grow): re-add after Grow confirms the eranchief.com domain for Apple Pay --><!-- <scr ipt type="text/javascript" src="https://meshulam.co.il/_media/js/apple_pay_sdk/sdk.min.js"></scr ipt> -->
 </head>
@@ -109,7 +109,7 @@
           <video id="paperFilm" data-src="/assets/paper-edition-film-lite.mp4" poster="/assets/paper-edition-film-poster.jpg" muted loop playsinline webkit-playsinline preload="none" aria-label="The ten Paper Edition works shown in living rooms" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:#ece8e0"></video>
           <script>(()=>{const v=document.getElementById('paperFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
         </div>
-        <div class="paper-room__scene" id="paperRoomScene" style="display:none">
+        <div class="paper-room__scene" id="paperRoomScene" style="display:none"><button type="button" class="paper-room__back" id="paperRoomBack">▶ Watch the film</button>
           <img class="paper-room__art" id="paperRoomArt" src="assets/paper-1-the-building-that-learned-to-fly.jpg" alt="The Building That Learned to Fly displayed full-frame without a frame in a living room">
         </div>
         <div class="paper-room__bar">
@@ -120,7 +120,7 @@
           </div>
         </div>
         <div class="paper-room__strip" id="paperRoomStrip" aria-label="Choose a Paper Edition photograph"></div>
-        <div class="paper-room__action"><span>Choose a photograph, then select your size.</span><button type="button" id="paperRoomOrder">Choose this print · from ₪249</button></div>
+        <div class="paper-room__action"><span>Tap a photograph below to see it on the wall, then select your size.</span><button type="button" id="paperRoomOrder">Choose this print · from ₪249</button></div>
       </div>
       <div class="paper-note"><span>Printed to order on archival Fine Art paper.</span><span>Every image is shown and printed in its complete original frame.</span><span>Available through 15 October 2026.</span></div>
     </section>
@@ -326,12 +326,12 @@
   <script>function chiefTranslateInit(){new google.translate.TranslateElement({pageLanguage:'en',includedLanguages:'he,ar,fr,es,de,it,pt,ru,zh-CN,ja,ko,nl,pl,tr,el,hi',layout:google.translate.TranslateElement.InlineLayout.SIMPLE,autoDisplay:false},'google_translate_element')}</script>
   <script src="https://translate.google.com/translate_a/element.js?cb=chiefTranslateInit" async></script>
   <script src="currency.js?v=1"></script>
-  <script src="hebrew-ui.js?v=18"></script>
+  <script src="hebrew-ui.js?v=19"></script>
   <script src="filter-orientations.js"></script>
   <script src="card-previews.js"></script>
   <script src="paper-edition-data.js" defer></script>
   <script src="paper-expiry.js" defer></script>
-  <script src="app.js?v=54" defer></script>
+  <script src="app.js?v=55" defer></script>
   <script src="catalog-filters.js?v=2"></script>
 <script>(()=>{const k=()=>document.querySelectorAll("video").forEach(v=>{if(!v.src&&v.dataset.src)v.src=v.dataset.src;if(v.paused){v.muted=true;const p=v.play();if(p)p.catch(()=>{})}});["touchend","click"].forEach(e=>document.addEventListener(e,k,{passive:true}));})()</script></body>
 </html>

@@ -126,3 +126,7 @@ html[lang="he"] .collection-cards .guide-cta::after{content:"←"}
 .collection-cards>a.night-card .guide-cta,.collection-cards>a:hover .guide-cta{background:#fff;color:#111}
 .theme-chips button{border-color:#77736b;font-weight:500;padding:9px 15px;font-size:14px}
 .theme-chips__label{color:#1c1b19;font-weight:600}
+
+.paper-room__back{position:absolute;z-index:3;top:10px;inset-inline-start:10px;padding:8px 14px;border:0;border-radius:999px;background:rgba(18,18,18,.78);color:#fff;font:500 13px Rubik,Arial,sans-serif;cursor:pointer}
+.paper-room__thumb{cursor:pointer}
+.paper-room__action span{font-weight:600}

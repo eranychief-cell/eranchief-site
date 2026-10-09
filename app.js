@@ -386,11 +386,14 @@ function renderPaperDrop(){
     buttons.forEach((button,i)=>{button.classList.toggle('is-selected',i===current);button.setAttribute('aria-pressed',i===current?'true':'false')});
     if(move)buttons[current].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
   };
-  buttons.forEach((button,i)=>button.addEventListener('click',()=>selectPaper(i)));
+  const film=document.querySelector('.paper-film'),filmVideo=document.querySelector('#paperFilm');
+  const showScene=()=>{if(film){film.style.display='none';if(filmVideo)filmVideo.pause()}scene.style.display='block';if(scene.getBoundingClientRect().top<70)scene.scrollIntoView({behavior:'smooth',block:'start'})};
+  const back=document.querySelector('#paperRoomBack');if(back)back.onclick=e=>{e.stopPropagation();scene.style.display='none';if(film){film.style.display='';if(filmVideo){const p=filmVideo.play();if(p)p.catch(()=>{})}}};
+  buttons.forEach((button,i)=>button.addEventListener('click',()=>{selectPaper(i);showScene()}));
   /* Selection follows taps/arrows/swipes only: auto-selecting the thumbnail nearest the centre while the strip scrolls overrode taps on the first/last works on phones. */
   const requestedPaper=Number(new URLSearchParams(location.search).get('paper'));
-  document.querySelector('#paperRoomPrev').onclick=()=>selectPaper(current-1);
-  document.querySelector('#paperRoomNext').onclick=()=>selectPaper(current+1);
+  document.querySelector('#paperRoomPrev').onclick=()=>{selectPaper(current-1);showScene()};
+  document.querySelector('#paperRoomNext').onclick=()=>{selectPaper(current+1);showScene()};
   document.querySelector('#paperRoomOrder').onclick=()=>{if(!paperClosed())openProduct(paperWorks[current].id);else refreshPaperState()};
   scene.addEventListener('pointerdown',event=>{startX=event.clientX});
   scene.addEventListener('pointerup',event=>{const delta=event.clientX-startX;if(Math.abs(delta)>38)selectPaper(current+(delta<0?1:-1))});
