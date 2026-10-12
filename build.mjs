@@ -308,7 +308,9 @@ const purchaseDetailsEn=`<aside class="purchase-details" aria-label="Purchase de
   const purchaseDetailsHe=`<aside class="purchase-details" aria-label="פרטי רכישה">${includedShipping?'<p>משלוח חינם בישראל</p>':''}<p>${includedShipping?'משלוח לחו״ל: ₪1,500 עד 80 ס״מ · ₪2,100 עד 110 ס״מ · ₪4,900 מעל':'משלוח בישראל: ₪69 לקנבס, חינם לאלוקובונד ולפרספקס · לחו״ל החל מ־₪1,500 לפי גודל'}</p><p>תשלום מאובטח באשראי באתר, דרך Grow</p><p>תעודת מקוריות חתומה</p><a href="/shipping-returns/#hebrew">משלוחים והחזרות</a></aside>`;
   const shipIL=v=>({...shippingDetails,shippingDestination:{'@type':'DefinedRegion',addressCountry:'IL'},shippingRate:{'@type':'MonetaryAmount',value:v,currency:'ILS'}});
   // Published rates: Alucobond & Perspex ship free in Israel; canvas ₪69.
-  const productShippingDetails=shipIL(0), canvasShippingDetails=shipIL(69);
+  // International (incl. US): published flat rate from ₪1,500 (up to 80 cm).
+  const shipIntl={...shippingDetails,shippingDestination:{'@type':'DefinedRegion',addressCountry:'US'},shippingRate:{'@type':'MonetaryAmount',value:1500,currency:'ILS'}};
+  const productShippingDetails=[shipIL(0),shipIntl], canvasShippingDetails=[shipIL(69),shipIntl];
   const productDelivery=includedShipping?'Free shipping within Israel. International shipping from ₪1,500 by size. Import duties and local taxes, if applicable, are not included.':'Shipping within Israel: ₪69 for canvas, free for Alucobond and Perspex. International shipping from ₪1,500 by size.';
   const productDeliveryHe=includedShipping?'משלוח חינם לכל הארץ. משלוח לחו״ל החל מ־₪1,500 לפי גודל. מכס ומסים מקומיים בחו״ל, אם חלים, אינם כלולים.':'משלוח בישראל: ₪69 לקנבס, חינם לאלוקובונד ולפרספקס. משלוח לחו״ל החל מ־₪1,500 לפי גודל.';
   const offers=productPrices.flatMap((price,i)=>[
@@ -342,7 +344,7 @@ const purchaseDetailsEn=`<aside class="purchase-details" aria-label="Purchase de
   const finalHeHtml=heHtml.replace(`${w.title} — תמונה לסלון ואמנות ישראלית | CHIEF`,`${w.title} — צילום אמנותי מאת CHIEF | CHIEF`);
   await mkdir(`dist/client/he/artworks/${slug}`,{recursive:true}); await writeFile(`dist/client/he/artworks/${slug}/index.html`,finalHeHtml); sitemapUrls.push(heUrl); imageSitemapEntries.push({url:heUrl,image:`${site}${image}`,title:`${w.title} — צילום של ערן ירושלמי (CHIEF)`,caption:`${w.title}, צילום אמנותי ישראלי מקורי מאת ערן ירושלמי (CHIEF), צלם אייפון מתל אביב`});
   const feedPrice=w.category==='accessible'?canvasPrices[0]:productPrices[0];
-  merchantFeedItems.push(`<item><g:id>CHIEF-${String(w.id).padStart(3,'0')}</g:id><g:title>${esc(w.title)} — CHIEF Fine Art Photography</g:title><g:description>${esc(discoveryDescription)}</g:description><g:link>${url}</g:link><g:image_link>${site}${image}</g:image_link><g:availability>in_stock</g:availability><g:condition>new</g:condition><g:price>${feedPrice} ILS</g:price><g:shipping><g:country>IL</g:country><g:price>${w.category==='accessible'?69:0} ILS</g:price></g:shipping><g:brand>CHIEF</g:brand><g:product_type>Art &amp; Entertainment &gt; Artwork &gt; Photography</g:product_type><g:identifier_exists>no</g:identifier_exists></item>`);
+  merchantFeedItems.push(`<item><g:id>CHIEF-${String(w.id).padStart(3,'0')}</g:id><g:title>${esc(w.title)} — CHIEF Fine Art Photography</g:title><g:description>${esc(discoveryDescription)}</g:description><g:link>${url}</g:link><g:image_link>${site}${image}</g:image_link><g:availability>in_stock</g:availability><g:condition>new</g:condition><g:price>${feedPrice} ILS</g:price><g:shipping><g:country>IL</g:country><g:price>${w.category==='accessible'?69:0} ILS</g:price></g:shipping><g:shipping><g:country>US</g:country><g:price>1500 ILS</g:price></g:shipping><g:brand>CHIEF</g:brand><g:product_type>Art &amp; Entertainment &gt; Artwork &gt; Photography</g:product_type><g:identifier_exists>no</g:identifier_exists></item>`);
 }
 
 for(const [category,slug] of Object.entries(categorySlugs)){
