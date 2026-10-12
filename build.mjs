@@ -288,7 +288,9 @@ storeSchema.hasShippingService=shippingService;
 // Preview image proportions differ from listed print dimensions for these works.
 // Keep the room viewer implementation; omit its entry point until each is reviewed.
 const roomPreviewHoldIds=new Set([1,3,7,9,11,12,13,14,16,17,28,30,31,32,35,60,61,65,68,70,75,78,80,82,85,87,91,93,96,97,98,101,104,107,109,171,174,176,177,180,186,187]);
+const artworkSlugById={};
 for(const w of works){
+  artworkSlugById[w.id]=artworkSlug(w);
   const slug=artworkSlug(w),url=`${site}/artworks/${slug}/`,heUrl=`${site}/he/artworks/${slug}/`,image=`/${w.image}`,productPrices=pricesFor(w),productPerspexPrices=perspectPrices[w.category]??productPrices.map(price=>Math.round(price*1.3)),productSizes=sizesFor(w);
   const artworkHeader=header.replaceAll('href="/he/art-for-home/">עברית</a>',`href="${heUrl}">עברית</a>`);
   const artworkHeaderHe=headerHe.replaceAll('href="/">English</a>',`href="${url}">English</a>`);
@@ -650,10 +652,24 @@ export default { async fetch(request, env) {
     '/he/artworks/rain-check-161/': '/he/artworks/the-rain-left-one-color-behind-161/'
   };
   if (redirects[url.pathname]) return Response.redirect(new URL(redirects[url.pathname], url.origin), 301);
+  // Shared links like /?artwork=13 (&lang=he) open a popup on the homepage; send them to the full artwork page so search engines see one page per work.
+  if (url.pathname === '/' && url.searchParams.has('artwork')) {
+    const slug = ${JSON.stringify(artworkSlugById)}[url.searchParams.get('artwork')];
+    if (slug) {
+      const target = new URL((url.searchParams.get('lang') === 'he' ? '/he' : '') + '/artworks/' + slug + '/', url.origin);
+      for (const [k, v] of url.searchParams) if (k !== 'artwork' && k !== 'lang') target.searchParams.append(k, v);
+      return Response.redirect(target.toString(), 301);
+    }
+  }
   const assetResponse = await env.ASSETS.fetch(request);
   // The *.workers.dev address is a technical/preview address: keep it out of search engines.
   if (url.hostname.endsWith('.workers.dev')) {
     const headers = new Headers(assetResponse.headers); headers.set('x-robots-tag', 'noindex, nofollow');
+    return new Response(assetResponse.body, { status: assetResponse.status, statusText: assetResponse.statusText, headers });
+  }
+  // The Google Merchant feed is for Shopping only, not a page for search results.
+  if (url.pathname === '/google-merchant-feed.xml') {
+    const headers = new Headers(assetResponse.headers); headers.set('x-robots-tag', 'noindex');
     return new Response(assetResponse.body, { status: assetResponse.status, statusText: assetResponse.statusText, headers });
   }
   return assetResponse;
