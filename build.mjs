@@ -652,15 +652,6 @@ export default { async fetch(request, env) {
     '/he/artworks/rain-check-161/': '/he/artworks/the-rain-left-one-color-behind-161/'
   };
   if (redirects[url.pathname]) return Response.redirect(new URL(redirects[url.pathname], url.origin), 301);
-  // Shared links like /?artwork=13 (&lang=he) open a popup on the homepage; send them to the full artwork page so search engines see one page per work.
-  if (url.pathname === '/' && url.searchParams.has('artwork')) {
-    const slug = ${JSON.stringify(artworkSlugById)}[url.searchParams.get('artwork')];
-    if (slug) {
-      const target = new URL((url.searchParams.get('lang') === 'he' ? '/he' : '') + '/artworks/' + slug + '/', url.origin);
-      for (const [k, v] of url.searchParams) if (k !== 'artwork' && k !== 'lang') target.searchParams.append(k, v);
-      return Response.redirect(target.toString(), 301);
-    }
-  }
   const assetResponse = await env.ASSETS.fetch(request);
   // The *.workers.dev address is a technical/preview address: keep it out of search engines.
   if (url.hostname.endsWith('.workers.dev')) {
