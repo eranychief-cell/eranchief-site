@@ -658,8 +658,8 @@ export default { async fetch(request, env) {
     const headers = new Headers(assetResponse.headers); headers.set('x-robots-tag', 'noindex, nofollow');
     return new Response(assetResponse.body, { status: assetResponse.status, statusText: assetResponse.statusText, headers });
   }
-  // The Google Merchant feed is for Shopping only, not a page for search results.
-  if (url.pathname === '/google-merchant-feed.xml') {
+  // The Google Merchant feed (Shopping only) and /?artwork=N chooser links (copies of the homepage) stay out of search results; the full artwork pages are the indexed ones.
+  if (url.pathname === '/google-merchant-feed.xml' || (url.pathname === '/' && url.searchParams.has('artwork'))) {
     const headers = new Headers(assetResponse.headers); headers.set('x-robots-tag', 'noindex');
     return new Response(assetResponse.body, { status: assetResponse.status, statusText: assetResponse.statusText, headers });
   }
