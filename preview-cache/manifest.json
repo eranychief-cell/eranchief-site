@@ -280,15 +280,19 @@
   ]
  },
  "assets/site_work_02.jpg": {
-  "hash": "4b192bf4d8db34fbbd76372873fa48b0473fd975ca278f8cddb16587a7049e5e",
+  "hash": "9258c142143995bbe922f3388ec308c8bdc60a3b12159a08f60b2259cfda8917",
   "variants": [
    [
     480,
     "/assets/card-previews/site_work_02-480.webp"
    ],
    [
-    534,
-    "/assets/card-previews/site_work_02-534.webp"
+    960,
+    "/assets/card-previews/site_work_02-960.webp"
+   ],
+   [
+    1440,
+    "/assets/card-previews/site_work_02-1440.webp"
    ]
   ]
  },
