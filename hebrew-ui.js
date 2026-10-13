@@ -64,6 +64,7 @@
   const note=document.querySelector('.shipping-form > small');if(note)note.innerHTML='התשלום מתבצע בעמוד התשלום המאובטח של Grow. CHIEF לא שומר פרטי כרטיס. <a href="/terms/" target="_blank">תקנון ותנאי רכישה</a> · <a href="/shipping-returns/?lang=he" target="_blank">מדיניות משלוחים והחזרות</a>.';
   document.querySelectorAll('a[href="/paper-edition/"]').forEach(a => a.setAttribute('href', '/he/paper-edition/'));
   document.querySelectorAll('a[href^="/collections/"]').forEach(a => a.setAttribute('href', '/he' + a.getAttribute('href')));
+  const galleryNote = document.querySelector('.gallery-note'); if (galleryNote) galleryNote.innerHTML = 'מגוון נוסף של עבודות CHIEF, שאינן מוצעות באתר הזה, זמין לרכישה ב<a href="https://www.under1000.com/he-IL" target="_blank" rel="noopener">גלריית פחות מאלף ↗</a>.';
   const storyNote = document.querySelector('.collector-story-order-note');
   if (storyNote) storyNote.innerHTML = 'כבר יש לכם יצירה של CHIEF? אחרי שהיא מגיעה, <a href="/collector-stories/?lang=he">שתפו את סיפור ה־Collector שלכם</a> עם תמונה מהבית.';
   document.querySelectorAll('[placeholder]').forEach(el => {
