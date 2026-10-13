@@ -1,0 +1,26 @@
+.press-kit{box-sizing:border-box;width:100%;max-width:1040px;margin:0 auto;padding:40px 5vw 90px;color:#121212;overflow-x:hidden}
+.press-kit .pk-kicker{color:#ad8a47;font-size:12px;letter-spacing:.22em;text-transform:uppercase;margin:0 0 12px}
+.press-kit h1{font:600 clamp(40px,6vw,72px)/.95 "Inter Tight",Rubik,sans-serif;margin:0 0 14px}
+.press-kit .pk-tagline{font-size:clamp(18px,2.2vw,24px);line-height:1.4;max-width:760px;margin:0 0 30px}
+.pk-actions{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 40px}
+.pk-actions a{display:inline-block;border:1px solid #121212;padding:12px 18px;text-decoration:none;color:#121212;font-weight:600;font-size:14px}
+.pk-actions a.primary{background:#121212;color:#fff}
+.pk-intro{display:grid;grid-template-columns:300px 1fr;gap:36px;align-items:start;margin:0 0 50px}
+.pk-intro img{width:100%;height:auto!important;aspect-ratio:3/4;object-fit:cover;display:block;border:1px solid #ddd6ca}
+.pk-intro figcaption{font-size:12px;color:#77736b;margin-top:8px}
+.press-kit h2{font:600 clamp(24px,3vw,34px) "Inter Tight",Rubik,sans-serif;margin:46px 0 16px}
+.press-kit p,.press-kit li{font-size:16px;line-height:1.65}
+.pk-facts{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px 28px}
+.pk-facts li{padding:12px 14px;background:#f4f1eb;border-left:3px solid #ad8a47}
+.pk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pk-grid figure{margin:0}
+.pk-grid img{width:100%;display:block;aspect-ratio:3/4;object-fit:cover;background:#e9e5dd}
+.pk-grid figcaption{font-size:13px;line-height:1.45;margin-top:8px}
+.pk-grid figcaption strong{display:block;font-size:15px}
+.pk-grid figcaption a{color:#121212}
+.pk-note{font-size:14px;color:#77736b}
+.pk-contact{background:#121212;color:#fff;padding:28px;margin-top:40px}
+.pk-contact a{color:#fff}
+.pk-contact p{margin:6px 0}
+@media(max-width:760px){.pk-intro{grid-template-columns:1fr}.pk-intro img{max-width:300px}.pk-facts{grid-template-columns:1fr}.pk-grid{grid-template-columns:1fr 1fr;gap:12px}}
+@media(max-width:480px){.pk-grid{grid-template-columns:1fr}}
