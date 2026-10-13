@@ -6,7 +6,8 @@
     if (!rates) return;
     document.querySelectorAll('[data-ils]').forEach(el => {
       const ils = Number(el.dataset.ils);
-      if (!Number.isFinite(ils) || ils <= 0) return;
+      // An empty bag (0 ILS) must not keep showing the previous estimate (site review, 13 Oct 2026).
+      if (!Number.isFinite(ils) || ils <= 0) { el.textContent = ''; el.removeAttribute('title'); return; }
       el.textContent = `≈ ${estimate(ils, 'USD')} / ${estimate(ils, 'EUR')}`;
       el.title = `Approximate conversion using Bank of Israel reference rates (${rates.USD.updated?.slice(0, 10) || 'latest available'}). Payment is quoted in ILS; your payment provider may use a different rate.`;
     });
