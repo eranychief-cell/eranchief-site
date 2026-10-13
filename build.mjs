@@ -170,6 +170,7 @@ const editionNote=(c,lang)=>c==='super'?(lang==='he'?'<p class="edition-note">7 
 const edition=c=>c==='super'?'Limited edition of 7':c==='premium'||c==='late-night'?'Limited edition of 25':c==='accessible'?'Open edition':'Edition details available on request';
 const editionTotal=c=>c==='super'?7:(c==='premium'||c==='late-night'?25:null);
 const availability=w=>w.soldEditions&&editionTotal(w.category)?`${editionTotal(w.category)-w.soldEditions} of ${editionTotal(w.category)} editions available · ${w.soldEditions} sold`:edition(w.category);
+const sizeLabelHe=value=>{const m=String(value).match(/(\d+)\s*×\s*(\d+)/);if(!m)return value;return m[1]===m[2]?`<bdi>${m[1]} × ${m[2]}</bdi> ס״מ`:`רוחב <bdi>${m[1]}</bdi> × גובה <bdi>${m[2]}</bdi> ס״מ`;};
 const formatSize=value=>String(value).replace(/\s*[×x]\s*/gi,' × ').replace(/\s*cm\b/gi,' cm').trim();
 const sizesFor=w=>(w.sizes||(w.sizeMode==='fixed70'?['70 × 70 cm']:w.category==='square'?['50 × 50 cm','70 × 70 cm','100 × 100 cm']:['50 × 75 cm','70 × 105 cm','100 × 150 cm'])).map(formatSize);
 const pricesFor=w=>w.sizeMode==='fixed70'?[prices.square[1]]:prices[w.category];
@@ -341,7 +342,7 @@ const purchaseDetailsEn=`<aside class="purchase-details" aria-label="Purchase de
   const heDescription=`${w.title} — צילום אמנותי ישראלי מקורי מאת CHIEF מתל אביב. תמונה לסלון ולבית, זמינה בגדלים שונים על ${w.category==='accessible'?'קנבס, אלוקובונד או פרספקס':'אלוקובונד או פרספקס'}, עם תעודת מקוריות.`;
   const discoveryHeDescription=w.discovery?`${w.title} — צילום מאת CHIEF. ${w.discovery.he} ${w.discovery.roomHe}`:heDescription;
   const discoveryHeHtml=w.discovery?`<section class="product-discovery"><h2>על הצילום</h2><p>${esc(w.discovery.he)}</p><p>${esc(w.discovery.roomHe)}</p><p>צולם ונערך באייפון בידי CHIEF. התמונה מוצגת בפריים המקורי והמלא, ללא חיתוך.</p></section>`:"";
-  const heRows=productSizes.map((s,i)=>`<tr><th scope="row"><bdi>${s}</bdi></th>${w.category==='accessible'?`<td>${money(canvasPrices[i])}</td>`:''}<td>${money(productPrices[i])}</td><td>${money(productPerspexPrices[i])}</td></tr>`).join('');
+  const heRows=productSizes.map((s,i)=>`<tr><th scope="row">${sizeLabelHe(s)}</th>${w.category==='accessible'?`<td>${money(canvasPrices[i])}</td>`:''}<td>${money(productPrices[i])}</td><td>${money(productPerspexPrices[i])}</td></tr>`).join('');
   const hePriceHead=`<thead><tr><th scope="col">מידה</th>${w.category==='accessible'?'<th scope="col">קנבס</th>':''}<th scope="col">אלוקובונד</th><th scope="col">פרספקס</th></tr></thead>`;
   const heImageSchema={...imageSchema,name:`${w.title} — צילום אמנותי ישראלי`,caption:`${w.title}, צילום אמנותי ישראלי מקורי מאת CHIEF`};
   const heSchema={"@context":"https://schema.org","@graph":[storeSchema,{"@type":"Product","@id":`${heUrl}#product`,url:heUrl,name:w.title,image:[heImageSchema],description:discoveryHeDescription,inLanguage:"he",sku:`CHIEF-${String(w.id).padStart(3,'0')}`,brand:{"@type":"Brand",name:"CHIEF"},creator:artistSchema,material:w.category==='accessible'?'קנבס, אלוקובונד או פרספקס':'אלוקובונד או פרספקס',offers:offers.map(o=>({...o,url:heUrl}))},{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"CHIEF בעברית",item:`${site}/he/`},{"@type":"ListItem",position:2,name:"תמונות לסלון",item:`${site}/he/art-for-living-room/`},{"@type":"ListItem",position:3,name:w.title,item:heUrl}]}]};
