@@ -8,3 +8,6 @@ h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 
 .bestseller-badge{position:absolute;z-index:2;top:12px;right:12px;background:var(--gold,#ad8a47);color:#fff;font:600 10px/1 Rubik,sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:7px 9px;border-radius:2px}
 [dir=rtl] .bestseller-badge,.bestseller-badge:lang(he){letter-spacing:.02em;text-transform:none;font-size:11px}
+
+/* Mobile: keep the price + add-to-bag button visible while choosing (site review 13.10.2026) */
+@media(max-width:850px){.product-dialog[open] .add-to-cart{position:fixed;left:50%;right:auto;transform:translateX(-50%);width:min(94vw,calc(100vw - 6px - 2em));bottom:4vh;z-index:60;box-shadow:0 -10px 24px rgba(0,0,0,.18)}.product-dialog .product-info{padding-bottom:96px}}

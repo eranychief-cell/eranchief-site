@@ -13,7 +13,7 @@ async function shrinkPhoto(file){
   const status=document.querySelector('#storyStatus');
   const setStatus=(message,error=false)=>{status.textContent=message;status.className=error?'error':'success'};
   const requestedArtwork=new URLSearchParams(location.search).get('artwork');
-  if(requestedArtwork){const artworkField=document.querySelector('#storyForm [name="artwork"]');if(artworkField)artworkField.value=requestedArtwork.slice(0,160);}
+  if(requestedArtwork){const artworkField=document.querySelector('#storyForm [name="artwork"]');if(artworkField)artworkField.value=requestedArtwork.slice(0,160);setTimeout(()=>document.getElementById("shareStory")?.scrollIntoView({block:"start"}),400);}
   const applyLanguage=()=>{document.documentElement.lang=lang;document.documentElement.dir=lang==='he'?'rtl':'ltr';document.querySelectorAll('[data-he][data-en]').forEach(el=>el.textContent=el.dataset[lang]);const switcher=document.querySelector('#storyLanguage');if(switcher)switcher.textContent=lang==='he'?'English':'עברית';};
   applyLanguage();
   document.querySelector('#storyLanguage')?.addEventListener('click',event=>{

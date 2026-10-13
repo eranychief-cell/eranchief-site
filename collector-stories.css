@@ -2,3 +2,5 @@
 
 /* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
 h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
+
+.published-stories{margin:34px 0 10px}.share-title{font:600 26px/1.2 "Inter Tight",Rubik,sans-serif;margin:46px 0 18px;padding-top:30px;border-top:1px solid rgba(18,18,18,.15)}
