@@ -5,3 +5,6 @@
 
 /* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
 h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
+
+.bestseller-badge{position:absolute;z-index:2;top:12px;right:12px;background:var(--gold,#ad8a47);color:#fff;font:600 10px/1 Rubik,sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:7px 9px;border-radius:2px}
+[dir=rtl] .bestseller-badge,.bestseller-badge:lang(he){letter-spacing:.02em;text-transform:none;font-size:11px}
