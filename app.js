@@ -819,3 +819,6 @@ if(newsletterForm){
 }
 
 document.querySelector('#shippingForm [name="country"]').addEventListener('input',updateShippingUi);
+
+// 'Read more' folds for long homepage sections on phones (site review, 13 Oct 2026).
+document.querySelectorAll('.home-more-toggle').forEach(button=>{const target=document.getElementById(button.dataset.more);if(!target)return;const label=()=>{const open=target.classList.contains('open');button.setAttribute('aria-expanded',String(open));button.textContent=open?ui('הצגת פחות',button.dataset.close):ui('עוד על האמן',button.dataset.open)};label();button.onclick=()=>{target.classList.toggle('open');label()}});
