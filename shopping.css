@@ -135,3 +135,11 @@ html[lang="he"] .collection-cards .guide-cta::after{content:"←"}
 /* Long homepage sections: on phones, secondary content folds behind a 'Read more' (content stays in the page). */
 .home-more-toggle{display:none}
 @media(max-width:560px){.home-more{display:none}.home-more.open{display:block}.home-more-toggle{display:inline-block;margin:10px 0 0;background:none;border:1px solid var(--line,rgba(18,18,18,.18));border-radius:999px;padding:10px 16px;font:600 13px Rubik,sans-serif;color:var(--ink,#121212);cursor:pointer}}
+
+.home-stories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;max-width:880px;margin:26px auto 8px;text-align:start}
+.home-story{background:#fff;border:1px solid #ddd6ca;padding:0 0 18px;display:flex;flex-direction:column;gap:6px}
+.home-story img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.home-story h3{font:600 17px Rubik,sans-serif;margin:14px 18px 0}
+.home-story small{color:var(--gold,#ad8a47);font-size:12px;letter-spacing:.08em;margin:0 18px}
+.home-story p{font-size:15px;line-height:1.55;margin:4px 18px 0;color:#22201c}
+@media(max-width:560px){.home-stories{grid-template-columns:1fr;gap:16px}}
