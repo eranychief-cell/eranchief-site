@@ -9,6 +9,7 @@
 .hero-shop-primary:hover{background:#fff}
 .hero-shop-secondary{border:1px solid rgba(255,255,255,.9);color:#fff}
 .hero-shop-secondary:hover{background:#fff;color:#121212}
+.hero-copy .hero-shown{font-size:13px!important;letter-spacing:.03em!important;margin:0 0 12px;color:#e8e2d8}.hero-copy .hero-shown a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.55);padding-bottom:1px}.hero-copy .hero-shown a:hover{border-color:#fff}
 .hero-copy .hero-reassurance{font-size:13px!important;letter-spacing:.025em!important;line-height:1.5!important;color:#e8e2d8;margin-top:22px}
 .hero-copy .currency-hero{font-size:13px!important;color:#e8e2d8;margin:10px 0 0;line-height:1.4}
 .currency-hero [data-ils]:empty{display:none}

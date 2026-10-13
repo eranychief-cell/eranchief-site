@@ -474,6 +474,10 @@ let appliedCoupon=JSON.parse(localStorage.getItem('chiefCoupon')||'null');
 const gallery=document.querySelector('#gallery');
 const heroSlides=[...document.querySelectorAll('.hero-slide')];
 let heroSlideIndex=0;
+// Hero: say which work is on the wall and link to it (site review, 13 Oct 2026). A slide without data-work-id is not for sale.
+const heroShown=document.querySelector('.hero-shown'),heroShownLink=document.querySelector('[data-hero-shown-link]');
+function syncHeroShown(){if(!heroShown||!heroShownLink)return;const slide=heroSlides[heroSlideIndex];const id=Number(slide?.dataset.workId);const w=id&&works.find(x=>x.id===id);if(!w){heroShown.hidden=true;return}heroShown.hidden=false;heroShownLink.href=`${heProductRoute?'/he':''}/artworks/${slide.dataset.workSlug}/`;heroShownLink.innerHTML=`<strong></strong> · ${ui('לצפייה בעבודה ←','View this work →')}`;heroShownLink.querySelector('strong').textContent=w.title;heroShown.firstChild.nodeValue=ui('על הקיר: ','Shown on the wall: ');heroShownLink.onclick=e=>{e.preventDefault();openProduct(w.id)}}
+syncHeroShown();
 if(heroSlides.length>1&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
   const loadHero=slide=>{if(slide.dataset.srcset){slide.srcset=slide.dataset.srcset;delete slide.dataset.srcset}if(slide.dataset.src){slide.src=slide.dataset.src;delete slide.dataset.src}return slide.decode?.().catch(()=>{})||Promise.resolve()};
   setInterval(async()=>{
@@ -482,6 +486,7 @@ if(heroSlides.length>1&&!window.matchMedia('(prefers-reduced-motion: reduce)').m
     heroSlides[heroSlideIndex].classList.remove('active');
     heroSlideIndex=next;
     heroSlides[next].classList.add('active');
+    syncHeroShown();
   },5000);
 }
 const cardPicture=(work,alt)=>{const variants=(window.chiefCardPreviews?.[work.image]||[]).filter(([width])=>width>=480),srcset=variants.map(([width,url])=>`${url} ${width}w`).join(', ');return srcset?`<picture><source type="image/webp" srcset="${srcset}" sizes="(max-width: 520px) 90vw, (max-width: 850px) 45vw, 32vw"><img loading="lazy" decoding="async" src="${work.image}" alt="${alt}"></picture>`:`<img loading="lazy" src="${work.image}" alt="${alt}">`};
