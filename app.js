@@ -591,6 +591,13 @@ function refreshPaperState(){
   const pathsNote=document.querySelector('.shop-paths-note');if(pathsNote)pathsNote.textContent=ui('מהדורת הנייר הנוכחית נסגרה, ומהדורה חדשה בדרך. Art Edition על קנבס זמינה כל השנה. כל עבודה מגיעה עם תעודת מקוריות, ומחירי המשלוח מופיעים בכל עבודה.','The current Paper Edition has closed; a new one is on its way. Art Edition canvas is available year-round. Every work includes a Certificate of Authenticity, and shipping prices are listed on every work.');
   document.querySelectorAll('.work-card[data-series="paper"] .work-shop').forEach(button=>button.outerHTML=paperNotice());
   const order=document.querySelector('#paperRoomOrder');if(order)order.outerHTML=paperNotice();
+  // After closing, no homepage text should still promote the closed edition or its deadline.
+  const guide=document.querySelector('.edition-guide-grid a[href="#paper-edition"]');
+  if(guide){guide.setAttribute('href','#newsletter');const spans=guide.querySelectorAll('span');if(spans[1])spans[1].textContent=ui('המהדורה הנוכחית נסגרה · מהדורה חדשה בקרוב','This edition has closed · a new one is coming soon');guide.querySelector('small')?.remove();const cta=guide.querySelector('.guide-cta');if(cta)cta.textContent=ui('הצטרפו לרשימת התפוצה','Join the mailing list');}
+  const dropCopy=document.querySelector('.paper-drop__copy > p');if(dropCopy)dropCopy.textContent=ui('מהדורת הנייר הנוכחית נסגרה, ומהדורה חדשה בדרך. הצטרפו לרשימת התפוצה כדי לשמוע עליה ראשונים. Art Edition על קנבס זמינה כל השנה.','The current Paper Edition has closed and a new one is on its way. Join the mailing list to hear about it first. Art Edition canvas remains available year-round.');
+  const dropPrice=document.querySelector('.paper-drop__copy > strong');if(dropPrice)dropPrice.remove();
+  const dropCountdown=document.querySelector('.paper-countdown');if(dropCountdown)dropCountdown.textContent=ui('המהדורה נסגרה','This edition has closed');
+  document.querySelectorAll('.paper-note span').forEach(span=>{if(/15 October|Available through|זמין עד|באוקטובר/.test(span.textContent))span.textContent=ui('המהדורה נסגרה · מהדורה חדשה בקרוב','This edition has closed · a new one is coming soon')});
   const dialog=document.querySelector('#productDialog');
   if(dialog.open&&dialog.querySelector('.paper-product .add-to-cart')){
     const id=Number(dialog.querySelector('.paper-product')?.dataset.workId);
