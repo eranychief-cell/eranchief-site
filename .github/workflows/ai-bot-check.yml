@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: robots.txt as served
-        run: curl -sS https://eranchief.com/robots.txt
+        run: echo "::notice title=robots::$(curl -sS https://eranchief.com/robots.txt | tr '\n' '|' | cut -c1-900)"
       - name: Status per user agent
         run: |
           for ua in \
@@ -24,8 +24,8 @@ jobs:
             for p in / /about/ /llms.txt /he/eran-yerushalmi-photographer/; do
               r=$(curl -s -o /tmp/b -w '%{http_code} %{size_download}' -A "$ua" "https://eranchief.com$p")
               t=$(grep -o '<title>[^<]*' /tmp/b | head -1 | cut -c8-70)
-              echo "$(echo "$ua" | grep -oE '(OAI-SearchBot|ChatGPT-User|GPTBot|PerplexityBot|ClaudeBot|Claude-SearchBot|Google-Extended|bingbot|Googlebot|iPhone)' | head -1) $p -> $r | $t"
+              echo "::notice::$(echo "$ua" | grep -oE '(OAI-SearchBot|ChatGPT-User|GPTBot|PerplexityBot|ClaudeBot|Claude-SearchBot|Google-Extended|bingbot|Googlebot|iPhone)' | head -1) $p -> $r | $t"
             done
           done
       - name: Headers on home
-        run: curl -sSI https://eranchief.com/ | head -30
+        run: echo "::notice title=headers::$(curl -sSI https://eranchief.com/ | tr -d '\r' | grep -iE '^(HTTP|server|x-robots|cf-|content-signal|link)' | tr '\n' '|')"
