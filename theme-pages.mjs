@@ -19,7 +19,7 @@ export const themePages = {
     },
     en: {
       title: 'Lobby Wall Art — Art for Residential Buildings and Shared Spaces',
-      seoTitle: 'Lobby Wall Art for Residential Buildings | CHIEF Fine Art Photography',
+      seoTitle: 'Lobby Wall Art for Residential Buildings | CHIEF',
       description: 'Large-format lobby wall art for residential buildings: original fine art photography by CHIEF for house committees, developers and interior designers. From canvas to Alucobond and Perspex, with a Certificate of Authenticity.',
       intro: 'A lobby is the first room every resident and guest walks into, and it sets the tone for the whole building. These CHIEF works are made to be seen big: colour, light and Tel Aviv reflections that bring a tall wall and a shared space to life. Start with canvas at an accessible price, or upgrade to Alucobond or Perspex for a durable, premium finish. House committees, developers and interior designers: send a photo of the wall and its measurements, and we will help you choose the work, size and finish.',
       faqs: [

@@ -2,3 +2,5 @@
 
 /* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
 h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
+/* Hebrew page title: styled like the H1 but kept as H2 so each page has a single H1 (SEO fix, 16 Oct 2026) */
+.legal-main h2.legal-title{font:600 clamp(48px,7vw,82px)/.95 "Inter Tight",Rubik,sans-serif;margin:18px 0 24px}
