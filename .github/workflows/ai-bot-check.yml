@@ -1,0 +1,31 @@
+name: AI bot access check (temporary)
+on:
+  push:
+    branches: [ai-bot-check]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: robots.txt as served
+        run: curl -sS https://eranchief.com/robots.txt
+      - name: Status per user agent
+        run: |
+          for ua in \
+            "Mozilla/5.0 (compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot)" \
+            "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot" \
+            "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.2; +https://openai.com/gptbot" \
+            "Mozilla/5.0 (compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)" \
+            "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)" \
+            "Mozilla/5.0 (compatible; Claude-SearchBot/1.0; +https://www.anthropic.com)" \
+            "Mozilla/5.0 (compatible; Google-Extended)" \
+            "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)" \
+            "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" \
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1"; do
+            for p in / /about/ /llms.txt /he/eran-yerushalmi-photographer/; do
+              r=$(curl -s -o /tmp/b -w '%{http_code} %{size_download}' -A "$ua" "https://eranchief.com$p")
+              t=$(grep -o '<title>[^<]*' /tmp/b | head -1 | cut -c8-70)
+              echo "$(echo "$ua" | grep -oE '(OAI-SearchBot|ChatGPT-User|GPTBot|PerplexityBot|ClaudeBot|Claude-SearchBot|Google-Extended|bingbot|Googlebot|iPhone)' | head -1) $p -> $r | $t"
+            done
+          done
+      - name: Headers on home
+        run: curl -sSI https://eranchief.com/ | head -30
