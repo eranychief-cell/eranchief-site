@@ -597,7 +597,7 @@ for (const [file,he] of [['dist/client/he/eran-yerushalmi-photographer/index.htm
     ['בסיס','תל אביב, ישראל'],
     ['נושאים','ים, אור, השתקפויות אחרי גשם, תל אביב, ריקוד ודמות, צילום סוריאליסטי'],
     ['פרסומים','חדשות 13, Ynet, N12, mako, עיריית תל אביב–יפו, וואלה, ישראל היום, טיים אאוט, ISRAEL21c ו־Artsy'],
-    ['תערוכות','<a href="https://archive.israel21c.org/tel-aviv-fanta-sea/" target="_blank" rel="noopener">FANTASEA</a> (2014); Urban Tel Aviv ב־Artsy (2019)'],
+    ['תערוכות','<a href="https://archive.israel21c.org/tel-aviv-fanta-sea/" target="_blank" rel="noopener">FANTASEA</a>, תערוכת יחיד בגלריה בקניון רמת אביב (2014); Urban Tel Aviv ב־Artsy (2019); "התערוכה של צ׳יף", תערוכת יחיד בחלל פופ־אפ בתל אביב, סוקרה במעריב (2022)'],
     ['פרס','זוכה תחרות "תמונות העונה" של "האח הגדול"'],
     ['רכישת עבודות','באתר הרשמי eranchief.com: מהדורת נייר החל מ־₪249, קנבס החל מ־₪990, ומהדורות אספנים ממוספרות (25 או 7 עותקים בסך הכול לכל יצירה) עם תעודת מקוריות חתומה'],
   ]:[
@@ -606,7 +606,7 @@ for (const [file,he] of [['dist/client/he/eran-yerushalmi-photographer/index.htm
     ['Based in','Tel Aviv, Israel'],
     ['Subjects','Sea, light, after-rain reflections, Tel Aviv, dance and the figure, surreal photography'],
     ['Featured by','Channel 13, Ynet, N12, Mako, Tel Aviv–Yafo Municipality, Walla, Israel Hayom, Time Out, ISRAEL21c and Artsy'],
-    ['Exhibitions','<a href="https://archive.israel21c.org/tel-aviv-fanta-sea/" target="_blank" rel="noopener">FANTASEA</a> (2014); Urban Tel Aviv on Artsy (2019)'],
+    ['Exhibitions','<a href="https://archive.israel21c.org/tel-aviv-fanta-sea/" target="_blank" rel="noopener">FANTASEA</a>, solo exhibition at the Ramat Aviv Mall gallery (2014); Urban Tel Aviv on Artsy (2019); solo pop-up exhibition in Tel Aviv, covered by Maariv (2022)'],
     ['Award','Winner, "Photos of the Season" competition, Big Brother Israel'],
     ['Buy work','On the official website eranchief.com: Paper Edition from ₪249, canvas from ₪990, and numbered collector editions (25 or 7 copies in total per work) with a signed Certificate of Authenticity'],
   ];
