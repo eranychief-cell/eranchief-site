@@ -15,6 +15,8 @@ await cp('collector-stories', 'dist/client/collector-stories', { recursive: true
 const files = ['index.html','app.js','paper-edition-data.js','paper-expiry.js','currency.js','hebrew-ui.js','styles.css','editorial.css','commerce.css','finish.css','language.css','motion.css','collections.css','frame-integrity.css','logo.css','pairs.css','seo-pages.css','catalog-filters.css','catalog-filters.js','product-stories.css','product-stories.js','product-room.css','product-room.js','interiors.css','canvas.css','checkout.css','shopping.css','legal.css','newsletter.css','press.css','press-archive.css','press-facebook.css','award.css','collector-room.css','trade.css','artist-profile.css','videos.css','paper-edition.css','paper-landing.css','tel-aviv-story.css','press-kit.css'];
 for (const file of files) await cp(file, `dist/client/${file}`);
 await cp('assets', 'dist/client/assets', { recursive: true });
+// Response headers for static assets (Cloudflare Workers static assets read dist/client/_headers).
+await cp('_headers', 'dist/client/_headers');
 for (const page of ['terms','privacy','shipping-returns','licensing','accessibility','press','collector-room','trade','stories']) await cp(page, `dist/client/${page}`, { recursive: true });
 // Born and Raised on iPhone: English page + shared images at /born-and-raised-on-iphone/, Hebrew page at /he/born-and-raised-on-iphone/
 await cp('born-and-raised-on-iphone', 'dist/client/born-and-raised-on-iphone', { recursive: true, filter: src => !src.endsWith('he.html') });

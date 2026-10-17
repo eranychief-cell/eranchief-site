@@ -1,0 +1,4 @@
+# Files in /assets/review/ are sent by direct link only (never linked from the site):
+# keep them out of search results.
+/assets/review/*
+  X-Robots-Tag: noindex, nofollow, noarchive
