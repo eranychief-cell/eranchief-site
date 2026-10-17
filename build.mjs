@@ -316,7 +316,7 @@ for(const w of works){
   const slug=artworkSlug(w),url=`${site}/artworks/${slug}/`,heUrl=`${site}/he/artworks/${slug}/`,image=`/${w.image}`,productPrices=pricesFor(w),productPerspexPrices=perspectPrices[w.category]??productPrices.map(price=>Math.round(price*1.3)),productSizes=sizesFor(w);
   const artworkHeader=header.replaceAll('href="/he/art-for-home/">עברית</a>',`href="${heUrl}">עברית</a>`);
   const artworkHeaderHe=headerHe.replaceAll('href="/?lang=en">English</a>',`href="${url}">English</a>`);
-  const description=`${w.title} by CHIEF — signed ${labels[w.category]} fine art photography for contemporary homes and collectors. Available on Alucobond or Perspex with worldwide delivery.`;
+  const description=w.under1000?`${w.title} by CHIEF — signed ${labels[w.category]} fine art photography, a limited edition of 25 on matte Alucobond, available through the Under1000 gallery.`:`${w.title} by CHIEF — signed ${labels[w.category]} fine art photography for contemporary homes and collectors. Available on Alucobond or Perspex with worldwide delivery.`;
   const discoveryDescription=w.discovery?`${w.title} by CHIEF. ${w.discovery.en} ${w.discovery.roomEn}`:description;
   const discoveryHtml=w.discovery?`<section class="product-discovery"><h2>About this photograph</h2><p>${esc(w.discovery.en)}</p><p>${esc(w.discovery.roomEn)}</p><p>Photographed and edited on iPhone by CHIEF. The original image is presented in full, without cropping.</p><a href="/he/art-for-living-room/">View the wall-art selection guide (Hebrew)</a></section>`:"";
   const includedShipping=w.category==='premium'||w.category==='super';
@@ -352,7 +352,7 @@ const purchaseDetailsEn=`<aside class="purchase-details" aria-label="Purchase de
   await mkdir(`dist/client/artworks/${slug}`,{recursive:true}); await writeFile(`dist/client/artworks/${slug}/index.html`,finalHtml); sitemapUrls.push(url); imageSitemapEntries.push({url,image:`${site}${image}`,title:`${w.title} — Fine Art Photography by Eran Yerushalmi (CHIEF)`,caption:`${w.title}, a fine art photograph by Eran Yerushalmi (CHIEF), Tel Aviv iPhone photographer`});
 
   const heEdition=w.category==='super'?'מהדורה מוגבלת של 7':w.category==='premium'||w.category==='late-night'?'מהדורה מוגבלת של 25':w.category==='accessible'?'מהדורה פתוחה':'פרטי המהדורה זמינים בעמוד היצירה';
-  const heDescription=`${w.title} — צילום אמנותי ישראלי מקורי מאת CHIEF מתל אביב. תמונה לסלון ולבית, זמינה בגדלים שונים על ${w.category==='accessible'?'קנבס, אלוקובונד או פרספקס':'אלוקובונד או פרספקס'}, עם תעודת מקוריות.`;
+  const heDescription=w.under1000?`${w.title} — צילום אמנותי ישראלי מקורי מאת CHIEF מתל אביב. מהדורה מוגבלת של 25 עותקים על אלוקובונד מט, עם תעודת מקוריות, זמינה לרכישה בגלריה "פחות מאלף".`:`${w.title} — צילום אמנותי ישראלי מקורי מאת CHIEF מתל אביב. תמונה לסלון ולבית, זמינה בגדלים שונים על ${w.category==='accessible'?'קנבס, אלוקובונד או פרספקס':'אלוקובונד או פרספקס'}, עם תעודת מקוריות.`;
   const discoveryHeDescription=w.discovery?`${w.title} — צילום מאת CHIEF. ${w.discovery.he} ${w.discovery.roomHe}`:heDescription;
   const discoveryHeHtml=w.discovery?`<section class="product-discovery"><h2>על הצילום</h2><p>${esc(w.discovery.he)}</p><p>${esc(w.discovery.roomHe)}</p><p>צולם ונערך באייפון בידי CHIEF. התמונה מוצגת בפריים המקורי והמלא, ללא חיתוך.</p></section>`:"";
   const heRows=productSizes.map((s,i)=>`<tr><th scope="row">${sizeLabelHe(s,w.id)}</th>${w.category==='accessible'?`<td>${money(canvasPrices[i])}</td>`:''}<td>${money(productPrices[i])}</td><td>${money(productPerspexPrices[i])}</td></tr>`).join('');
