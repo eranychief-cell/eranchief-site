@@ -158,7 +158,7 @@ const fourthCuratedWorks = [
   {id:177,title:'The City Walked Between Them',titleHe:'העיר הלכה ביניהם',category:'accessible',image:'assets/work_177_the_city_walked_between_them.jpg'},
   {id:178,title:'The Balcony Was Watching',titleHe:'המרפסת התבוננה',category:'premium',image:'assets/work_178_the_balcony_was_watching.jpg'},
   {id:179,title:'A Shortcut to the Underworld',titleHe:'קיצור דרך לעולם התחתון',category:'accessible',image:'assets/work_179_a_shortcut_to_the_underworld.jpg'},
-  {id:180,title:'The City Never Knew It Was Being Watched',titleHe:'העיר מעולם לא ידעה שצופים בה',category:'premium',image:'assets/work_180_the_city_never_knew_it_was_being_watched.jpg'},
+  {id:180,title:'The Wall Has Eyes',titleHe:'לקירות יש עיניים',slug:'the-city-never-knew-it-was-being-watched-180',category:'premium',image:'assets/work_180_the_city_never_knew_it_was_being_watched.jpg'},
   {id:181,title:'A Million Pieces of Heaven',titleHe:'מיליון חתיכות של גן עדן',category:'premium',image:'assets/work_181_a_million_pieces_of_heaven.jpg'},
   {id:182,title:'The Past Rode Beneath Him',titleHe:'העבר רכב תחתיו',category:'accessible',image:'assets/work_182_the_past_rode_beneath_him.jpg'},
   {id:183,title:'Where Every Story Meets',titleHe:'המקום שבו כל סיפור נפגש',category:'accessible',image:'assets/work_183_where_every_story_meets.jpg'},

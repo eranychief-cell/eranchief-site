@@ -143,3 +143,13 @@ h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 .mockup-cta { display:inline-block; border:1.5px solid #121212; color:#121212; background:transparent; padding:14px 22px; text-decoration:none; font-weight:600; }
 .mockup-cta:hover, .mockup-cta:focus-visible { background:#121212; color:#fff; }
 .mockup-note { font-size:14px; color:#6b665e; margin:6px 0 0; line-height:1.5; }
+/* Works sold only at the Under1000 gallery (פחות מאלף) */
+.u1k-box{margin:22px 0;padding:18px 20px;border:1px solid currentColor;border-radius:2px}
+.u1k-box .price{margin-top:0}
+.u1k-box p{line-height:1.6}
+.u1k-box .seo-cta{margin-top:6px}
+/* Works sold only at the Under1000 gallery (פחות מאלף) */
+.u1k-box{margin:22px 0;padding:18px 20px;border:1px solid currentColor;border-radius:2px}
+.u1k-box .price{margin-top:0}
+.u1k-box p{line-height:1.6}
+.u1k-box .seo-cta{margin-top:6px}
