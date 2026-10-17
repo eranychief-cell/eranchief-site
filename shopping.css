@@ -143,3 +143,10 @@ html[lang="he"] .collection-cards .guide-cta::after{content:"←"}
 .home-story small{color:var(--gold,#ad8a47);font-size:12px;letter-spacing:.08em;margin:0 18px}
 .home-story p{font-size:15px;line-height:1.55;margin:4px 18px 0;color:#22201c}
 @media(max-width:560px){.home-stories{grid-template-columns:1fr;gap:16px}}
+/* Works sold only at the Under1000 gallery (פחות מאלף) */
+.u1k-card-note{font-size:13px;color:#5b574f}
+a.work-shop.u1k-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.u1k-notice{margin:18px 0;padding:16px 18px;border:1px solid #1d1c19;background:#f6f3ec}
+.u1k-notice p{margin:0 0 12px;line-height:1.55}
+.u1k-notice .u1k-link{display:inline-block;padding:12px 18px;background:#1d1c19;color:#fff;font:600 15px Rubik,Arial,sans-serif;text-decoration:none}
+.u1k-notice .u1k-link:hover,.u1k-notice .u1k-link:focus-visible{background:#3a372f}
