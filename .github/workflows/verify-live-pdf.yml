@@ -6,15 +6,9 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check the Under1000 update on the live site
+      - name: Check payment status and paper edition on the live site
         run: |
-          for i in $(seq 1 30); do
-            if curl -s "https://eranchief.com/app.js?v=$i" | grep -q under1000Links; then echo "::notice::new app.js live after $i tries"; break; fi
-            sleep 20
-          done
-          for u in artworks/the-standoff-ii-iii-97/ he/artworks/the-standoff-ii-iii-97/ artworks/burning-silence-29/ artworks/the-fall-i-iii-96/ artworks/the-city-never-knew-it-was-being-watched-180/ press/ ""; do
-            body=$(curl -s "https://eranchief.com/$u")
-            code=$(curl -s -o /dev/null -w '%{http_code}' "https://eranchief.com/$u")
-            echo "::notice::/$u status=$code u1k_box=$(echo "$body" | grep -o 'u1k-box' | wc -l) u1k_product_links=$(echo "$body" | grep -o 'under1000.com/he-IL/products/[a-z0-9-]*' | sort -u | tr '\n' ' ') offers=$(echo "$body" | grep -o '"offers"' | wc -l) boredpanda=$(echo "$body" | grep -o 'stunning-iphone-photography' | wc -l)"
-          done
-          echo "::notice::app.js under1000Links=$(curl -s https://eranchief.com/app.js | grep -o 'under1000.com/he-IL/products/' | wc -l) feed_items=$(curl -s https://eranchief.com/google-merchant-feed.xml | grep -o '<item>' | wc -l) sitemap_locs=$(curl -s https://eranchief.com/sitemap.xml | grep -o '<loc>' | wc -l)"
+          echo "::notice::grow_status $(curl -s https://eranchief.com/api/grow/status)"
+          echo "::notice::grow_status_test $(curl -s 'https://eranchief.com/api/grow/status?growtest=1')"
+          echo "::notice::paper_page status=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/paper-edition/) closesAt=$(curl -s https://eranchief.com/paper-edition-data.js | grep -o "closesAt:'[^']*'")"
+          echo "::notice::home has paper link=$(curl -s https://eranchief.com/ | grep -o -i 'paper' | wc -l)"
