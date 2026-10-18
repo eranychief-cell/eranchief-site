@@ -441,7 +441,8 @@ const lobbyWorks = [
 // Works listed at the Under1000 gallery (פחות מאלף). By agreement with the gallery (Oct 2026) they are sold there only,
 // so on this site they show a link to Under1000 instead of a bag button. Remove an id to make a work purchasable here again.
 const UNDER1000_URL='https://www.under1000.com/he-IL/artists';
-const under1000Ids=new Set([5,6,9,26,29,37,67,80,96,97,98,102,137,154,174,178,180,181,187,193]);
+// The Fall — I/III (96) stays purchasable here until Under1000 approves it (29 of 30 approved on 18.10.2026)
+const under1000Ids=new Set([5,6,9,26,29,37,67,80,97,98,102,137,154,174,178,180,181,187,193]);
 const works=[...paperWorks,...latestWorks,...standardWorks.filter(work=>work.title!=='Between Two Cities'),...squareWorks,...lateNightWorks,...premiumReviewWorks,...newlyCuratedWorks,...septemberCuratedWorks,...newWorks,...septemberSecondCuratedWorks,...thirdCuratedWorks,...fourthCuratedWorks,...lobbyWorks].map(work=>({...work,discovery:discoveryCopy[work.id],soldEditions:soldEditionCounts[work.id]??work.soldEditions??0,under1000:under1000Ids.has(work.id)}));
 if(typeof document!=='undefined')document.querySelectorAll('[data-work-count]').forEach(el=>el.textContent=works.length);
 const interiorMockups={
