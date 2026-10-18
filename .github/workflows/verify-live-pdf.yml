@@ -6,16 +6,11 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check the hosted PDF on the live site
+      - name: Check the Bored Panda additions on the live site
         run: |
-          URL="https://eranchief.com/assets/review/chief-available-works-2026-c33eebc496e9.pdf"
-          UA="Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1"
-          for i in $(seq 1 30); do
-            code=$(curl -s -o /tmp/f.pdf -w '%{http_code}' -A "$UA" "$URL")
-            [ "$code" = "200" ] && break
-            sleep 20
+          sleep 30
+          for u in press/ press-kit/ born-and-raised-on-iphone/ he/born-and-raised-on-iphone/ ""; do
+            body=$(curl -s "https://eranchief.com/$u")
+            code=$(curl -s -o /dev/null -w '%{http_code}' "https://eranchief.com/$u")
+            echo "::notice::/$u status=$code boredpanda_links=$(echo "$body" | grep -o 'stunning-iphone-photography-chieferanyerushalmi' | wc -l) yahoo=$(echo "$body" | grep -o 'photographer-took-30-000' | wc -l)"
           done
-          H=$(curl -sI -A "$UA" "$URL" | tr -d '\r')
-          echo "::notice::status=$code size=$(stat -c%s /tmp/f.pdf) sha=$(sha256sum /tmp/f.pdf | cut -c1-12) magic=$(head -c5 /tmp/f.pdf)"
-          echo "::notice::type=$(echo "$H" | grep -i '^content-type' | cut -d' ' -f2-) | robots=$(echo "$H" | grep -i '^x-robots-tag' | cut -d' ' -f2-)"
-          echo "::notice::_headers=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/_headers) | in-sitemap=$(curl -s https://eranchief.com/sitemap.xml | grep -c c33eebc496e9) | home=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/) | paris-pdf-robots=$(curl -sI https://eranchief.com/assets/review/Eran_Yerushalmi_The_Edge-c4b527bc65a7.pdf | tr -d '\r' | grep -i '^x-robots-tag' | cut -d' ' -f2-)"
