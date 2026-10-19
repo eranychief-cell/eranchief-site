@@ -29,6 +29,37 @@ export const themePages = {
       ],
     },
   },
+  hospitality: {
+    slug: 'restaurant-bar-art',
+    video: '/assets/restaurants-bars-film-lite.mp4',
+    poster: '/assets/restaurants-bars-film-poster.jpg',
+    he: {
+      title: 'תמונות למסעדות ולברים — סדרת הכוסות בים',
+      seoTitle: 'תמונות למסעדות ולברים | אמנות לקיר במסעדה, בבר ובמלון | CHIEF',
+      description: 'תמונות למסעדות, לברים ולמלונות: סדרת הכוסות בים של CHIEF, כוסות יין על חוף תל אביב בשקיעה. צילום אמנותי מקורי במהדורה מוגבלת, על אלוקובונד או פרספקס, עם תעודת מקוריות.',
+      intro: 'במסעדה ובבר הקיר הוא חלק מהחוויה, ולפעמים הוא הדבר הראשון שהאורחים מצלמים. את סדרת הכוסות בים CHIEF צילם באייפון על חוף תל אביב: כוסות יין שוכבות בחול הרטוב, והשקיעה עוברת דרך הזכוכית. חמש עבודות שאפשר לתלות לבד, בזוג או כסדרה שלמה על קיר מרכזי. כל עבודה במהדורה מוגבלת, חתומה וממוספרת, והעבודה Two\u00a0as\u00a0One במהדורה של 7 עותקים בלבד. לבעלי מסעדות וברים, למנהלי מלונות ולמעצבי פנים: שלחו צילום של הקיר והמידות שלו, ונכין הדמיה של העבודה אצלכם.',
+      cta: 'לייעוץ ליצירה למסעדה או לבר',
+      faqs: [
+        ['איזה גודל מתאים לקיר במסעדה או בבר?', 'לקיר מרכזי מעל ספות או מול הבר מתאים הגודל הגדול של כל עבודה, עד 100 × 150 ס״מ. לקיר צר ליד הבר או במסדרון מתאימה עבודה אנכית כמו Captured\u00a0Sun. שלחו צילום של הקיר ומידות, ונציע גודל מדויק.'],
+        ['איזה חומר מתאים למסעדה?', 'אלוקובונד מט לא מחזיר את אור המנורות ונקי בקלות, ולכן הוא מתאים במיוחד לאולם מסעדה ולבר. פרספקס מבריק מעמיק את הצבעים ונראה יוקרתי מאוד בתאורה מבוקרת.'],
+        ['אפשר להזמין את כל הסדרה?', 'כן. אפשר לקנות עבודה אחת, זוג או את חמש העבודות יחד. לסדרה שלמה נשלח הצעת מחיר.'],
+        ['אפשר לראות איך זה ייראה אצלנו לפני ההזמנה?', 'כן. שלחו צילום של הקיר, ונכין הדמיה של העבודה בחלל שלכם.'],
+      ],
+    },
+    en: {
+      title: 'Art for Restaurants and Bars — The Glasses at Sea Series',
+      seoTitle: 'Wall Art for Restaurants, Bars and Hotels | CHIEF',
+      description: 'Wall art for restaurants, bars and hotels: CHIEF’s Glasses at Sea series, wine glasses on the Tel Aviv shore at sunset. Original fine art photography in limited editions on Alucobond or Perspex, with a Certificate of Authenticity.',
+      intro: 'In a restaurant or a bar, the wall is part of the experience, and sometimes it is the first thing guests photograph. CHIEF shot the Glasses at Sea series on iPhone on the Tel Aviv shore: wine glasses lying in the wet sand, with the sunset passing through the glass. Five works that hang alone, as a pair or as a full series on a feature wall. Every work is a signed, numbered limited edition, and Two as One is limited to just 7 copies. Restaurant and bar owners, hotel managers and interior designers: send a photo of the wall and its measurements, and we will prepare a visualisation of the work in your space.',
+      cta: 'Ask about art for your restaurant or bar',
+      faqs: [
+        ['What size works for a restaurant or bar wall?', 'For a feature wall above banquettes or facing the bar, choose the largest size of each work, up to 100 × 150 cm. A narrow wall by the bar or in a corridor suits a portrait work such as Captured Sun. Send a photo and measurements and we will suggest an exact size.'],
+        ['Which finish suits a restaurant?', 'Matte Alucobond does not reflect the lamps and is easy to clean, so it suits dining rooms and bars especially well. Glossy Perspex deepens the colours and looks very premium under controlled lighting.'],
+        ['Can we order the whole series?', 'Yes. You can buy one work, a pair or all five together. For a full series we will send a quote.'],
+        ['Can we see it in our space before ordering?', 'Yes. Send a photo of the wall and we will prepare a visualisation of the work in your space.'],
+      ],
+    },
+  },
   telaviv: {
     slug: 'tel-aviv-wall-art',
     he: {

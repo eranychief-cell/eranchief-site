@@ -206,6 +206,14 @@
         <a href="/he/lobby-art/">Art for building lobbies →</a> · <a href="https://wa.me/972507123109" target="_blank" rel="noopener">Ask about art for your lobby →</a>
         <script>(()=>{const v=document.getElementById('lobbyFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
       </div>
+      <div class="hospitality-film" style="max-width:540px;margin:56px auto 0;text-align:center">
+        <p class="eyebrow">RESTAURANTS &amp; BARS</p>
+        <h3 style="margin:6px 0 18px">A wall your guests will photograph.</h3>
+        <video id="hospitalityFilm" data-src="/assets/restaurants-bars-film-lite.mp4" poster="/assets/restaurants-bars-film-poster.jpg" muted loop playsinline webkit-playsinline preload="none" aria-label="CHIEF works from the Glasses at Sea series shown in a bar and in a seafront restaurant" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;background:#ece8e0"></video>
+        <p style="margin:18px auto 10px;max-width:470px">The Glasses at Sea series, wine glasses on the Tel Aviv shore at sunset, is a natural fit for restaurants, bars and hotels. Five works that hang alone or together, in signed limited editions on Alucobond or Perspex. For owners, managers and interior designers: send a photo of the wall and we'll prepare a visualisation.</p>
+        <a href="/he/restaurant-bar-art/">Art for restaurants &amp; bars →</a> · <a href="https://wa.me/972507123109" target="_blank" rel="noopener">Ask about art for your venue →</a>
+        <script>(()=>{const v=document.getElementById('hospitalityFilm');if(!v)return;const go=()=>{const p=v.play();if(p)p.catch(()=>{})};let loaded=false,inView=false;const load=()=>{if(loaded)return;loaded=true;v.src=v.dataset.src;go()};if('IntersectionObserver'in window){new IntersectionObserver(es=>{es.forEach(e=>{inView=e.isIntersecting;if(inView){load();go()}else v.pause()})},{rootMargin:'300px'}).observe(v)}else{inView=true;load()}v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(!loaded||!inView||document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>
+      </div>
     </section>
 
     <section class="materials" id="materials">
