@@ -6,10 +6,15 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check the corporate gifts PDF on the live site
+      - name: Check the restaurants section on the live site
         run: |
-          U=https://eranchief.com/assets/review/chief-corporate-gifts-2027-6534813190f2.pdf
-          for i in $(seq 1 20); do c=$(curl -s -o /dev/null -w '%{http_code}' $U); [ "$c" = 200 ] && break; sleep 15; done
+          U=https://eranchief.com/assets/review/chief-glasses-at-sea-restaurants-bars-cf2c20f82247.pdf
+          for i in $(seq 1 30); do c=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/he/restaurant-bar-art/); [ "$c" = 200 ] && break; sleep 15; done
+          echo "::notice::theme he status=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/he/restaurant-bar-art/)"
+          echo "::notice::theme en status=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/restaurant-bar-art/)"
+          echo "::notice::theme he title=$(curl -s https://eranchief.com/he/restaurant-bar-art/ | grep -o '<title>[^<]*' | head -1)"
+          echo "::notice::home block=$(curl -s https://eranchief.com/ | grep -c 'hospitalityFilm')"
+          echo "::notice::film=$(curl -s -o /dev/null -w '%{http_code} %{content_type} %{size_download}' https://eranchief.com/assets/restaurants-bars-film-lite.mp4)"
           echo "::notice::pdf status=$(curl -s -o /dev/null -w '%{http_code} %{content_type} %{size_download}' $U)"
           echo "::notice::pdf robots=$(curl -sI $U | grep -i x-robots-tag | tr -d '\r')"
-          echo "::notice::home status=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/)"
+          echo "::notice::sitemap=$(curl -s https://eranchief.com/sitemap.xml | grep -c '<loc>')"
