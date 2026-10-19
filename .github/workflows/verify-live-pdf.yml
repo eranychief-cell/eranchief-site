@@ -6,15 +6,11 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check the restaurants section on the live site
+      - name: Check the Under1000 artist link on the live site
         run: |
-          U=https://eranchief.com/assets/review/chief-glasses-at-sea-restaurants-bars-cf2c20f82247.pdf
-          for i in $(seq 1 30); do c=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/he/restaurant-bar-art/); [ "$c" = 200 ] && break; sleep 15; done
-          echo "::notice::theme he status=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/he/restaurant-bar-art/)"
-          echo "::notice::theme en status=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/restaurant-bar-art/)"
-          echo "::notice::theme he title=$(curl -s https://eranchief.com/he/restaurant-bar-art/ | grep -o '<title>[^<]*' | head -1)"
-          echo "::notice::home block=$(curl -s https://eranchief.com/ | grep -c 'hospitalityFilm')"
-          echo "::notice::film=$(curl -s -o /dev/null -w '%{http_code} %{content_type} %{size_download}' https://eranchief.com/assets/restaurants-bars-film-lite.mp4)"
-          echo "::notice::pdf status=$(curl -s -o /dev/null -w '%{http_code} %{content_type} %{size_download}' $U)"
-          echo "::notice::pdf robots=$(curl -sI $U | grep -i x-robots-tag | tr -d '\r')"
-          echo "::notice::sitemap=$(curl -s https://eranchief.com/sitemap.xml | grep -c '<loc>')"
+          P=https://eranchief.com/he/artworks/the-mayor-of-the-beach-102/
+          for i in $(seq 1 30); do n=$(curl -s $P | grep -c 'eran-yerushalmi-chief-12918272'); [ "$n" -gt 0 ] && break; sleep 15; done
+          echo "::notice::mayor page artist links=$(curl -s $P | grep -o 'eran-yerushalmi-chief-12918272' | wc -l)"
+          echo "::notice::en mayor page=$(curl -s https://eranchief.com/artworks/the-mayor-of-the-beach-102/ | grep -o 'All my works at the Under1000 gallery' | wc -l)"
+          echo "::notice::home sameAs=$(curl -s https://eranchief.com/ | grep -o 'eran-yerushalmi-chief-12918272' | wc -l)"
+          echo "::notice::restaurant page=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/he/restaurant-bar-art/)"
