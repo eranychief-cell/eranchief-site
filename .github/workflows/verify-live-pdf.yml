@@ -9,8 +9,8 @@ jobs:
       - name: Check the Under1000 artist link on the live site
         run: |
           P=https://eranchief.com/he/artworks/the-mayor-of-the-beach-102/
-          for i in $(seq 1 30); do n=$(curl -s $P | grep -c 'eran-yerushalmi-chief-12918272'); [ "$n" -gt 0 ] && break; sleep 15; done
-          echo "::notice::mayor page artist links=$(curl -s $P | grep -o 'eran-yerushalmi-chief-12918272' | wc -l)"
-          echo "::notice::en mayor page=$(curl -s https://eranchief.com/artworks/the-mayor-of-the-beach-102/ | grep -o 'All my works at the Under1000 gallery' | wc -l)"
-          echo "::notice::home sameAs=$(curl -s https://eranchief.com/ | grep -o 'eran-yerushalmi-chief-12918272' | wc -l)"
+          for i in $(seq 1 30); do n=$(curl -s $P | grep -c 'eran-yerushalmi-chief-12918272' || true); [ "$n" -gt 0 ] && break; sleep 15; done
+          echo "::notice::mayor page artist links=$(curl -s $P | grep -o 'eran-yerushalmi-chief-12918272' | wc -l || true)"
+          echo "::notice::en mayor page=$(curl -s https://eranchief.com/artworks/the-mayor-of-the-beach-102/ | grep -o 'All my works at the Under1000 gallery' | wc -l || true)"
+          echo "::notice::home sameAs=$(curl -s https://eranchief.com/ | grep -o 'eran-yerushalmi-chief-12918272' | wc -l || true)"
           echo "::notice::restaurant page=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/he/restaurant-bar-art/)"
