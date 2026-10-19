@@ -6,9 +6,10 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check payment status and paper edition on the live site
+      - name: Check the corporate gifts PDF on the live site
         run: |
-          echo "::notice::grow_status $(curl -s https://eranchief.com/api/grow/status)"
-          echo "::notice::grow_status_test $(curl -s 'https://eranchief.com/api/grow/status?growtest=1')"
-          echo "::notice::paper_page status=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/paper-edition/) closesAt=$(curl -s https://eranchief.com/paper-edition-data.js | grep -o "closesAt:'[^']*'")"
-          echo "::notice::home has paper link=$(curl -s https://eranchief.com/ | grep -o -i 'paper' | wc -l)"
+          U=https://eranchief.com/assets/review/chief-corporate-gifts-2027-6534813190f2.pdf
+          for i in $(seq 1 20); do c=$(curl -s -o /dev/null -w '%{http_code}' $U); [ "$c" = 200 ] && break; sleep 15; done
+          echo "::notice::pdf status=$(curl -s -o /dev/null -w '%{http_code} %{content_type} %{size_download}' $U)"
+          echo "::notice::pdf robots=$(curl -sI $U | grep -i x-robots-tag | tr -d '\r')"
+          echo "::notice::home status=$(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/)"
