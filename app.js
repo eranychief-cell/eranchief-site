@@ -691,7 +691,7 @@ function openProduct(id,preferredFinish){
   document.querySelectorAll('#productView input').forEach(i=>i.onchange=update);
   if(preferredFinish&&document.querySelector(`#productView input[name="finish"][value="${preferredFinish}"]`)){document.querySelector(`#productView input[name="finish"][value="${preferredFinish}"]`).checked=true;update()}
   document.querySelector('.close-product').onclick=()=>dialog.close();
-  document.querySelector('.add-to-cart').onclick=()=>{if(isPaper&&paperClosed()){refreshPaperState();return}const si=+document.querySelector('input[name="size"]:checked').value,f=document.querySelector('input[name="finish"]:checked').value;const newItem={...w,size:productSizes[si],finish:f,price:isPaper?Math.round(priceFor(si,f)):Math.round(priceFor(si,f)/10)*10};if(!canAddCopy(newItem)){if(isPaper&&paperItemUnavailable(newItem)){refreshPaperState();return}alert(ui('כל העותקים הזמינים של יצירה זו כבר בסל.','All available copies of this work are already in your bag.'));return}cart.push(newItem);saveCart();dialog.close();openCart()};
+  document.querySelector('.add-to-cart').onclick=()=>{if(isPaper&&paperClosed()){refreshPaperState();return}const si=+document.querySelector('input[name="size"]:checked').value,f=document.querySelector('input[name="finish"]:checked').value;const newItem={...w,size:productSizes[si],finish:f,price:isPaper?Math.round(priceFor(si,f)):Math.round(priceFor(si,f)/10)*10};if(!canAddCopy(newItem)){if(isPaper&&paperItemUnavailable(newItem)){refreshPaperState();return}alert(ui('כל העותקים הזמינים של יצירה זו כבר בסל.','All available copies of this work are already in your bag.'));return}cart.push(newItem);saveCart();try{window.fbq&&fbq('track','AddToCart',{value:newItem.price,currency:'ILS',content_ids:[String(newItem.id)],content_name:newItem.title,content_type:'product'})}catch(_){}dialog.close();openCart()};
 }
 const orderPricing=()=>{const subtotal=cart.reduce((a,x)=>a+x.price,0),eligible=cart.filter(x=>x.category!=='paper').reduce((a,x)=>a+x.price,0),discount=appliedCoupon?Math.round(eligible*appliedCoupon.percent/100/10)*10:0,c=shippingCountry(),shipping=(!c||isIsraelShipping(c))?cartShippingFee():cartIntlFee();return{subtotal,discount,shipping,total:subtotal-discount+shipping}};
 function shippingCountry(){return document.querySelector('#shippingForm [name="country"]')?.value.trim()||''}
@@ -761,19 +761,20 @@ document.querySelector('#checkoutButton').onclick=()=>{
   if(!cart.length||hasClosedPaper()){renderCart();return}
   closeCart();
   const pricing=orderPricing();document.querySelector('#shippingSubtotal').textContent=money(pricing.subtotal);document.querySelector('#shippingDiscount').textContent=`−${money(pricing.discount)}`;document.querySelector('#shippingDiscountRow').hidden=!appliedCoupon;document.querySelector('#shippingTotal').textContent=money(pricing.total);document.querySelector('#shippingApprox').dataset.ils=String(pricing.total);window.chiefRefreshCurrency?.();
-  updateShippingUi();checkoutDialog.showModal();checkGrow();
+  updateShippingUi();checkoutDialog.showModal();checkGrow();try{window.fbq&&fbq('track','InitiateCheckout',{value:pricing.total,currency:'ILS',num_items:cart.length})}catch(_){}
 };
 function selectionMessage(){
   const items=cart.map((x,i)=>`${i+1}. ${x.title} | ${x.size} | ${finishText(x.finish)} | ${money(x.price)}`).join('\n');
   return heProductRoute?`היי צ׳יף, אני רוצה להזמין:\n\n${items}\n\n${cartShippingIncluded()?'סכום כולל משלוח':'מחיר היצירות לפני משלוח'}: ${money(orderPricing().total)}\n${shippingSummary(true)}\nאשמח לאישור זמן אספקה ולקישור תשלום מאובטח. העיר והמדינה שלי: `:`Hello CHIEF, I would like to order:\n\n${items}\n\n${cartShippingIncluded()?'Total including shipping':'Artwork total before shipping'}: ${money(orderPricing().total)}\n${shippingSummary(false)}\nPlease confirm estimated delivery and send me a secure payment link. My delivery city and country are: `;
 }
-if(document.querySelector('#quickRequestButton'))document.querySelector('#quickRequestButton').onclick=()=>{if(hasClosedPaper()){renderCart();return}if(cart.length)window.open(`https://wa.me/972507123109?text=${encodeURIComponent(selectionMessage())}`,'_blank','noopener')};
+if(document.querySelector('#quickRequestButton'))document.querySelector('#quickRequestButton').onclick=()=>{if(hasClosedPaper()){renderCart();return}if(cart.length){try{window.fbq&&fbq('track','Contact')}catch(_){}}if(cart.length)window.open(`https://wa.me/972507123109?text=${encodeURIComponent(selectionMessage())}`,'_blank','noopener')};
 document.querySelector('#closeCheckout').onclick=()=>checkoutDialog.close();
 document.querySelector('#shippingForm').onsubmit=async e=>{
   e.preventDefault();
   if(hasClosedPaper()){checkoutDialog.close();openCart();renderCart();return}
   if(appliedCoupon){const response=await fetch('/api/coupon',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code:appliedCoupon.code})});if(!response.ok){appliedCoupon=null;localStorage.removeItem('chiefCoupon');renderCart();checkoutDialog.close();openCart();const status=document.querySelector('#couponStatus');status.textContent=ui('יש להחיל שוב את קוד ההנחה.','The discount code must be applied again.');status.className='error';return}const verified=await response.json();appliedCoupon={code:verified.code,percent:verified.percent};localStorage.setItem('chiefCoupon',JSON.stringify(appliedCoupon))}
   const data=Object.fromEntries(new FormData(e.currentTarget));
+  try{window.fbq&&fbq('track','AddPaymentInfo',{value:orderPricing().total,currency:'ILS'})}catch(_){}
   if(onlinePayAvailable()){
     const button=e.currentTarget.querySelector('.submit-order'),err=document.querySelector('#payError');err.hidden=true;button.disabled=true;const label=button.textContent;button.textContent=ui('פותח תשלום מאובטח…','Opening secure payment…');setTimeout(()=>{button.textContent=label},8000);
     try{

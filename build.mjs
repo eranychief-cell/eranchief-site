@@ -679,7 +679,7 @@ await writeFile('dist/client/robots.txt',`User-agent: *\nAllow: /\n\nSitemap: ${
 const applePayDomainFile = await readFile('well-known/apple-developer-merchantid-domain-association', 'utf8');
 await writeFile('dist/server/index.js', `import { handleCollectorStories } from './collector-stories-worker.js';
 import { handleGrow } from './grow-worker.js';
-export default { async fetch(request, env) {
+async function route(request, env) {
   // www.eranchief.com -> eranchief.com (301, same path + query), exactly like the old host did, to keep SEO intact.
   { const u = new URL(request.url); if (u.pathname === '/__build') return new Response(JSON.stringify({ host: 'cloudflare-worker', build: '${new Date().toISOString()}' }), { headers: { 'content-type': 'application/json', 'x-robots-tag': 'noindex', 'cache-control': 'no-store' } }); if (u.hostname === 'www.eranchief.com') { u.hostname = 'eranchief.com'; return Response.redirect(u.toString(), 301); } }
   if (new URL(request.url).pathname === '/.well-known/apple-developer-merchantid-domain-association') return new Response(${JSON.stringify(applePayDomainFile)}, { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600', 'access-control-allow-origin': '*' } });
@@ -787,4 +787,26 @@ export default { async fetch(request, env) {
     return new Response(assetResponse.body, { status: assetResponse.status, statusText: assetResponse.statusText, headers });
   }
   return assetResponse;
-} };\n`);
+}
+// Meta Pixel (dataset "eranchief.com", ID 2031851447525485), added 21.10.2026 with Eran's approval.
+// Injected into every public HTML page of eranchief.com. Not on owner pages or preview hosts, and not for visitors
+// from the EU, EEA, UK or Switzerland (the site has no consent banner). Events: PageView everywhere, ViewContent on
+// artwork and Paper Edition pages; AddToCart, InitiateCheckout, AddPaymentInfo and Contact fire from app.js; Purchase from /order/thanks/.
+const PIXEL_ID = '2031851447525485';
+const PIXEL_OFF_COUNTRIES = new Set(['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']);
+function withPixel(request, response) {
+  try {
+    const url = new URL(request.url);
+    const p = url.pathname;
+    const type = response.headers.get('content-type') || '';
+    if (response.status !== 200 || !type.includes('text/html') || url.hostname !== 'eranchief.com') return response;
+    if (p.startsWith('/orders/manage') || p.startsWith('/collector-stories/manage') || p.startsWith('/api/')) return response;
+    const cf = request.cf || {};
+    if (cf.isEUCountry === '1' || PIXEL_OFF_COUNTRIES.has(cf.country)) return response;
+    const product = p.startsWith('/artworks/') || p.startsWith('/he/artworks/') || p.startsWith('/paper-edition') || p.startsWith('/he/paper-edition');
+    const head = "<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','" + PIXEL_ID + "');fbq('track','PageView');" + (product ? "fbq('track','ViewContent',{content_type:'product'});" : '') + "</script>";
+    return new HTMLRewriter().on('head', { element(el) { el.prepend(head, { html: true }); } }).transform(response);
+  } catch (e) { return response; }
+}
+export default { async fetch(request, env) { return withPixel(request, await route(request, env)); } };
+`);
