@@ -6,3 +6,5 @@
 /* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
 h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 .submit-order:disabled{background:#9a958c;cursor:not-allowed}
+/* A hidden pricing row (no discount code applied) must stay hidden even though the rows are flex. */
+.checkout-pricing [hidden]{display:none!important}
