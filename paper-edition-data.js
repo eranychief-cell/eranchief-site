@@ -4,7 +4,7 @@
 // portrait:true marks vertical photographs so the room hangs them upright. year is optional (left out when unknown).
 globalThis.chiefPaperEditionData={
   opensAt:'2026-10-21T00:00:00+03:00',
-  closesAt:'2026-10-28T23:59:59+02:00',
+  closesAt:'2026-11-20T23:59:59+02:00',
   sizes:['30 × 40 cm','50 × 70 cm'],
   works:[
     {id:206,title:'Jaffa Melts Into the Sand',titleHe:'יפו נמסה אל החול',image:'assets/paper-11-jaffa-melts-into-the-sand.jpg',year:2026,portrait:true,prices:[249,399]},
