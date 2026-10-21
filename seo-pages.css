@@ -153,3 +153,6 @@ h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 .u1k-box .price{margin-top:0}
 .u1k-box p{line-height:1.6}
 .u1k-box .seo-cta{margin-top:6px}
+
+/* Hebrew pages: the reach line ("8,207 לייקים · 114 תגובות") must read right to left, or the first number ends up after the Hebrew words. */
+html[dir="rtl"] .featured-proof strong{direction:rtl;text-align:right}

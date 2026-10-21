@@ -178,11 +178,11 @@ const latestWorks = [
 const paperConfig=globalThis.chiefPaperEditionData;
 const paperWorks=paperConfig.works.map(w=>({...w,category:'paper',sizes:paperConfig.sizes,paperDrop:true}));
 const paperCloseDate=new Date(paperConfig.closesAt);
-const paperOpenDate=new Date(Date.UTC(paperCloseDate.getUTCFullYear(),paperCloseDate.getUTCMonth()-1,paperCloseDate.getUTCDate()));
+const paperOpenDate=paperConfig.opensAt?new Date(`${paperConfig.opensAt.slice(0,10)}T00:00:00Z`):new Date(Date.UTC(paperCloseDate.getUTCFullYear(),paperCloseDate.getUTCMonth()-1,paperCloseDate.getUTCDate()));
 const paperDays=Math.round((Date.UTC(paperCloseDate.getUTCFullYear(),paperCloseDate.getUTCMonth(),paperCloseDate.getUTCDate())-paperOpenDate.getTime())/86400000);
 const paperDateEn=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jerusalem',day:'numeric',month:'long',year:'numeric'}).format(paperCloseDate);
 const paperDateHe=new Intl.DateTimeFormat('he-IL',{timeZone:'Asia/Jerusalem',day:'numeric',month:'long',year:'numeric'}).format(paperCloseDate);
-const paperMonthEn=new Intl.DateTimeFormat('en-US',{month:'long',timeZone:'UTC'}).format(new Date(Date.UTC(paperCloseDate.getUTCFullYear(),paperCloseDate.getUTCMonth()-1,1)));
+const paperMonthEn=new Intl.DateTimeFormat('en-US',{month:'long',timeZone:'UTC'}).format(paperOpenDate);
 
 // Historical collector sales recorded by CHIEF on 23 September 2026.
 // Editions are shared across sizes and finishes, so each count is applied to the work itself.
@@ -465,7 +465,7 @@ const formatSize=value=>String(value).replace(/\s*[×x]\s*/gi,' × ').replace(/\
 // Size labels: in Hebrew "50 × 75 cm" was rendering as "cm 75 × 50" (site review, 13 Oct 2026). Say width and height explicitly, numbers kept LTR.
 const orientSize=(value,id)=>{const o=window.chiefOrientations?.[id],m=String(value).match(/(\d+)\s*×\s*(\d+)/);if(!o||!m)return value;const a=+m[1],b=+m[2];return (o==='landscape'&&a<b)||(o==='portrait'&&a>b)?String(value).replace(m[0],`${b} × ${a}`):value;};
 const sizeLabel=(value,id,he=heProductRoute)=>{value=orientSize(value,id);const m=String(value).match(/(\d+)\s*×\s*(\d+)/);if(!m)return value;if(!he)return `${m[1]} × ${m[2]} cm`;return m[1]===m[2]?`<bdi>${m[1]} × ${m[2]}</bdi> ס״מ`:`רוחב <bdi>${m[1]}</bdi> × גובה <bdi>${m[2]}</bdi> ס״מ`;};
-const editionText=category=>category==='paper'?ui(`זמין ${paperDays} ימים`,`Available for ${paperDays} days`):category==='super'?ui('מהדורה מוגבלת של 7','Limited edition of 7'):category==='premium'||category==='late-night'?ui('מהדורה מוגבלת של 25','Limited edition of 25'):category==='accessible'?ui('מהדורה פתוחה · ללא מספור','Open edition · unnumbered'):ui('פרטי המהדורה יפורסמו בקרוב','Edition details to be announced');
+const editionText=category=>category==='paper'?ui(`זמין עד ${paperDateHe}`,`Available through ${paperDateEn}`):category==='super'?ui('מהדורה מוגבלת של 7','Limited edition of 7'):category==='premium'||category==='late-night'?ui('מהדורה מוגבלת של 25','Limited edition of 25'):category==='accessible'?ui('מהדורה פתוחה · ללא מספור','Open edition · unnumbered'):ui('פרטי המהדורה יפורסמו בקרוב','Edition details to be announced');
 const editionTotal=category=>category==='super'?7:(category==='premium'||category==='late-night'?25:null);
 const availabilityText=w=>w.soldEditions&&editionTotal(w.category)?ui(`${editionTotal(w.category)-w.soldEditions} מתוך ${editionTotal(w.category)} עותקים זמינים · ${w.soldEditions} נמכרו`,`${editionTotal(w.category)-w.soldEditions} of ${editionTotal(w.category)} editions available · ${w.soldEditions} sold`):editionText(w.category);
 const ui=(he,en)=>heProductRoute?he:en;
@@ -573,7 +573,7 @@ window.chiefShowAllForFiltering=()=>{
 
 function renderPaperDrop(){
   const scene=document.querySelector('#paperRoomScene'),art=document.querySelector('#paperRoomArt'),title=document.querySelector('#paperRoomTitle'),strip=document.querySelector('#paperRoomStrip');if(!scene||!art||!title||!strip)return;
-  const portraitIndexes=new Set([0,2,4,5,6,8,9]);
+  const portraitIndexes=new Set(paperWorks.flatMap((w,i)=>w.portrait?[i]:[]));
   strip.innerHTML=paperWorks.map((w,i)=>`<button type="button" class="paper-room__thumb${i===0?' is-selected':''}" data-paper-index="${i}" aria-label="Show ${w.title} in the room" aria-pressed="${i===0?'true':'false'}">${paperThumb(w)}<span>${String(i+1).padStart(2,'0')}</span></button>`).join('');
   const buttons=[...strip.querySelectorAll('.paper-room__thumb')];let current=0,scrollTimer,startX=0;
   const selectPaper=(index,move=true)=>{
@@ -581,7 +581,7 @@ function renderPaperDrop(){
     /* Preload, then swap. The build adds a responsive srcset to this <img> for work 01; it must be removed, or the browser keeps showing 01 whatever src is set. */
     const token=current,show=()=>{if(token!==current)return;art.removeAttribute('loading');art.removeAttribute('srcset');art.removeAttribute('sizes');art.src=work.image;art.alt=`${work.title} displayed full-frame without a frame in a living room`;art.classList.toggle('is-portrait',portraitIndexes.has(current));art.style.opacity='1'};
     art.style.opacity='.15';const pre=new Image();pre.onload=pre.onerror=show;pre.src=work.image;setTimeout(show,1200);
-    title.textContent=`${String(current+1).padStart(2,'0')} · ${work.title}`;
+    title.textContent=`${String(current+1).padStart(2,'0')} · ${ui(work.titleHe||work.title,work.title)}`;
     buttons.forEach((button,i)=>{button.classList.toggle('is-selected',i===current);button.setAttribute('aria-pressed',i===current?'true':'false')});
     if(move)buttons[current].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
   };
@@ -669,7 +669,7 @@ function openProduct(id,preferredFinish){
     info.querySelector('.close-product').setAttribute('aria-label','סגירה');
     const conversion=info.querySelectorAll('.product-next-step')[1];conversion.innerHTML=`המרה משוערת למחיר היצירה: <span data-ils="${w.category==='accessible'?canvasPrices[0]:p[0]}"></span> · התשלום בש״ח.`;
     if(isPaper)info.querySelector('.paper-badge').textContent=`מהדורת נייר · עד ${paperDateHe}`;
-    info.querySelector('.collector-story-product-note').innerHTML=`כבר רכשתם את העבודה הזו? <a href="${collectorStoryUrl}">שתפו את סיפור ה־Collector שלכם לאחר שהיא תגיע לביתכם.</a>`;
+    info.querySelector('.collector-story-product-note').innerHTML=`כבר רכשתם את העבודה הזו? <a href="${collectorStoryUrl}">שתפו את סיפור האספן שלכם לאחר שהיא תגיע לביתכם.</a>`;
   }
   const dialog=document.querySelector('#productDialog');
   if(w.under1000){

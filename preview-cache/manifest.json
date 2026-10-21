@@ -1,251 +1,201 @@
 {
- "assets/paper-1-the-building-that-learned-to-fly.jpg": {
-  "hash": "af314976df703cd01428ee3f03ba982fb0a03a6db8576c0ec4ba69a8e6f591a0",
+ "assets/paper-11-jaffa-melts-into-the-sand.jpg": {
+  "hash": "cd61b864e202244cc0b45119f340d6d2c44a6b1d62ce2bb5d45ee35690a7c822",
   "variants": [
    [
     160,
-    "/assets/card-previews/paper-1-the-building-that-learned-to-fly-160.webp"
+    "/assets/card-previews/paper-11-jaffa-melts-into-the-sand-160.webp"
    ],
    [
     320,
-    "/assets/card-previews/paper-1-the-building-that-learned-to-fly-320.webp"
+    "/assets/card-previews/paper-11-jaffa-melts-into-the-sand-320.webp"
    ],
    [
     480,
-    "/assets/card-previews/paper-1-the-building-that-learned-to-fly-480.webp"
+    "/assets/card-previews/paper-11-jaffa-melts-into-the-sand-480.webp"
    ],
    [
     960,
-    "/assets/card-previews/paper-1-the-building-that-learned-to-fly-960.webp"
+    "/assets/card-previews/paper-11-jaffa-melts-into-the-sand-960.webp"
    ],
    [
     1350,
-    "/assets/card-previews/paper-1-the-building-that-learned-to-fly-1350.webp"
+    "/assets/card-previews/paper-11-jaffa-melts-into-the-sand-1350.webp"
    ]
   ]
  },
- "assets/paper-2-the-game-before-sunset.jpg": {
-  "hash": "15bc461573d46f467822fb9f7241ea7dc216f4882d5d04bbfbe3203a1884aeab",
+ "assets/paper-12-the-last-wave-is-his.jpg": {
+  "hash": "716dcb2d6cf98c320e77d0e56b5103813beab0f3d1a7baad7a0094c221e55736",
   "variants": [
    [
     160,
-    "/assets/card-previews/paper-2-the-game-before-sunset-160.webp"
+    "/assets/card-previews/paper-12-the-last-wave-is-his-160.webp"
    ],
    [
     320,
-    "/assets/card-previews/paper-2-the-game-before-sunset-320.webp"
+    "/assets/card-previews/paper-12-the-last-wave-is-his-320.webp"
    ],
    [
     480,
-    "/assets/card-previews/paper-2-the-game-before-sunset-480.webp"
+    "/assets/card-previews/paper-12-the-last-wave-is-his-480.webp"
    ],
    [
     960,
-    "/assets/card-previews/paper-2-the-game-before-sunset-960.webp"
+    "/assets/card-previews/paper-12-the-last-wave-is-his-960.webp"
    ],
    [
     1440,
-    "/assets/card-previews/paper-2-the-game-before-sunset-1440.webp"
+    "/assets/card-previews/paper-12-the-last-wave-is-his-1440.webp"
    ]
   ]
  },
- "assets/paper-3-the-last-lifeguard.jpg": {
-  "hash": "44cf2d72d21dd8e43be02bd4bc1c824e5d935f417b7d9c471d15473c2712add1",
+ "assets/paper-13-the-sky-opened-over-jaffa.jpg": {
+  "hash": "88f0a27254fc58a4b232ab7950e4bc74fcf8c317cd7800cea16502e68b111767",
   "variants": [
    [
     160,
-    "/assets/card-previews/paper-3-the-last-lifeguard-160.webp"
+    "/assets/card-previews/paper-13-the-sky-opened-over-jaffa-160.webp"
    ],
    [
     320,
-    "/assets/card-previews/paper-3-the-last-lifeguard-320.webp"
+    "/assets/card-previews/paper-13-the-sky-opened-over-jaffa-320.webp"
    ],
    [
     480,
-    "/assets/card-previews/paper-3-the-last-lifeguard-480.webp"
+    "/assets/card-previews/paper-13-the-sky-opened-over-jaffa-480.webp"
    ],
    [
     960,
-    "/assets/card-previews/paper-3-the-last-lifeguard-960.webp"
+    "/assets/card-previews/paper-13-the-sky-opened-over-jaffa-960.webp"
    ],
    [
     1350,
-    "/assets/card-previews/paper-3-the-last-lifeguard-1350.webp"
+    "/assets/card-previews/paper-13-the-sky-opened-over-jaffa-1350.webp"
    ]
   ]
  },
- "assets/paper-4-the-sea-broke-the-sun.jpg": {
-  "hash": "8cf3f55dacba6b39d12c481a1e15a180b110e6e9430cdfc53dc4b9523c1d511a",
+ "assets/paper-14-the-towers-drank-the-sky.jpg": {
+  "hash": "c5dc4cd91c3429d8221538bd63e146f25d2f0f26694b97b67b5ac3ff8cb59b19",
   "variants": [
    [
     160,
-    "/assets/card-previews/paper-4-the-sea-broke-the-sun-160.webp"
+    "/assets/card-previews/paper-14-the-towers-drank-the-sky-160.webp"
    ],
    [
     320,
-    "/assets/card-previews/paper-4-the-sea-broke-the-sun-320.webp"
+    "/assets/card-previews/paper-14-the-towers-drank-the-sky-320.webp"
    ],
    [
     480,
-    "/assets/card-previews/paper-4-the-sea-broke-the-sun-480.webp"
+    "/assets/card-previews/paper-14-the-towers-drank-the-sky-480.webp"
    ],
    [
     960,
-    "/assets/card-previews/paper-4-the-sea-broke-the-sun-960.webp"
+    "/assets/card-previews/paper-14-the-towers-drank-the-sky-960.webp"
    ],
    [
     1440,
-    "/assets/card-previews/paper-4-the-sea-broke-the-sun-1440.webp"
+    "/assets/card-previews/paper-14-the-towers-drank-the-sky-1440.webp"
    ]
   ]
  },
- "assets/paper-5-bigger-than-the-horizon.jpg": {
-  "hash": "d068a15d6643c4669cb231cf4c3376fa17614fcb93adbccfe3b122bffcc7b9ca",
+ "assets/paper-15-the-rope-that-leads-to-the-sun.jpg": {
+  "hash": "af3fd7b7b47ad403d6fe4566d69e75b68332b8fedd4616c7f15e935387e74f1e",
   "variants": [
    [
     160,
-    "/assets/card-previews/paper-5-bigger-than-the-horizon-160.webp"
+    "/assets/card-previews/paper-15-the-rope-that-leads-to-the-sun-160.webp"
    ],
    [
     320,
-    "/assets/card-previews/paper-5-bigger-than-the-horizon-320.webp"
+    "/assets/card-previews/paper-15-the-rope-that-leads-to-the-sun-320.webp"
    ],
    [
     480,
-    "/assets/card-previews/paper-5-bigger-than-the-horizon-480.webp"
+    "/assets/card-previews/paper-15-the-rope-that-leads-to-the-sun-480.webp"
    ],
    [
     960,
-    "/assets/card-previews/paper-5-bigger-than-the-horizon-960.webp"
+    "/assets/card-previews/paper-15-the-rope-that-leads-to-the-sun-960.webp"
    ],
    [
-    1350,
-    "/assets/card-previews/paper-5-bigger-than-the-horizon-1350.webp"
+    1349,
+    "/assets/card-previews/paper-15-the-rope-that-leads-to-the-sun-1349.webp"
    ]
   ]
  },
- "assets/paper-6-small-king-big-sky.jpg": {
-  "hash": "ea983b9def202b5991362fda1b94220e842ed1423cacbe1b8ac655c4f43a3cdd",
+ "assets/paper-16-someone-had-to-shoot-it.jpg": {
+  "hash": "1218d538498fb7d8267b071aed7df8504af1b98e8866066c5a04a4f029bf7264",
   "variants": [
    [
     160,
-    "/assets/card-previews/paper-6-small-king-big-sky-160.webp"
+    "/assets/card-previews/paper-16-someone-had-to-shoot-it-160.webp"
    ],
    [
     320,
-    "/assets/card-previews/paper-6-small-king-big-sky-320.webp"
+    "/assets/card-previews/paper-16-someone-had-to-shoot-it-320.webp"
    ],
    [
     480,
-    "/assets/card-previews/paper-6-small-king-big-sky-480.webp"
+    "/assets/card-previews/paper-16-someone-had-to-shoot-it-480.webp"
    ],
    [
     960,
-    "/assets/card-previews/paper-6-small-king-big-sky-960.webp"
-   ],
-   [
-    1350,
-    "/assets/card-previews/paper-6-small-king-big-sky-1350.webp"
-   ]
-  ]
- },
- "assets/paper-7-born-of-the-tide.jpg": {
-  "hash": "a518fe3d327158667ac7523aad0c3f0e67e7caeae2aeac658a6fe23ee863bc05",
-  "variants": [
-   [
-    160,
-    "/assets/card-previews/paper-7-born-of-the-tide-160.webp"
-   ],
-   [
-    320,
-    "/assets/card-previews/paper-7-born-of-the-tide-320.webp"
-   ],
-   [
-    480,
-    "/assets/card-previews/paper-7-born-of-the-tide-480.webp"
-   ],
-   [
-    960,
-    "/assets/card-previews/paper-7-born-of-the-tide-960.webp"
-   ],
-   [
-    1350,
-    "/assets/card-previews/paper-7-born-of-the-tide-1350.webp"
-   ]
-  ]
- },
- "assets/paper-8-heaven-caught-fire.jpg": {
-  "hash": "39f17b2aadb3b798b9ecf0f96062237e5442899ff91615e752e17de59a137a4c",
-  "variants": [
-   [
-    160,
-    "/assets/card-previews/paper-8-heaven-caught-fire-160.webp"
-   ],
-   [
-    320,
-    "/assets/card-previews/paper-8-heaven-caught-fire-320.webp"
-   ],
-   [
-    480,
-    "/assets/card-previews/paper-8-heaven-caught-fire-480.webp"
-   ],
-   [
-    960,
-    "/assets/card-previews/paper-8-heaven-caught-fire-960.webp"
+    "/assets/card-previews/paper-16-someone-had-to-shoot-it-960.webp"
    ],
    [
     1440,
-    "/assets/card-previews/paper-8-heaven-caught-fire-1440.webp"
+    "/assets/card-previews/paper-16-someone-had-to-shoot-it-1440.webp"
    ]
   ]
  },
- "assets/paper-9-the-one-who-stayed.jpg": {
-  "hash": "c2f180ffb50cdf96b9c9c7f4cbf797e6f4e515e46bf3f87249e8488a2ad4e62e",
+ "assets/paper-17-upside-down-at-habima.jpg": {
+  "hash": "7ebea238d2f43d98cccc797e2070efb988c8aa9b605f76b8b99180a08bcdbf2b",
   "variants": [
    [
     160,
-    "/assets/card-previews/paper-9-the-one-who-stayed-160.webp"
+    "/assets/card-previews/paper-17-upside-down-at-habima-160.webp"
    ],
    [
     320,
-    "/assets/card-previews/paper-9-the-one-who-stayed-320.webp"
+    "/assets/card-previews/paper-17-upside-down-at-habima-320.webp"
    ],
    [
     480,
-    "/assets/card-previews/paper-9-the-one-who-stayed-480.webp"
+    "/assets/card-previews/paper-17-upside-down-at-habima-480.webp"
    ],
    [
     960,
-    "/assets/card-previews/paper-9-the-one-who-stayed-960.webp"
+    "/assets/card-previews/paper-17-upside-down-at-habima-960.webp"
    ],
    [
-    1350,
-    "/assets/card-previews/paper-9-the-one-who-stayed-1350.webp"
+    1440,
+    "/assets/card-previews/paper-17-upside-down-at-habima-1440.webp"
    ]
   ]
  },
- "assets/paper-10-when-the-sun-came-ashore.jpg": {
-  "hash": "ad0822af87a3a328663df18052a35b67aff9e6bed129b1d88a9f4b49f155b535",
+ "assets/paper-18-the-real-rider.jpg": {
+  "hash": "a0980437bd130142c669032f23beb7b11fa72c695978bd642f2356dacaeafb71",
   "variants": [
    [
     160,
-    "/assets/card-previews/paper-10-when-the-sun-came-ashore-160.webp"
+    "/assets/card-previews/paper-18-the-real-rider-160.webp"
    ],
    [
     320,
-    "/assets/card-previews/paper-10-when-the-sun-came-ashore-320.webp"
+    "/assets/card-previews/paper-18-the-real-rider-320.webp"
    ],
    [
     480,
-    "/assets/card-previews/paper-10-when-the-sun-came-ashore-480.webp"
+    "/assets/card-previews/paper-18-the-real-rider-480.webp"
    ],
    [
     960,
-    "/assets/card-previews/paper-10-when-the-sun-came-ashore-960.webp"
+    "/assets/card-previews/paper-18-the-real-rider-960.webp"
    ],
    [
-    1350,
-    "/assets/card-previews/paper-10-when-the-sun-came-ashore-1350.webp"
+    1440,
+    "/assets/card-previews/paper-18-the-real-rider-1440.webp"
    ]
   ]
  },
