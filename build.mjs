@@ -385,7 +385,7 @@ const purchaseDetailsEn=`<aside class="purchase-details" aria-label="Purchase de
 
 for(const [category,slug] of Object.entries(categorySlugs)){
   const meta=categoryCopy[category],url=`${site}/collections/${slug}/`,items=works.filter(w=>w.category===category);
-  const lateFilm=label=>category==='late-night'?`<figure class="collection-film" style="margin:8px auto 36px;max-width:540px"><video style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;background:#111" src="/media/open-after-midnight-film-post-lite.mp4" poster="/assets/open-after-midnight-film-post-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="${label}"></video></figure><script>(()=>{const v=document.querySelector('.collection-film video');if(!v)return;v.setAttribute('webkit-playsinline','');const go=()=>{const p=v.play();if(p)p.catch(()=>{})};v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>`:'';
+  const lateFilm=label=>category==='late-night'?`<figure class="collection-film" style="margin:8px auto 36px;max-width:540px"><video style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;background:#111" src="/assets/open-after-midnight-film-post-lite.mp4" poster="/assets/open-after-midnight-film-post-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="${label}"></video></figure><script>(()=>{const v=document.querySelector('.collection-film video');if(!v)return;v.setAttribute('webkit-playsinline','');const go=()=>{const p=v.play();if(p)p.catch(()=>{})};v.addEventListener('ended',()=>{v.currentTime=0;go()});let last=-1,stuck=0;setInterval(()=>{if(document.visibilityState!=='visible')return;if(v.paused){go();return}if(v.currentTime===last){if(++stuck>=2){go();stuck=0}}else stuck=0;last=v.currentTime},2000)})()</script>`:'';
   const cards=items.map((w,i)=>`<a class="seo-card" ${filterAttrs(w)} href="/artworks/${artworkSlug(w)}/">${responsiveCard(w,`${esc(w.title)} — ${esc(meta.title)} by CHIEF`,i<2?'eager':'lazy')}<h2>${esc(w.title)}</h2>${w.under1000?`<p>${labels[w.category]} · Available at the Under1000 gallery</p>`:`<p>${labels[w.category]} · ${w.category==='accessible'?'Canvas':'Alucobond'} from ${money(w.category==='accessible'?canvasPrices[0]:pricesFor(w)[0])}</p><small class="fx-seo-note" data-ils="${w.category==='accessible'?canvasPrices[0]:pricesFor(w)[0]}"></small>`}${w.category==='premium'||w.category==='super'?'<p>Free shipping in Israel</p>':''}</a>`).join('');
   const schema={"@context":"https://schema.org","@graph":[{"@type":"CollectionPage",name:meta.title,description:meta.description,url,mainEntity:{"@type":"ItemList",itemListElement:items.map((w,i)=>({"@type":"ListItem",position:i+1,url:`${site}/artworks/${artworkSlug(w)}/`,name:w.title}))}},{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"CHIEF",item:`${site}/`},{"@type":"ListItem",position:2,name:"Collections",item:`${site}/#collectionIndex`},{"@type":"ListItem",position:3,name:meta.title,item:url}]}]};
   const html=`<!doctype html><html lang="en"><head>${commonHead(`${meta.title} | CHIEF`,meta.description,url,`/${items[0]?.image||'assets/site_work_01.jpg'}`)}<script type="application/ld+json">${JSON.stringify(schema)}</script>${filterAssets}</head><body class="seo-body">${header}<main class="seo-main"><div class="seo-breadcrumbs"><a href="/?lang=en">Home</a> / Collections / ${labels[category]}</div><h1 class="seo-title">${meta.title}</h1><p class="seo-lead">${meta.description}</p>${lateFilm('Open After Midnight works shown in bedrooms and bars')}<div class="seo-grid" data-catalog-grid>${cards}</div></main><script>(()=>{const k=()=>document.querySelectorAll("video").forEach(v=>{if(!v.src&&v.dataset.src)v.src=v.dataset.src;if(v.paused){v.muted=true;const p=v.play();if(p)p.catch(()=>{})}});["touchend","click"].forEach(e=>document.addEventListener(e,k,{passive:true}));})()</script></body></html>`;
@@ -679,31 +679,7 @@ await writeFile('dist/client/robots.txt',`User-agent: *\nAllow: /\n\nSitemap: ${
 const applePayDomainFile = await readFile('well-known/apple-developer-merchantid-domain-association', 'utf8');
 await writeFile('dist/server/index.js', `import { handleCollectorStories } from './collector-stories-worker.js';
 import { handleGrow } from './grow-worker.js';
-// Videos: iPhone Safari only plays a video when the server answers byte-range requests (206 Partial Content).
-// Files under /assets/ are served straight from static storage, which answers ranges with the whole file (200),
-// so films are linked as /media/<name>.mp4 (= /assets/<name>.mp4) and any other *.mp4 path is passed through here.
-async function serveVideo(request, env, url) {
-  let path = url.pathname;
-  if (path.startsWith('/media/')) {
-    const name = path.slice(7);
-    if (!/^[a-z0-9][a-z0-9-]*\\.mp4$/.test(name)) return new Response('Not found', { status: 404 });
-    path = '/assets/' + name;
-  }
-  const res = await env.ASSETS.fetch(new Request(new URL(path, url.origin), { method: 'GET' }));
-  if (!res.ok) return res;
-  const buf = await res.arrayBuffer(), size = buf.byteLength;
-  const base = { 'content-type': 'video/mp4', 'accept-ranges': 'bytes', 'cache-control': 'public, max-age=3600' };
-  const head = request.method === 'HEAD';
-  const m = /^bytes=(\\d*)-(\\d*)$/.exec((request.headers.get('range') || '').trim());
-  if (!m || (m[1] === '' && m[2] === '')) return new Response(head ? null : buf, { status: 200, headers: { ...base, 'content-length': String(size) } });
-  let start, end;
-  if (m[1] === '') { start = Math.max(0, size - Number(m[2])); end = size - 1; }
-  else { start = Number(m[1]); end = m[2] === '' ? size - 1 : Math.min(Number(m[2]), size - 1); }
-  if (start >= size || start > end) return new Response(null, { status: 416, headers: { ...base, 'content-range': 'bytes */' + size } });
-  return new Response(head ? null : buf.slice(start, end + 1), { status: 206, headers: { ...base, 'content-range': 'bytes ' + start + '-' + end + '/' + size, 'content-length': String(end - start + 1) } });
-}
 export default { async fetch(request, env) {
-  { const vu = new URL(request.url); if ((request.method === 'GET' || request.method === 'HEAD') && vu.pathname.endsWith('.mp4')) return serveVideo(request, env, vu); }
   // www.eranchief.com -> eranchief.com (301, same path + query), exactly like the old host did, to keep SEO intact.
   { const u = new URL(request.url); if (u.pathname === '/__build') return new Response(JSON.stringify({ host: 'cloudflare-worker', build: '${new Date().toISOString()}' }), { headers: { 'content-type': 'application/json', 'x-robots-tag': 'noindex', 'cache-control': 'no-store' } }); if (u.hostname === 'www.eranchief.com') { u.hostname = 'eranchief.com'; return Response.redirect(u.toString(), 301); } }
   if (new URL(request.url).pathname === '/.well-known/apple-developer-merchantid-domain-association') return new Response(${JSON.stringify(applePayDomainFile)}, { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600', 'access-control-allow-origin': '*' } });
