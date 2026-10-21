@@ -9,10 +9,5 @@ jobs:
       - name: probe live site
         run: |
           U=https://eranchief.com
-          echo "::notice title=landing first card::$(curl -s "$U/he/paper-edition/" | grep -o 'id="work-01".\{0,400\}' | grep -o 'paper-18[a-z-]*\.jpg\|לבחירת גודל ורכישה' | sort -u | tr '\n' ' ')"
-          echo "::notice title=og image::$(curl -s "$U/he/paper-edition/" | grep -o 'og:image" content="[^"]*')"
-          echo "::notice title=data first::$(curl -s "$U/paper-edition-data.js" | grep -o "{id:[0-9]*" | head -2 | tr '\n' ' ')"
-          echo "::notice title=app showScene::$(curl -s "$U/app.js" | grep -c 'selectPaper(requestedPaper-1);showScene()')"
-          echo "::notice title=hebrew optional::$(curl -s "$U/hebrew-ui.js" | grep -c "\['(optional)','(לא חובה)'\]")"
-          echo "::notice title=checkout css::$(curl -s "$U/checkout.css" | grep -c 'checkout-pricing \[hidden\]')"
-          echo "::notice title=pixel::$(curl -s "$U/he/paper-edition/" | grep -c "fbq('init','2031851447525485')")"
+          echo "::notice title=cta count::$(curl -s "$U/he/paper-edition/" | grep -o 'לבחירת גודל ורכישה' | wc -l) / old: $(curl -s "$U/he/paper-edition/" | grep -o 'להצגת היצירה בחדר' | wc -l)"
+          echo "::notice title=en cta::$(curl -s "$U/paper-edition/" | grep -o 'Choose a size and buy' | wc -l)"
