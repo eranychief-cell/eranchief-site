@@ -3,7 +3,7 @@
 export const themePages = {
   lobby: {
     slug: 'lobby-art',
-    video: '/assets/lobbies-film-lite.mp4',
+    video: '/media/lobbies-film-lite.mp4',
     poster: '/assets/lobbies-film-poster.jpg',
     he: {
       title: 'תמונות ללובי בניין — אמנות לוועד הבית ולחללים משותפים',
@@ -31,7 +31,7 @@ export const themePages = {
   },
   hospitality: {
     slug: 'restaurant-bar-art',
-    video: '/assets/restaurants-bars-film-lite.mp4',
+    video: '/media/restaurants-bars-film-lite.mp4',
     poster: '/assets/restaurants-bars-film-poster.jpg',
     he: {
       title: 'תמונות למסעדות ולברים — סדרת הכוסות בים',
