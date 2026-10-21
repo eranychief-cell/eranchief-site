@@ -9,9 +9,11 @@ jobs:
       - name: probe live site
         run: |
           U=https://eranchief.com
-          h=$(curl -s "$U/")
-          echo "::notice title=film::$(echo "$h" | grep -o '<video id="paperFilm"[^>]*>' | grep -o 'data-src="[^"]*"')"
-          echo "::notice title=title::$(echo "$h" | grep -o 'Seven works.<br><em>[^<]*' | head -1)"
-          echo "::notice title=data::$(curl -s "$U/paper-edition-data.js" | grep -o "closesAt:'[^']*'")"
-          echo "::notice title=he::$(curl -s "$U/he/paper-edition/" | grep -o 'זמין עד [^<]*' | head -1)"
-          echo "::notice title=mp4::$(curl -s -o /dev/null -w '%{http_code} %{size_download}' "$U/assets/paper-edition-film-oct-v3-lite.mp4")"
+          echo "::notice title=home pixel::$(curl -s "$U/he/" | grep -o "fbq('init','[0-9]*');fbq('track','PageView');[^<]\{0,60\}" | head -1)"
+          echo "::notice title=paper pixel::$(curl -s "$U/he/paper-edition/" | grep -o "fbq('track','ViewContent'[^<]\{0,40\}" | head -1)"
+          echo "::notice title=press::$(curl -s "$U/press/" | grep -o 'Channel 13 · Morning show · 11 May 2022\|RmC9u_Lb0XU' | sort -u | tr '\n' ' ')"
+          echo "::notice title=he bari::$(curl -s "$U/he/born-and-raised-on-iphone/" | grep -o 'ערוץ 13 · פותחים יום · 11 במאי 2022\|לצפייה ביוטיוב' | sort -u | tr '\n' ' ')"
+          echo "::notice title=privacy::$(curl -s "$U/privacy/" | grep -o 'Last updated: [^<]*\|פיקסל של מטא' | sort -u | tr '\n' ' ')"
+          echo "::notice title=app events::$(curl -s "$U/app.js" | grep -o "fbq('track','[A-Za-z]*'" | sort -u | tr '\n' ' ')"
+          echo "::notice title=app cache::$(curl -s -o /dev/null -D - "$U/app.js" | tr -d '\r' | grep -i 'cache-control' )"
+          echo "::notice title=app tag::$(curl -s "$U/he/" | grep -o '<script[^>]*app.js[^>]*>' | head -2 | tr '\n' ' ')"
