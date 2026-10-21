@@ -149,31 +149,6 @@
    ]
   ]
  },
- "assets/paper-17-upside-down-at-habima.jpg": {
-  "hash": "7ebea238d2f43d98cccc797e2070efb988c8aa9b605f76b8b99180a08bcdbf2b",
-  "variants": [
-   [
-    160,
-    "/assets/card-previews/paper-17-upside-down-at-habima-160.webp"
-   ],
-   [
-    320,
-    "/assets/card-previews/paper-17-upside-down-at-habima-320.webp"
-   ],
-   [
-    480,
-    "/assets/card-previews/paper-17-upside-down-at-habima-480.webp"
-   ],
-   [
-    960,
-    "/assets/card-previews/paper-17-upside-down-at-habima-960.webp"
-   ],
-   [
-    1440,
-    "/assets/card-previews/paper-17-upside-down-at-habima-1440.webp"
-   ]
-  ]
- },
  "assets/paper-18-one-look-back.jpg": {
   "hash": "77bd0097aef54aa1fa94566b1023ea9ee695a6ad89198697ede191896fdccd08",
   "variants": [
