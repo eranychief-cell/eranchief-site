@@ -14,6 +14,6 @@ globalThis.chiefPaperEditionData={
     {id:210,title:'The Rope That Leads to the Sun',titleHe:'החבל שמוביל לשמש',image:'assets/paper-15-the-rope-that-leads-to-the-sun.jpg',year:2026,portrait:true,prices:[249,399]},
     {id:211,title:'Someone Had to Shoot It',titleHe:'מישהו היה חייב לצלם את זה',image:'assets/paper-16-someone-had-to-shoot-it.jpg',year:2026,prices:[249,399]},
     {id:212,title:'Upside Down at Habima',titleHe:'הפוך מול הבימה',image:'assets/paper-17-upside-down-at-habima.jpg',year:2021,prices:[249,399]},
-    {id:213,title:'The Guardian of the Shore',titleHe:'שומר החוף',image:'assets/paper-18-the-guardian-of-the-shore.jpg',portrait:true,prices:[249,399]}
+    {id:213,title:'One Look Back',titleHe:'מבט אחד לאחור',image:'assets/paper-18-one-look-back.jpg',portrait:true,prices:[249,399]}
   ]
 };
