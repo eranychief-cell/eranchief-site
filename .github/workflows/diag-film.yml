@@ -9,7 +9,9 @@ jobs:
       - name: probe live site
         run: |
           U=https://eranchief.com
-          echo "::notice title=homepage film tag::$(curl -s "$U/" | grep -o '<video id="paperFilm"[^>]*>' | head -1)"
-          for p in /assets/paper-edition-film-oct-v2-lite.mp4 /assets/lobbies-film-lite.mp4; do
-            echo "::notice title=GET $p::$(curl -s -o /dev/null -D - "$U$p" | tr -d '\r' | grep -i -E '^HTTP|content-type|content-length' | tr '\n' ' ')"
-          done
+          h=$(curl -s "$U/")
+          echo "::notice title=film::$(echo "$h" | grep -o '<video id="paperFilm"[^>]*>' | grep -o 'data-src="[^"]*"')"
+          echo "::notice title=title::$(echo "$h" | grep -o 'Seven works.<br><em>[^<]*' | head -1)"
+          echo "::notice title=data::$(curl -s "$U/paper-edition-data.js" | grep -o "closesAt:'[^']*'")"
+          echo "::notice title=he::$(curl -s "$U/he/paper-edition/" | grep -o 'זמין עד [^<]*' | head -1)"
+          echo "::notice title=mp4::$(curl -s -o /dev/null -w '%{http_code} %{size_download}' "$U/assets/paper-edition-film-oct-v3-lite.mp4")"
