@@ -9,7 +9,7 @@ jobs:
       - name: probe live site
         run: |
           U=https://eranchief.com
-          for p in /assets/paper-edition-film-oct-lite.mp4 /assets/paper-edition-film-oct-poster.jpg /assets/paper-edition-film-lite.mp4; do
+          for p in /media/paper-edition-film-oct-lite.mp4 /media/lobbies-film-lite.mp4 /media/press-channel-13-interview.mp4 /born-and-raised-on-iphone/img/press-channel-13-interview.mp4; do
             h=$(curl -s -o /dev/null -D - -A "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1" "$U$p" | tr -d '\r' | grep -i -E "^HTTP|content-type|content-length|accept-ranges|cache-control" | tr '\n' ' ')
             echo "::notice title=GET $p::$h"
             r=$(curl -s -o /dev/null -D - -H "Range: bytes=0-1" "$U$p" | tr -d '\r' | grep -i -E "^HTTP|content-range|content-length|content-type" | tr '\n' ' ')
