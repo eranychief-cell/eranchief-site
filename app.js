@@ -656,7 +656,7 @@ function openProduct(id,preferredFinish){
   {const tag=document.querySelector('#productView .category-tag');if(tag){const n=w.category==='super'?7:(w.category==='premium'||w.category==='late-night')?25:0;const note=n?`<p class="edition-note">${ui(`${n} עותקים בסך הכול לכל יצירה, בכל הגדלים והחומרים יחד. כל עותק ממוספר, חתום ומגיע עם תעודת מקוריות.`,`${n} copies in total for this work, across all sizes and finishes combined. Each copy is numbered, signed and comes with a Certificate of Authenticity.`)}</p>`:'';tag.insertAdjacentHTML('afterend',note+`<p class="certificate-link"><a href="/assets/certificate-of-authenticity-sample.jpg" target="_blank" rel="noopener">${ui('לצפייה בדוגמה לתעודת המקוריות','See a sample Certificate of Authenticity')}</a></p>`)}}
   if(heProductRoute){
     const info=document.querySelector('#productView .product-info');info.dir='rtl';
-    info.querySelector('.category-tag').textContent=`${heLabels[w.category]} · ${cartEditionText(w.category)}`;
+    info.querySelector('.category-tag').textContent=w.category==='paper'?'חתום בידי האמן · תעודת מקוריות · ללא מסגרת':`${heLabels[w.category]} · ${cartEditionText(w.category)}`;
     if(w.discovery){const detail=[...info.querySelectorAll('h2 ~ p')];const english=detail.find(x=>x.textContent===w.discovery.en);if(english)english.textContent=w.discovery.he;const room=detail.find(x=>x.textContent===w.discovery.roomEn);if(room)room.textContent=w.discovery.roomHe}
     const signed=[...info.querySelectorAll('p')].find(x=>x.textContent.startsWith('Signed Fine Art'));if(signed)signed.textContent='צילום אמנותי מקורי מאת CHIEF · תעודת מקוריות כלולה';
     info.querySelectorAll('.option-group > label')[0].textContent='בחרו גודל · רוחב × גובה בס״מ';
@@ -803,6 +803,9 @@ const requestedFinish=requestedParams.get('finish');
 if(requestedArtwork&&works.some(w=>w.id===requestedArtwork)){
   history.replaceState({},'',location.pathname);
   openProduct(requestedArtwork,requestedFinish);
+  /* Landing links like /?artwork=213&size=1 arrive with the chosen size already selected. */
+  const sizeInput=requestedParams.has('size')&&document.querySelector(`#productView input[name="size"][value="${Number(requestedParams.get('size'))}"]`);
+  if(sizeInput&&!sizeInput.checked){sizeInput.checked=true;sizeInput.dispatchEvent(new Event('change'))}
 }else if(requestedParams.get('bag')==='1'){
   history.replaceState({},'',location.pathname);
   openCart();

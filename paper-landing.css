@@ -27,3 +27,17 @@
 
 /* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
 h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
+
+/* Direct buy from each card (Oct 2026): one tap per size opens the product sheet with that size selected */
+.paper-seo-buy{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 12px}
+.paper-seo-size{display:flex;flex-direction:column;gap:4px;padding:13px 14px;border:1px solid #171512;color:#171512;text-decoration:none;background:#fbf9f5;transition:background .2s,color .2s}
+.paper-seo-size span,.paper-seo-size bdi{font-size:14px;color:#575147}
+.paper-seo-size strong{font:600 24px/1.1 "Inter Tight",Rubik,sans-serif;color:#171512}
+.paper-seo-size em{font-style:normal;font-weight:600;font-size:14px;color:#9a3e27}
+.paper-seo-size:hover,.paper-seo-size:focus-visible{background:#171512}
+.paper-seo-size:hover span,.paper-seo-size:hover bdi,.paper-seo-size:hover strong,.paper-seo-size:hover em,.paper-seo-size:focus-visible span,.paper-seo-size:focus-visible bdi,.paper-seo-size:focus-visible strong,.paper-seo-size:focus-visible em{color:#f2efe8}
+.paper-seo-room{display:inline-block;color:#575147;font-size:14px;text-underline-offset:4px}
+.paper-seo-hero>p.paper-seo-trust{margin:0;font-size:15px;line-height:1.55;color:#575147}
+.paper-seo-trust a{color:#171512;font-weight:600}
+.paper-seo-footer p a{color:#171512;font-weight:600}
+@media(max-width:720px){.paper-seo-main{padding-top:36px}.paper-seo-hero{margin-bottom:40px}.paper-seo-hero h1{font-size:clamp(40px,11vw,54px);line-height:.95}.paper-seo-summary{margin:18px 0}.paper-seo-hero>p:not(.paper-seo-kicker):not(.paper-seo-trust){font-size:17px}}
