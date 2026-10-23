@@ -17,6 +17,22 @@ const plain = (s, max = 120) => String(s ?? '').replace(/[^\p{L}\p{N} .,@+\-]/gu
 // Accepts common spellings and small typos ("Isarel", "Isreal", "מדינת ישראל").
 function israel(country){const c=String(country||'').trim().toLowerCase().replace(/[.\s]+/g,' ').replace(/^(the )?(state of )?/,'');if(['il','isr'].includes(c)||c.includes('ישראל'))return true;const w=c.replace(/ /g,'');if(w.length<4||w.length>9)return false;const t='israel',d=[...Array(t.length+1).keys()];for(let i=1;i<=w.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=t.length;j++){const q=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(w[i-1]===t[j-1]?0:1));p=q}}return d[t.length]<=2}
 
+const FUNNEL_STEPS = ['landing', 'product', 'add', 'checkout', 'pay'];
+const israelDay = (d = new Date()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jerusalem' }).format(d);
+async function ensureFunnel(env) {
+  await env.DB.prepare('CREATE TABLE IF NOT EXISTS funnel_daily (day text NOT NULL, event text NOT NULL, src text NOT NULL, lang text NOT NULL, count integer NOT NULL DEFAULT 0, PRIMARY KEY (day, event, src, lang))').run();
+}
+async function funnelTable(env) {
+  await ensureFunnel(env);
+  const since = israelDay(new Date(Date.now() - 13 * 86400000));
+  const rows = (await env.DB.prepare('SELECT day, event, src, SUM(count) AS n FROM funnel_daily WHERE day >= ? GROUP BY day, event, src').bind(since).all()).results;
+  const days = [...new Set(rows.map(r => r.day))].sort().reverse();
+  const get = (day, ev, src) => rows.filter(r => (!day || r.day === day) && r.event === ev && (!src || r.src === src)).reduce((a, r) => a + r.n, 0);
+  const cells = day => `<td>${get(day, 'landing')}<br><small>FB/IG: ${get(day, 'landing', 'meta')}</small></td>` + FUNNEL_STEPS.slice(1).map(ev => `<td>${get(day, ev)}</td>`).join('');
+  const body = days.map(d => `<tr><td>${esc(d.slice(8, 10) + '.' + d.slice(5, 7))}</td>${cells(d)}</tr>`).join('');
+  return `<style>.funnel{overflow-x:auto}.funnel table{font-size:13px}.funnel td,.funnel th{padding:6px 4px}</style><h2>מהדורת הנייר: איפה אנשים נעצרים</h2><p><small>14 הימים האחרונים. כל מבקר נספר פעם אחת בכל שלב, בלי פרטים אישיים. הספירה התחילה ב־23.10.2026.</small></p><div class="funnel"><table><tr><th>יום</th><th>נכנסו</th><th>פתחו צילום</th><th>הוסיפו לסל</th><th>פתחו קופה</th><th>לחצו לתשלום</th></tr>${body || '<tr><td colspan="6">עדיין אין נתונים</td></tr>'}${days.length ? `<tr><th>סה״כ</th>${cells('')}</tr>` : ''}</table></div>`;
+}
+
 async function ensureOrders(env) {
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS grow_orders (id text PRIMARY KEY NOT NULL, items text NOT NULL, subtotal integer NOT NULL,
     discount integer NOT NULL, total integer NOT NULL, coupon text, full_name text NOT NULL, phone text NOT NULL, email text NOT NULL,
@@ -64,7 +80,24 @@ const page = (title, body) => new Response(`<!doctype html><html lang="he" dir="
 export async function handleGrow(request, env) {
   const url = new URL(request.url);
   const path = url.pathname;
-  if (!path.startsWith('/api/grow') && !path.startsWith('/order/') && !path.startsWith('/orders/manage')) return null;
+  if (!path.startsWith('/api/grow') && !path.startsWith('/order/') && !path.startsWith('/orders/manage') && path !== '/api/funnel') return null;
+
+  // Private funnel counter: anonymous daily counts per step (no IP, no cookies, no personal data), shown only on /orders/manage.
+  if (path === '/api/funnel') {
+    if (request.method === 'POST' && env.DB) {
+      try {
+        const b = await request.json();
+        const ua = request.headers.get('user-agent') || '';
+        if (FUNNEL_STEPS.includes(b.e) && !/bot|crawl|spider|preview|headless|lighthouse/i.test(ua)) {
+          const src = ['meta', 'other', 'direct'].includes(b.s) ? b.s : 'direct';
+          const lang = b.l === 'en' ? 'en' : 'he';
+          await ensureFunnel(env);
+          await env.DB.prepare('INSERT INTO funnel_daily (day, event, src, lang, count) VALUES (?, ?, ?, ?, 1) ON CONFLICT(day, event, src, lang) DO UPDATE SET count = count + 1').bind(israelDay(), b.e, src, lang).run();
+        }
+      } catch {}
+    }
+    return new Response(null, { status: 204, headers: { 'cache-control': 'no-store' } });
+  }
 
   // While on Grow's sandbox, online payment is offered only on test visits (?growtest=1) so real customers never meet a test wallet.
   const sandbox = base(env).includes('sandbox');
@@ -153,7 +186,8 @@ export async function handleGrow(request, env) {
     await ensureOrders(env);
     const rows = (await env.DB.prepare('SELECT * FROM grow_orders ORDER BY created_at DESC LIMIT 100').all()).results;
     const label = { paid: 'שולם ✅', pending: 'ממתין לתשלום', check: 'לבדיקה ⚠️' };
-    return page('הזמנות', `<h1>הזמנות אונליין</h1><p>${enabled(env) ? `תשלומים פעילים (${base(env).includes('sandbox') ? 'סביבת בדיקות' : 'אמיתי'})` : 'תשלומים כבויים — חסרים מפתחות Grow'}</p><table><tr><th>תאריך</th><th>סטטוס</th><th>לקוח</th><th>יצירות</th><th>סכום</th></tr>${rows.map(r => `<tr><td>${esc(r.created_at.slice(0, 16).replace('T', ' '))}</td><td>${label[r.status] || esc(r.status)}${r.asmachta ? `<br>אסמכתא ${esc(r.asmachta)}` : ''}</td><td>${esc(r.full_name)}<br>${esc(r.phone)}<br>${esc(r.email)}<br>${esc(r.address)}, ${esc(r.city)}</td><td>${JSON.parse(r.items).map(x => `${esc(x.title)} · ${esc(x.size)} · ${({ perspect: 'פרספקס', canvas: 'קנבס', paper: 'נייר אמנותי', alucobond: 'אלוקובונד' })[x.finish] || ''}`).join('<br>')}</td><td>₪${r.total.toLocaleString('en')}${r.coupon ? `<br>${esc(r.coupon)}` : ''}</td></tr>`).join('') || '<tr><td colspan="5">אין עדיין הזמנות</td></tr>'}</table>`);
+    const funnel = await funnelTable(env).catch(() => '');
+    return page('הזמנות', `${funnel}<h1>הזמנות אונליין</h1><p>${enabled(env) ? `תשלומים פעילים (${base(env).includes('sandbox') ? 'סביבת בדיקות' : 'אמיתי'})` : 'תשלומים כבויים — חסרים מפתחות Grow'}</p><table><tr><th>תאריך</th><th>סטטוס</th><th>לקוח</th><th>יצירות</th><th>סכום</th></tr>${rows.map(r => `<tr><td>${esc(r.created_at.slice(0, 16).replace('T', ' '))}</td><td>${label[r.status] || esc(r.status)}${r.asmachta ? `<br>אסמכתא ${esc(r.asmachta)}` : ''}</td><td>${esc(r.full_name)}<br>${esc(r.phone)}<br>${esc(r.email)}<br>${esc(r.address)}, ${esc(r.city)}</td><td>${JSON.parse(r.items).map(x => `${esc(x.title)} · ${esc(x.size)} · ${({ perspect: 'פרספקס', canvas: 'קנבס', paper: 'נייר אמנותי', alucobond: 'אלוקובונד' })[x.finish] || ''}`).join('<br>')}</td><td>₪${r.total.toLocaleString('en')}${r.coupon ? `<br>${esc(r.coupon)}` : ''}</td></tr>`).join('') || '<tr><td colspan="5">אין עדיין הזמנות</td></tr>'}</table>`);
   }
   return null;
 }
