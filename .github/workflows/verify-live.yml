@@ -1,0 +1,15 @@
+name: verify-live
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check live counter
+        run: |
+          sleep 60
+          f=$(curl -s -o /dev/null -w '%{http_code}' "https://eranchief.com/funnel.js?v=$(date +%s)")
+          h=$(curl -sL "https://eranchief.com/he/paper-edition/?v=$(date +%s)")
+          g=$(curl -s -o /dev/null -w '%{http_code}' "https://eranchief.com/api/funnel")
+          m=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' "https://eranchief.com/orders/manage/")
+          a=$(curl -sL "https://eranchief.com/app.js?v=$(date +%s)" | grep -o "chiefFunnel('[a-z]*'" | sort -u | tr '\n' ' ')
+          echo "::notice::funnel.js=$f landing_includes=$(grep -c 'funnel.js' <<<"$h") api_get=$g orders_manage_public=$m app_steps=$a"
