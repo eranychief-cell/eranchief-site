@@ -18,19 +18,38 @@ const plain = (s, max = 120) => String(s ?? '').replace(/[^\p{L}\p{N} .,@+\-]/gu
 function israel(country){const c=String(country||'').trim().toLowerCase().replace(/[.\s]+/g,' ').replace(/^(the )?(state of )?/,'');if(['il','isr'].includes(c)||c.includes('ישראל'))return true;const w=c.replace(/ /g,'');if(w.length<4||w.length>9)return false;const t='israel',d=[...Array(t.length+1).keys()];for(let i=1;i<=w.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=t.length;j++){const q=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(w[i-1]===t[j-1]?0:1));p=q}}return d[t.length]<=2}
 
 const FUNNEL_STEPS = ['landing', 'product', 'add', 'checkout', 'pay'];
+// Artwork pages (every work, not only the Paper Edition): page visit and buy-button click per work, then bag, checkout, pay.
+const ART_STEPS = ['art_landing', 'art_cta', 'art_u1000', 'art_add', 'art_checkout', 'art_pay'];
+const ART_WORK_STEPS = ['art_landing', 'art_cta', 'art_u1000'];
 const israelDay = (d = new Date()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jerusalem' }).format(d);
 async function ensureFunnel(env) {
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS funnel_daily (day text NOT NULL, event text NOT NULL, src text NOT NULL, lang text NOT NULL, count integer NOT NULL DEFAULT 0, PRIMARY KEY (day, event, src, lang))').run();
+  await env.DB.prepare('CREATE TABLE IF NOT EXISTS funnel_work_daily (day text NOT NULL, work text NOT NULL, event text NOT NULL, src text NOT NULL, count integer NOT NULL DEFAULT 0, PRIMARY KEY (day, work, event, src))').run();
+}
+const workTitle = slug => { const id = Number((slug.match(/-(\d+)$/) || [])[1]); return catalog[id]?.title || slug.replace(/-\d+$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); };
+async function artTable(env, since) {
+  const rows = (await env.DB.prepare(`SELECT day, event, src, SUM(count) AS n FROM funnel_daily WHERE day >= ? AND event LIKE 'art\\_%' ESCAPE '\\' GROUP BY day, event, src`).bind(since).all()).results;
+  const days = [...new Set(rows.map(r => r.day))].sort().reverse();
+  const get = (day, ev, src) => rows.filter(r => (!day || r.day === day) && r.event === ev && (!src || r.src === src)).reduce((a, r) => a + r.n, 0);
+  const cells = day => `<td>${get(day, 'art_landing')}<br><small>FB/IG: ${get(day, 'art_landing', 'meta')}</small></td>` + ART_STEPS.slice(1).map(ev => `<td>${get(day, ev)}</td>`).join('');
+  const body = days.map(d => `<tr><td>${esc(d.slice(8, 10) + '.' + d.slice(5, 7))}</td>${cells(d)}</tr>`).join('');
+  const works = (await env.DB.prepare('SELECT work, event, src, SUM(count) AS n FROM funnel_work_daily WHERE day >= ? GROUP BY work, event, src').bind(since).all()).results;
+  const byWork = {};
+  for (const r of works) { const w = byWork[r.work] ||= { visits: 0, meta: 0, cta: 0, u1000: 0 }; if (r.event === 'art_landing') { w.visits += r.n; if (r.src === 'meta') w.meta += r.n; } else if (r.event === 'art_cta') w.cta += r.n; else if (r.event === 'art_u1000') w.u1000 += r.n; }
+  const top = Object.entries(byWork).sort((a, b) => b[1].meta - a[1].meta || b[1].visits - a[1].visits).slice(0, 20);
+  const workRows = top.map(([slug, w]) => `<tr><td>${esc(workTitle(slug))}</td><td>${w.visits}<br><small>FB/IG: ${w.meta}</small></td><td>${w.cta}</td><td>${w.u1000}</td></tr>`).join('');
+  return `<h2>דפי העבודות: איפה אנשים נעצרים</h2><p><small>כל העבודות באתר, חוץ ממהדורת הנייר. "קנייה": לחצו על הכפתור לבחירת גודל באתר. "פחות מאלף": לחצו על הכפתור לגלריה. "סל", "קופה", "תשלום": הוסיפו לסל, פתחו קופה, לחצו לתשלום. הספירה התחילה ב־24.10.2026.</small></p><div class="funnel"><table><tr><th>יום</th><th>נכנסו</th><th>קנייה</th><th>פחות מאלף</th><th>סל</th><th>קופה</th><th>תשלום</th></tr>${body || '<tr><td colspan="7">עדיין אין נתונים</td></tr>'}${days.length ? `<tr><th>סה״כ</th>${cells('')}</tr>` : ''}</table></div><h2>לפי עבודה</h2><p><small>14 הימים האחרונים, מסודר לפי כניסות מפייסבוק ואינסטגרם.</small></p><div class="funnel"><table><tr><th>עבודה</th><th>נכנסו</th><th>קנייה</th><th>פחות מאלף</th></tr>${workRows || '<tr><td colspan="4">עדיין אין נתונים</td></tr>'}</table></div>`;
 }
 async function funnelTable(env) {
   await ensureFunnel(env);
   const since = israelDay(new Date(Date.now() - 13 * 86400000));
-  const rows = (await env.DB.prepare('SELECT day, event, src, SUM(count) AS n FROM funnel_daily WHERE day >= ? GROUP BY day, event, src').bind(since).all()).results;
+  const rows = (await env.DB.prepare(`SELECT day, event, src, SUM(count) AS n FROM funnel_daily WHERE day >= ? AND event NOT LIKE 'art\\_%' ESCAPE '\\' GROUP BY day, event, src`).bind(since).all()).results;
   const days = [...new Set(rows.map(r => r.day))].sort().reverse();
   const get = (day, ev, src) => rows.filter(r => (!day || r.day === day) && r.event === ev && (!src || r.src === src)).reduce((a, r) => a + r.n, 0);
   const cells = day => `<td>${get(day, 'landing')}<br><small>FB/IG: ${get(day, 'landing', 'meta')}</small></td>` + FUNNEL_STEPS.slice(1).map(ev => `<td>${get(day, ev)}</td>`).join('');
   const body = days.map(d => `<tr><td>${esc(d.slice(8, 10) + '.' + d.slice(5, 7))}</td>${cells(d)}</tr>`).join('');
-  return `<style>.funnel{overflow-x:auto}.funnel table{font-size:13px}.funnel td,.funnel th{padding:6px 4px}</style><h2>מהדורת הנייר: איפה אנשים נעצרים</h2><p><small>14 הימים האחרונים. כל מבקר נספר פעם אחת בכל שלב, בלי פרטים אישיים. הספירה התחילה ב־23.10.2026.</small></p><div class="funnel"><table><tr><th>יום</th><th>נכנסו</th><th>פתחו צילום</th><th>הוסיפו לסל</th><th>פתחו קופה</th><th>לחצו לתשלום</th></tr>${body || '<tr><td colspan="6">עדיין אין נתונים</td></tr>'}${days.length ? `<tr><th>סה״כ</th>${cells('')}</tr>` : ''}</table></div>`;
+  const art = await artTable(env, since).catch(() => '');
+  return `<style>.funnel{overflow-x:auto}.funnel table{font-size:13px}.funnel td,.funnel th{padding:6px 4px}.funnel small{white-space:nowrap}</style>${art}<h2>מהדורת הנייר: איפה אנשים נעצרים</h2><p><small>14 הימים האחרונים. כל מבקר נספר פעם אחת בכל שלב, בלי פרטים אישיים. הספירה התחילה ב־23.10.2026.</small></p><div class="funnel"><table><tr><th>יום</th><th>נכנסו</th><th>פתחו צילום</th><th>הוסיפו לסל</th><th>פתחו קופה</th><th>לחצו לתשלום</th></tr>${body || '<tr><td colspan="6">עדיין אין נתונים</td></tr>'}${days.length ? `<tr><th>סה״כ</th>${cells('')}</tr>` : ''}</table></div>`;
 }
 
 async function ensureOrders(env) {
@@ -88,11 +107,13 @@ export async function handleGrow(request, env) {
       try {
         const b = await request.json();
         const ua = request.headers.get('user-agent') || '';
-        if (FUNNEL_STEPS.includes(b.e) && !/bot|crawl|spider|preview|headless|lighthouse/i.test(ua)) {
+        if ((FUNNEL_STEPS.includes(b.e) || ART_STEPS.includes(b.e)) && !/bot|crawl|spider|preview|headless|lighthouse/i.test(ua)) {
           const src = ['meta', 'other', 'direct'].includes(b.s) ? b.s : 'direct';
           const lang = b.l === 'en' ? 'en' : 'he';
           await ensureFunnel(env);
           await env.DB.prepare('INSERT INTO funnel_daily (day, event, src, lang, count) VALUES (?, ?, ?, ?, 1) ON CONFLICT(day, event, src, lang) DO UPDATE SET count = count + 1').bind(israelDay(), b.e, src, lang).run();
+          const work = typeof b.w === 'string' && /^[a-z0-9-]{1,80}$/.test(b.w) ? b.w : null;
+          if (work && ART_WORK_STEPS.includes(b.e)) await env.DB.prepare('INSERT INTO funnel_work_daily (day, work, event, src, count) VALUES (?, ?, ?, ?, 1) ON CONFLICT(day, work, event, src) DO UPDATE SET count = count + 1').bind(israelDay(), work, b.e, src).run();
         }
       } catch {}
     }

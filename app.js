@@ -510,6 +510,7 @@ const cartShippingFee=()=>cart.reduce((m,x)=>Math.max(m,SHIP_FEE[x.finish]||0),0
 const intlFee=size=>{const n=(String(size).match(/\d+/g)||['0']).map(Number),l=Math.max(...n);return l<=80?1500:l<=110?2100:4900};
 const cartIntlFee=()=>cart.reduce((a,x)=>a+intlFee(x.size),0);
 const cartHasPaper=()=>cart.some(x=>x.finish==='paper'||x.category==='paper');
+const cartHasArt=()=>cart.some(x=>!(x.finish==='paper'||x.category==='paper'));
 const money=n=>new Intl.NumberFormat('en-IL',{style:'currency',currency:'ILS',maximumFractionDigits:0}).format(Math.round(n));
 const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target)}}),{threshold:.1});
 const watchReveals=()=>document.querySelectorAll('.reveal:not(.visible)').forEach(el=>revealObserver.observe(el));
@@ -692,7 +693,7 @@ function openProduct(id,preferredFinish){
   document.querySelectorAll('#productView input').forEach(i=>i.onchange=update);
   if(preferredFinish&&document.querySelector(`#productView input[name="finish"][value="${preferredFinish}"]`)){document.querySelector(`#productView input[name="finish"][value="${preferredFinish}"]`).checked=true;update()}
   document.querySelector('.close-product').onclick=()=>dialog.close();
-  document.querySelector('.add-to-cart').onclick=()=>{if(isPaper&&paperClosed()){refreshPaperState();return}const si=+document.querySelector('input[name="size"]:checked').value,f=document.querySelector('input[name="finish"]:checked').value;const newItem={...w,size:productSizes[si],finish:f,price:isPaper?Math.round(priceFor(si,f)):Math.round(priceFor(si,f)/10)*10};if(!canAddCopy(newItem)){if(isPaper&&paperItemUnavailable(newItem)){refreshPaperState();return}alert(ui('כל העותקים הזמינים של יצירה זו כבר בסל.','All available copies of this work are already in your bag.'));return}cart.push(newItem);saveCart();if(isPaper)try{window.chiefFunnel&&window.chiefFunnel('add',heProductRoute?'he':'en')}catch(_){}try{window.fbq&&fbq('track','AddToCart',{value:newItem.price,currency:'ILS',content_ids:[String(newItem.id)],content_name:newItem.title,content_type:'product'})}catch(_){}dialog.close();openCart()};
+  document.querySelector('.add-to-cart').onclick=()=>{if(isPaper&&paperClosed()){refreshPaperState();return}const si=+document.querySelector('input[name="size"]:checked').value,f=document.querySelector('input[name="finish"]:checked').value;const newItem={...w,size:productSizes[si],finish:f,price:isPaper?Math.round(priceFor(si,f)):Math.round(priceFor(si,f)/10)*10};if(!canAddCopy(newItem)){if(isPaper&&paperItemUnavailable(newItem)){refreshPaperState();return}alert(ui('כל העותקים הזמינים של יצירה זו כבר בסל.','All available copies of this work are already in your bag.'));return}cart.push(newItem);saveCart();if(isPaper)try{window.chiefFunnel&&window.chiefFunnel('add',heProductRoute?'he':'en')}catch(_){}if(!isPaper)try{window.chiefFunnel&&window.chiefFunnel('art_add',heProductRoute?'he':'en')}catch(_){}try{window.fbq&&fbq('track','AddToCart',{value:newItem.price,currency:'ILS',content_ids:[String(newItem.id)],content_name:newItem.title,content_type:'product'})}catch(_){}dialog.close();openCart()};
 }
 const orderPricing=()=>{const subtotal=cart.reduce((a,x)=>a+x.price,0),eligible=cart.filter(x=>x.category!=='paper').reduce((a,x)=>a+x.price,0),discount=appliedCoupon?Math.round(eligible*appliedCoupon.percent/100/10)*10:0,c=shippingCountry(),shipping=(!c||isIsraelShipping(c))?cartShippingFee():cartIntlFee();return{subtotal,discount,shipping,total:subtotal-discount+shipping}};
 function shippingCountry(){return document.querySelector('#shippingForm [name="country"]')?.value.trim()||''}
@@ -764,6 +765,7 @@ document.querySelector('#checkoutButton').onclick=()=>{
   const pricing=orderPricing();document.querySelector('#shippingSubtotal').textContent=money(pricing.subtotal);document.querySelector('#shippingDiscount').textContent=`−${money(pricing.discount)}`;document.querySelector('#shippingDiscountRow').hidden=!appliedCoupon;document.querySelector('#shippingTotal').textContent=money(pricing.total);document.querySelector('#shippingApprox').dataset.ils=String(pricing.total);window.chiefRefreshCurrency?.();
   {const c=document.querySelector('#shippingForm [name="country"]');if(c&&!c.value.trim()&&(heProductRoute||cart.every(x=>x.category==='paper')))c.value=heProductRoute?'ישראל':'Israel'}
   if(cartHasPaper())try{window.chiefFunnel&&window.chiefFunnel('checkout',heProductRoute?'he':'en')}catch(_){}
+  if(cartHasArt())try{window.chiefFunnel&&window.chiefFunnel('art_checkout',heProductRoute?'he':'en')}catch(_){}
   updateShippingUi();checkoutDialog.showModal();checkGrow();try{window.fbq&&fbq('track','InitiateCheckout',{value:pricing.total,currency:'ILS',num_items:cart.length})}catch(_){}
 };
 function selectionMessage(){
@@ -780,6 +782,7 @@ document.querySelector('#shippingForm').onsubmit=async e=>{
   try{window.fbq&&fbq('track','AddPaymentInfo',{value:orderPricing().total,currency:'ILS'})}catch(_){}
   if(onlinePayAvailable()){
     if(cartHasPaper())try{window.chiefFunnel&&window.chiefFunnel('pay',heProductRoute?'he':'en')}catch(_){}
+    if(cartHasArt())try{window.chiefFunnel&&window.chiefFunnel('art_pay',heProductRoute?'he':'en')}catch(_){}
     const button=e.currentTarget.querySelector('.submit-order'),err=document.querySelector('#payError');err.hidden=true;button.disabled=true;const label=button.textContent;button.textContent=ui('פותח תשלום מאובטח…','Opening secure payment…');setTimeout(()=>{button.textContent=label},8000);
     try{
       const response=await fetch('/api/grow/checkout'+growTestQuery,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({items:cart.map(x=>({id:x.id,size:x.size,finish:x.finish})),coupon:appliedCoupon?.code||'',terms:!!data.terms,customer:{fullName:data.fullName,phone:data.phone,email:data.email,country:data.country,city:data.city,address:data.address,postalCode:data.postalCode}})});
