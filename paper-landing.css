@@ -41,3 +41,9 @@ h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 .paper-seo-trust a{color:#171512;font-weight:600}
 .paper-seo-footer p a{color:#171512;font-weight:600}
 @media(max-width:720px){.paper-seo-main{padding-top:36px}.paper-seo-hero{margin-bottom:40px}.paper-seo-hero h1{font-size:clamp(40px,11vw,54px);line-height:.95}.paper-seo-summary{margin:18px 0}.paper-seo-hero>p:not(.paper-seo-kicker):not(.paper-seo-trust){font-size:17px}}
+/* photos first: compact hero, details below the works (24.10.2026) */
+.paper-seo-mini{margin:10px 0 0;font-size:14px;line-height:1.5;color:#5f594f}
+.paper-seo-details{max-width:760px;margin:clamp(56px,8vw,96px) 0 0}
+.paper-seo-details>p{font-size:clamp(17px,1.8vw,21px);line-height:1.55}
+.paper-seo-details>p.paper-seo-trust{font-size:15px;color:#575147}
+@media(max-width:720px){.paper-seo-main{padding-top:14px}.paper-seo-hero{margin-bottom:14px}.paper-seo-kicker{letter-spacing:.06em;font-size:11px}.paper-seo-hero h1{font-size:clamp(32px,9vw,42px);line-height:1;margin:.12em 0 .08em}.paper-seo-mini{font-size:12.5px;margin-top:6px}.paper-seo-grid{border-top:0!important;padding-top:0!important;margin-top:0!important}.paper-seo-image{aspect-ratio:auto;padding:0;background:none}.paper-seo-image img{height:auto;max-height:78vh}}
