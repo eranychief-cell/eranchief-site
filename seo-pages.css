@@ -156,3 +156,12 @@ h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 
 /* Hebrew pages: the reach line ("8,207 לייקים · 114 תגובות") must read right to left, or the first number ends up after the Hebrew words. */
 html[dir="rtl"] .featured-proof strong{direction:rtl;text-align:right}
+
+/* Under1000 works on phones: buy button stays on screen (hidden once the full buy box is visible). */
+.u1k-sticky{display:none}
+@media(max-width:800px){
+  .u1k-sticky{display:block;position:fixed;left:0;right:0;bottom:0;z-index:55;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(244,241,235,.96);border-top:1px solid #d8d1c4;transition:transform .25s ease,opacity .25s ease}
+  .u1k-sticky .seo-cta{display:block;text-align:center;padding:15px 18px;font-size:16px}
+  .u1k-sticky.u1k-hide{transform:translateY(110%);opacity:0;pointer-events:none}
+  .product-seo:has(~ .u1k-sticky), main:has(.u1k-sticky){padding-bottom:84px}
+}
