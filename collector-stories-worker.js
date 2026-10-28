@@ -10,6 +10,16 @@ const sessionValue = async token => {
   const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode('chief-admin-session-v1'));
   return [...new Uint8Array(sig)].map(b => b.toString(16).padStart(2, '0')).join('');
 };
+// Display order chosen by the artist (28.10.2026): Shani, Yael, Idit, Meital first; Asaf last.
+// Stories approved later appear after the pinned ones (newest first) and before the last ones.
+// On an artwork page, a story about that same artwork still comes first.
+const STORY_FIRST = ['3e071619-375e-458d-b64a-e91036085f1b','48aec262-85e3-4328-9893-719105176847','f3f6e3d8-7a4a-4d2c-9d95-5652903b79cc','c5c6e1e0-2fe1-4019-ab47-c97b88fae0d7'];
+const STORY_LAST = ['c8b358b5-ac92-4a12-8546-efbf4bfcdfb5'];
+const storyRank = id => STORY_FIRST.includes(id) ? STORY_FIRST.indexOf(id) : STORY_LAST.includes(id) ? 1000 + STORY_LAST.indexOf(id) : 500;
+export const orderStories = (rows, artwork) => {
+  const same = r => artwork && String(r.artwork || '').trim().toLowerCase() === String(artwork).trim().toLowerCase() ? 0 : 1;
+  return [...rows].sort((a, b) => same(a) - same(b) || storyRank(a.id) - storyRank(b.id) || String(b.created_at || '').localeCompare(String(a.created_at || '')));
+};
 const cookie = (request, name) => (request.headers.get('cookie') || '').split(/;\s*/).map(c => c.split('=')).find(([k]) => k === name)?.slice(1).join('=') || '';
 // Owner = correct `Authorization: Bearer <ADMIN_TOKEN>` header, or a session cookie from the password login page.
 const owner = async (request, env) => {
@@ -68,10 +78,9 @@ export async function handleCollectorStories(request, env) {
     if (path === '/api/collector-stories' && request.method === 'GET') {
       const artwork=url.searchParams.get('artwork');
       if(artwork && artwork.length>160)return json({error:'Invalid artwork.'},400);
-      const rows = artwork
-        ? await db(env).prepare("SELECT id, first_name, city, artwork, message, photo_key FROM collector_stories WHERE status = 'approved' AND publish_consent = 1 ORDER BY CASE WHEN lower(trim(artwork)) = lower(trim(?)) THEN 0 ELSE 1 END, created_at DESC LIMIT 2").bind(artwork).all()
-        : await db(env).prepare("SELECT id, first_name, city, artwork, message, photo_key FROM collector_stories WHERE status = 'approved' AND publish_consent = 1 ORDER BY created_at DESC LIMIT 30").all();
-      return json({stories:rows.results.map(({photo_key,...row}) => ({...row,photo:photo_key?'/api/collector-stories/'+row.id+'/photo':null}))});
+      const rows = await db(env).prepare("SELECT id, first_name, city, artwork, message, photo_key, created_at FROM collector_stories WHERE status = 'approved' AND publish_consent = 1 ORDER BY created_at DESC LIMIT 30").all();
+      const ordered = orderStories(rows.results, artwork).slice(0, artwork ? 2 : 30);
+      return json({stories:ordered.map(({photo_key,created_at,...row}) => ({...row,photo:photo_key?'/api/collector-stories/'+row.id+'/photo':null}))});
     }
     if (path === '/api/collector-stories/admin' && request.method === 'GET') {
       const rows = await db(env).prepare('SELECT id, first_name, email, city, artwork, message, photo_key, publish_consent, status, created_at FROM collector_stories ORDER BY created_at DESC LIMIT 100').all();
