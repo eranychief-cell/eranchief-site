@@ -26,7 +26,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=2">
   <link rel="stylesheet" href="editorial.css?v=2">
-  <link rel="stylesheet" href="commerce.css?v=3">
+  <link rel="stylesheet" href="commerce.css?v=4">
   <link rel="stylesheet" href="finish.css">
   <link rel="stylesheet" href="canvas.css">
   <link rel="stylesheet" href="checkout.css?v=2">
@@ -78,6 +78,11 @@
       <p class="hero-edition">CHIEF / COLLECTION 01 / 2026</p>
     </section>
     <div class="manifesto-strip"><span>SEA</span><i>·</i><span>REFLECTION</span><i>·</i><span>LIGHT</span><i>·</i><span>MOVEMENT</span><i>·</i><span>TRANSFORMATION</span></div>
+
+    <section class="new-arrivals" id="new-arrivals" aria-labelledby="newArrivalsTitle" hidden>
+      <div class="new-arrivals__head"><p class="eyebrow">JUST ADDED</p><h2 id="newArrivalsTitle">New on the site.</h2></div>
+      <div class="new-arrivals__grid" id="newArrivalsGrid"></div>
+    </section>
 
     <section class="shop-paths" aria-labelledby="shopPathsTitle">
       <div class="shop-paths-heading"><p class="eyebrow">FIND YOUR CHIEF</p><h2 id="shopPathsTitle">A work for every wall.<br><em>A way to begin at every price.</em></h2></div>
@@ -339,12 +344,12 @@
   <script>function chiefTranslateInit(){new google.translate.TranslateElement({pageLanguage:'en',includedLanguages:'he,ar,fr,es,de,it,pt,ru,zh-CN,ja,ko,nl,pl,tr,el,hi',layout:google.translate.TranslateElement.InlineLayout.SIMPLE,autoDisplay:false},'google_translate_element')}</script>
   <script src="https://translate.google.com/translate_a/element.js?cb=chiefTranslateInit" async></script>
   <script src="currency.js?v=1"></script>
-  <script src="hebrew-ui.js?v=22"></script>
+  <script src="hebrew-ui.js?v=23"></script>
   <script src="filter-orientations.js"></script>
   <script src="card-previews.js"></script>
   <script src="paper-edition-data.js" defer></script>
   <script src="funnel.js" defer></script><script src="paper-expiry.js" defer></script>
-  <script src="app.js?v=57" defer></script>
+  <script src="app.js?v=58" defer></script>
   <script src="catalog-filters.js?v=2"></script>
 <script>(()=>{const k=()=>document.querySelectorAll("video").forEach(v=>{if(!v.src&&v.dataset.src)v.src=v.dataset.src;if(v.paused){v.muted=true;const p=v.play();if(p)p.catch(()=>{})}});["touchend","click"].forEach(e=>document.addEventListener(e,k,{passive:true}));})()</script></body>
 </html>
