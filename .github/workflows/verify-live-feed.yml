@@ -6,12 +6,14 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check the New on the site strip is live
+      - name: Check the new Paper Edition order is live
         run: |
           S=https://eranchief.com
-          for i in $(seq 1 30); do curl -s "$S/?v=$i" | grep -q 'id="new-arrivals"' && break; sleep 15; done
-          H=$(curl -s "$S/?x=2")
-          echo "::notice::HOME section=$(echo "$H" | grep -c 'id="new-arrivals"') grid=$(echo "$H" | grep -c 'id="newArrivalsGrid"') app=$(echo "$H" | grep -o 'app.js?v=[0-9]*') css=$(echo "$H" | grep -o 'commerce.css?v=[0-9]*') he=$(echo "$H" | grep -o 'hebrew-ui.js?v=[0-9]*')"
-          echo "::notice::APPJS newArrivals=$(curl -s "$S/app.js?v=58" | grep -c 'newArrivals') status=$(curl -s -o /dev/null -w '%{http_code}' "$S/app.js?v=58")"
-          echo "::notice::CSS badge=$(curl -s "$S/commerce.css?v=4" | grep -c 'new-badge')"
-          echo "::notice::HEUI $(curl -s "$S/hebrew-ui.js?v=23" | grep -o 'חדש באתר' | head -1)"
+          for i in $(seq 1 30); do curl -s "$S/paper-edition-data.js?v=$i" | grep -q "id:215.*" && ! curl -s "$S/paper-edition-data.js?v=$i" | grep -q "id:213" && break; sleep 15; done
+          D=$(curl -s "$S/paper-edition-data.js?x=1")
+          echo "::notice::DATA first=$(echo "$D" | grep -o "title:'[^']*'" | head -2 | tr '\n' ' ') count=$(echo "$D" | grep -c "prices:") olb=$(echo "$D" | grep -c 'One Look Back')"
+          H=$(curl -s "$S/?x=3")
+          echo "::notice::HOME eight=$(echo "$H" | grep -o 'Eight works' | wc -l) nine=$(echo "$H" | grep -o 'Nine works' | wc -l) card=$(echo "$H" | grep -o 'paper-19-bad-hair-day.jpg' | wc -l) olb=$(echo "$H" | grep -c 'paper-18-one-look-back') film=$(echo "$H" | grep -o 'paper-film" style="display:none' | wc -l)"
+          P=$(curl -s "$S/he/paper-edition/")
+          echo "::notice::PAPER h1=$(echo "$P" | grep -o 'שמונה צילומים חתומים' | head -1) w01=$(echo "$P" | grep -c 'id="work-01"') og=$(echo "$P" | grep -o 'og:image" content="[^"]*' | head -1)"
+          echo "::notice::TWIN bhd=$(curl -s $S/he/artworks/bad-hair-day-214/ | grep -o 'paper-edition/#work-0[0-9]' | head -1) t3=$(curl -s $S/he/artworks/terminal-3-216/ | grep -o 'paper-edition/#work-0[0-9]' | head -1)"
