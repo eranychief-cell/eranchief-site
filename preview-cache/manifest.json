@@ -1,26 +1,51 @@
 {
- "assets/paper-18-one-look-back.jpg": {
-  "hash": "77bd0097aef54aa1fa94566b1023ea9ee695a6ad89198697ede191896fdccd08",
+ "assets/paper-19-bad-hair-day.jpg": {
+  "hash": "8c2115abfec6b14abaa4d668433a0787a6670bcd945a1dd38ae685bbbb885ade",
   "variants": [
    [
     160,
-    "/assets/card-previews/paper-18-one-look-back-160.webp"
+    "/assets/card-previews/paper-19-bad-hair-day-160.webp"
    ],
    [
     320,
-    "/assets/card-previews/paper-18-one-look-back-320.webp"
+    "/assets/card-previews/paper-19-bad-hair-day-320.webp"
    ],
    [
     480,
-    "/assets/card-previews/paper-18-one-look-back-480.webp"
+    "/assets/card-previews/paper-19-bad-hair-day-480.webp"
    ],
    [
     960,
-    "/assets/card-previews/paper-18-one-look-back-960.webp"
+    "/assets/card-previews/paper-19-bad-hair-day-960.webp"
    ],
    [
-    1351,
-    "/assets/card-previews/paper-18-one-look-back-1351.webp"
+    1350,
+    "/assets/card-previews/paper-19-bad-hair-day-1350.webp"
+   ]
+  ]
+ },
+ "assets/paper-20-terminal-3.jpg": {
+  "hash": "28a843c6df0ea4d19a12f163e7f0e90e7a9ff383280a4b8827392c46dbcada57",
+  "variants": [
+   [
+    160,
+    "/assets/card-previews/paper-20-terminal-3-160.webp"
+   ],
+   [
+    320,
+    "/assets/card-previews/paper-20-terminal-3-320.webp"
+   ],
+   [
+    480,
+    "/assets/card-previews/paper-20-terminal-3-480.webp"
+   ],
+   [
+    960,
+    "/assets/card-previews/paper-20-terminal-3-960.webp"
+   ],
+   [
+    1308,
+    "/assets/card-previews/paper-20-terminal-3-1308.webp"
    ]
   ]
  },
@@ -171,56 +196,6 @@
    [
     1440,
     "/assets/card-previews/paper-16-someone-had-to-shoot-it-1440.webp"
-   ]
-  ]
- },
- "assets/paper-19-bad-hair-day.jpg": {
-  "hash": "8c2115abfec6b14abaa4d668433a0787a6670bcd945a1dd38ae685bbbb885ade",
-  "variants": [
-   [
-    160,
-    "/assets/card-previews/paper-19-bad-hair-day-160.webp"
-   ],
-   [
-    320,
-    "/assets/card-previews/paper-19-bad-hair-day-320.webp"
-   ],
-   [
-    480,
-    "/assets/card-previews/paper-19-bad-hair-day-480.webp"
-   ],
-   [
-    960,
-    "/assets/card-previews/paper-19-bad-hair-day-960.webp"
-   ],
-   [
-    1350,
-    "/assets/card-previews/paper-19-bad-hair-day-1350.webp"
-   ]
-  ]
- },
- "assets/paper-20-terminal-3.jpg": {
-  "hash": "28a843c6df0ea4d19a12f163e7f0e90e7a9ff383280a4b8827392c46dbcada57",
-  "variants": [
-   [
-    160,
-    "/assets/card-previews/paper-20-terminal-3-160.webp"
-   ],
-   [
-    320,
-    "/assets/card-previews/paper-20-terminal-3-320.webp"
-   ],
-   [
-    480,
-    "/assets/card-previews/paper-20-terminal-3-480.webp"
-   ],
-   [
-    960,
-    "/assets/card-previews/paper-20-terminal-3-960.webp"
-   ],
-   [
-    1308,
-    "/assets/card-previews/paper-20-terminal-3-1308.webp"
    ]
   ]
  },
