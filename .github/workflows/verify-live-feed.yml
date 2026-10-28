@@ -1,0 +1,14 @@
+name: verify-live-feed
+on:
+  push:
+    branches: [verify-live-feed]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the live collector story order
+        run: |
+          for i in $(seq 1 20); do o=$(curl -s https://eranchief.com/api/collector-stories | jq -r '[.stories[].first_name]|join(",")'); case "$o" in שני*) break;; esac; sleep 15; done
+          echo "::notice::ORDER-ALL $(curl -s https://eranchief.com/api/collector-stories | jq -r '[.stories[].first_name]|join(" > ")')"
+          echo "::notice::ORDER-BHD $(curl -s 'https://eranchief.com/api/collector-stories?artwork=Bad%20Hair%20Day' | jq -r '[.stories[].first_name]|join(" > ")')"
+          echo "::notice::ORDER-WR $(curl -s 'https://eranchief.com/api/collector-stories?artwork=What%20Remains' | jq -r '[.stories[].first_name]|join(" > ")')"
