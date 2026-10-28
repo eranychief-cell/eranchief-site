@@ -6,14 +6,14 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check the new Paper Edition order is live
+      - name: Check work 205 now leads to work 1
         run: |
           S=https://eranchief.com
-          for i in $(seq 1 30); do curl -s "$S/paper-edition-data.js?v=$i" | grep -q "id:215.*" && ! curl -s "$S/paper-edition-data.js?v=$i" | grep -q "id:213" && break; sleep 15; done
-          D=$(curl -s "$S/paper-edition-data.js?x=1")
-          echo "::notice::DATA first=$(echo "$D" | grep -o "title:'[^']*'" | head -2 | tr '\n' ' ') count=$(echo "$D" | grep -c "prices:") olb=$(echo "$D" | grep -c 'One Look Back')"
-          H=$(curl -s "$S/?x=3")
-          echo "::notice::HOME eight=$(echo "$H" | grep -o 'Eight works' | wc -l) nine=$(echo "$H" | grep -o 'Nine works' | wc -l) card=$(echo "$H" | grep -o 'paper-19-bad-hair-day.jpg' | wc -l) olb=$(echo "$H" | grep -c 'paper-18-one-look-back') film=$(echo "$H" | grep -o 'paper-film" style="display:none' | wc -l)"
-          P=$(curl -s "$S/he/paper-edition/")
-          echo "::notice::PAPER h1=$(echo "$P" | grep -o 'שמונה צילומים חתומים' | head -1) w01=$(echo "$P" | grep -c 'id="work-01"') og=$(echo "$P" | grep -o 'og:image" content="[^"]*' | head -1)"
-          echo "::notice::TWIN bhd=$(curl -s $S/he/artworks/bad-hair-day-214/ | grep -o 'paper-edition/#work-0[0-9]' | head -1) t3=$(curl -s $S/he/artworks/terminal-3-216/ | grep -o 'paper-edition/#work-0[0-9]' | head -1)"
+          for i in $(seq 1 30); do c=$(curl -s -o /dev/null -w '%{http_code}' "$S/artworks/color-before-the-storm-205/"); [ "$c" = "301" ] && break; sleep 15; done
+          echo "::notice::EN $(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' $S/artworks/color-before-the-storm-205/)"
+          echo "::notice::HE $(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' $S/he/artworks/color-before-the-storm-205/)"
+          echo "::notice::TARGET $(curl -s -o /dev/null -w '%{http_code}' $S/he/artworks/colors-before-the-storm-1/)"
+          echo "::notice::FEED 205=$(curl -s $S/google-merchant-feed.xml | grep -o 'CHIEF-205' | wc -l) 1=$(curl -s $S/google-merchant-feed.xml | grep -o 'CHIEF-1<' | wc -l)"
+          echo "::notice::SITEMAP 205=$(curl -s $S/sitemap.xml | grep -c 'color-before-the-storm-205')"
+          echo "::notice::LOBBY $(curl -s $S/lobby-art/ | grep -o 'colors-before-the-storm-1/' | head -1) old=$(curl -s $S/lobby-art/ | grep -c 'color-before-the-storm-205')"
+          echo "::notice::APPJS has205=$(curl -s "$S/app.js?v=58&r=$RANDOM" | grep -c 'id:205,')"
