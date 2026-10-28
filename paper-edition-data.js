@@ -13,6 +13,7 @@ globalThis.chiefPaperEditionData={
     {id:208,title:'The Sky Opened Over Jaffa',titleHe:'השמיים נפתחו מעל יפו',image:'assets/paper-13-the-sky-opened-over-jaffa.jpg',year:2026,portrait:true,prices:[249,399]},
     {id:209,title:'The Towers Drank the Sky',titleHe:'המגדלים שתו את השמיים',image:'assets/paper-14-the-towers-drank-the-sky.jpg',year:2015,prices:[249,399]},
     {id:210,title:'The Rope That Leads to the Sun',titleHe:'החבל שמוביל לשמש',image:'assets/paper-15-the-rope-that-leads-to-the-sun.jpg',year:2026,portrait:true,prices:[249,399]},
-    {id:211,title:'Someone Had to Shoot It',titleHe:'מישהו היה חייב לצלם את זה',image:'assets/paper-16-someone-had-to-shoot-it.jpg',year:2026,prices:[249,399]}
+    {id:211,title:'Someone Had to Shoot It',titleHe:'מישהו היה חייב לצלם את זה',image:'assets/paper-16-someone-had-to-shoot-it.jpg',year:2026,prices:[249,399]},
+    {id:215,title:'Bad Hair Day',titleHe:'Bad Hair Day',image:'assets/paper-19-bad-hair-day.jpg',portrait:true,prices:[249,399]}
   ]
 };

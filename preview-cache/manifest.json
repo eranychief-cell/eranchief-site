@@ -174,6 +174,48 @@
    ]
   ]
  },
+ "assets/paper-19-bad-hair-day.jpg": {
+  "hash": "8c2115abfec6b14abaa4d668433a0787a6670bcd945a1dd38ae685bbbb885ade",
+  "variants": [
+   [
+    160,
+    "/assets/card-previews/paper-19-bad-hair-day-160.webp"
+   ],
+   [
+    320,
+    "/assets/card-previews/paper-19-bad-hair-day-320.webp"
+   ],
+   [
+    480,
+    "/assets/card-previews/paper-19-bad-hair-day-480.webp"
+   ],
+   [
+    960,
+    "/assets/card-previews/paper-19-bad-hair-day-960.webp"
+   ],
+   [
+    1350,
+    "/assets/card-previews/paper-19-bad-hair-day-1350.webp"
+   ]
+  ]
+ },
+ "assets/work_214_bad_hair_day.jpg": {
+  "hash": "c83d8a0edc6ee3b9805958fcc645e0ea2f965c08e6b0197032285e4a33664d60",
+  "variants": [
+   [
+    480,
+    "/assets/card-previews/work_214_bad_hair_day-480.webp"
+   ],
+   [
+    960,
+    "/assets/card-previews/work_214_bad_hair_day-960.webp"
+   ],
+   [
+    1440,
+    "/assets/card-previews/work_214_bad_hair_day-1440.webp"
+   ]
+  ]
+ },
  "assets/ED35DC73-61CF-4FB6-89FE-E9BA2A43AFF9.jpeg": {
   "hash": "2a0b471d9b69ba1483c227d91ed9d5ca036db7a4f9d860a401c1c2fb91429469",
   "variants": [
