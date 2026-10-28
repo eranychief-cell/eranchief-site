@@ -780,7 +780,10 @@ async function route(request, env) {
     '/artworks/dead-end-154/': '/artworks/between-then-and-now-154/',
     '/he/artworks/dead-end-154/': '/he/artworks/between-then-and-now-154/',
     '/artworks/rain-check-161/': '/artworks/the-rain-left-one-color-behind-161/',
-    '/he/artworks/rain-check-161/': '/he/artworks/the-rain-left-one-color-behind-161/'
+    '/he/artworks/rain-check-161/': '/he/artworks/the-rain-left-one-color-behind-161/',
+    // Work 205 was the same photograph as work 1 (limited edition of 25); its pages now lead to work 1 (28 Oct 2026).
+    '/artworks/color-before-the-storm-205/': '/artworks/colors-before-the-storm-1/',
+    '/he/artworks/color-before-the-storm-205/': '/he/artworks/colors-before-the-storm-1/'
   };
   if (redirects[url.pathname]) return Response.redirect(new URL(redirects[url.pathname], url.origin), 301);
   const assetResponse = await env.ASSETS.fetch(request);
