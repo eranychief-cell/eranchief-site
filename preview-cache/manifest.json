@@ -199,6 +199,48 @@
    ]
   ]
  },
+ "assets/paper-20-terminal-3.jpg": {
+  "hash": "28a843c6df0ea4d19a12f163e7f0e90e7a9ff383280a4b8827392c46dbcada57",
+  "variants": [
+   [
+    160,
+    "/assets/card-previews/paper-20-terminal-3-160.webp"
+   ],
+   [
+    320,
+    "/assets/card-previews/paper-20-terminal-3-320.webp"
+   ],
+   [
+    480,
+    "/assets/card-previews/paper-20-terminal-3-480.webp"
+   ],
+   [
+    960,
+    "/assets/card-previews/paper-20-terminal-3-960.webp"
+   ],
+   [
+    1308,
+    "/assets/card-previews/paper-20-terminal-3-1308.webp"
+   ]
+  ]
+ },
+ "assets/work_216_terminal_3.jpg": {
+  "hash": "f28790eed15c0bec3702e932f304b24eaebece3f95f0df0169f83b947b4fe20b",
+  "variants": [
+   [
+    480,
+    "/assets/card-previews/work_216_terminal_3-480.webp"
+   ],
+   [
+    960,
+    "/assets/card-previews/work_216_terminal_3-960.webp"
+   ],
+   [
+    1440,
+    "/assets/card-previews/work_216_terminal_3-1440.webp"
+   ]
+  ]
+ },
  "assets/work_214_bad_hair_day.jpg": {
   "hash": "c83d8a0edc6ee3b9805958fcc645e0ea2f965c08e6b0197032285e4a33664d60",
   "variants": [
