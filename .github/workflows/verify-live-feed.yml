@@ -6,16 +6,12 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Terminal 3 is live
+      - name: Check the New on the site strip is live
         run: |
           S=https://eranchief.com
-          for i in $(seq 1 30); do curl -s "$S/?v=$i" | grep -q "Nine works" && break; sleep 15; done
-          echo "::notice::HOME-NINE $(curl -s "$S/?x=1" | grep -o 'Nine works' | wc -l)"
-          echo "::notice::ART-EN $(curl -s -o /dev/null -w '%{http_code}' $S/artworks/terminal-3-216/)"
-          echo "::notice::ART-HE $(curl -s -o /dev/null -w '%{http_code}' $S/he/artworks/terminal-3-216/)"
-          echo "::notice::IMG $(curl -s -o /dev/null -w '%{http_code} %{content_type}' $S/assets/work_216_terminal_3.jpg)"
-          echo "::notice::PAPER-HE work-09=$(curl -s $S/he/paper-edition/ | grep -c 'id="work-09"') t3=$(curl -s $S/he/paper-edition/ | grep -o 'טרמינל 3' | wc -l)"
-          echo "::notice::TWIN-HE $(curl -s $S/he/artworks/terminal-3-216/ | grep -o 'paper-edition/#work-09' | head -1)"
-          echo "::notice::OG $(curl -s $S/he/artworks/terminal-3-216/ | grep -o 'og:image" content="[^"]*' | head -1)"
-          echo "::notice::FEED $(curl -s $S/google-merchant-feed.xml | grep -o 'CHIEF-216' | head -1) items=$(curl -s $S/google-merchant-feed.xml | grep -c '<item>')"
-          echo "::notice::SITEMAP $(curl -s $S/sitemap.xml | grep -c 'terminal-3-216')"
+          for i in $(seq 1 30); do curl -s "$S/?v=$i" | grep -q 'id="new-arrivals"' && break; sleep 15; done
+          H=$(curl -s "$S/?x=2")
+          echo "::notice::HOME section=$(echo "$H" | grep -c 'id="new-arrivals"') grid=$(echo "$H" | grep -c 'id="newArrivalsGrid"') app=$(echo "$H" | grep -o 'app.js?v=[0-9]*') css=$(echo "$H" | grep -o 'commerce.css?v=[0-9]*') he=$(echo "$H" | grep -o 'hebrew-ui.js?v=[0-9]*')"
+          echo "::notice::APPJS newArrivals=$(curl -s "$S/app.js?v=58" | grep -c 'newArrivals') status=$(curl -s -o /dev/null -w '%{http_code}' "$S/app.js?v=58")"
+          echo "::notice::CSS badge=$(curl -s "$S/commerce.css?v=4" | grep -c 'new-badge')"
+          echo "::notice::HEUI $(curl -s "$S/hebrew-ui.js?v=23" | grep -o 'חדש באתר' | head -1)"
