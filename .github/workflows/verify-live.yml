@@ -1,0 +1,22 @@
+name: verify-live
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check live audit fixes
+        run: |
+          t=$(date +%s)
+          he=$(curl -sL "https://eranchief.com/he/?v=$t")
+          wy=$(curl -sL "https://eranchief.com/artworks/watching-you-40/?v=$t")
+          wyhe=$(curl -sL "https://eranchief.com/he/artworks/watching-you-40/?v=$t")
+          home=$(curl -sL "https://eranchief.com/?v=$t")
+          app=$(curl -sL "https://eranchief.com/app.js?v=59&t=$t")
+          hu=$(curl -sL "https://eranchief.com/hebrew-ui.js?v=25&t=$t")
+          css=$(curl -sL "https://eranchief.com/seo-pages.css?v=3&t=$t")
+          echo "::notice::he_routes=$(grep -c 'he-route' <<<"$he") he_title=$(grep -c 'איך מתחילים' <<<"$he") he_paper_link=$(grep -o 'href="/he/paper-edition/"' <<<"$he" | wc -l) h1=$(grep -o '<h1' <<<"$he" | wc -l)"
+          echo "::notice::wy_en_LE25=$(grep -c 'Limited edition of 25' <<<"$wy") wy_en_old=$(grep -c 'Edition details available on request' <<<"$wy") wy_he_LE25=$(grep -c 'מהדורה מוגבלת של 25' <<<"$wyhe")"
+          echo "::notice::home_sq=$(grep -c 'Edition of 25 · 8 works' <<<"$home") home_app59=$(grep -c 'app.js?v=59' <<<"$home") home_hu25=$(grep -c 'hebrew-ui.js?v=25' <<<"$home") region=$(grep -c 'regionField' <<<"$home") en_guides=$(grep -c 'data-en-guides' <<<"$home")"
+          echo "::notice::app_sync=$(grep -c 'syncRegionField' <<<"$app") app_us=$(grep -c 'isUSCountry' <<<"$app") app_sq=$(grep -c "category==='square'?25" <<<"$app") hu_guides=$(grep -c 'data-en-guides' <<<"$hu") hu_bored=$(grep -c 'Bored Panda וב־Yahoo' <<<"$hu") css_routes=$(grep -c 'he-routes' <<<"$css")"
+          api=$(curl -s -X POST "https://eranchief.com/api/grow/checkout" -H 'content-type: application/json' --data '{"items":[],"terms":true,"customer":{"fullName":"Test Check","phone":"12125550100","email":"test@example.com","country":"United States","city":"New York","address":"1 Test St","postalCode":""}}')
+          echo "::notice::api_us_no_state=$api"
