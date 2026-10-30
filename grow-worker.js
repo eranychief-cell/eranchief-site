@@ -15,6 +15,8 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 // Grow asks for no special characters in parameters.
 const plain = (s, max = 120) => String(s ?? '').replace(/[^\p{L}\p{N} .,@+\-]/gu, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
 // Accepts common spellings and small typos ("Isarel", "Isreal", "מדינת ישראל").
+// Buyer audit 31.10.2026: US orders need a state and a ZIP code.
+function unitedStates(country){const c=String(country||'').trim().toLowerCase().replace(/[.\s]+/g,' ').replace(/^the /,'').trim();return ['us','usa','u s','u s a','united states','united states of america','america','ארצות הברית','ארה״ב','ארה"ב','ארהב'].includes(c)}
 function israel(country){const c=String(country||'').trim().toLowerCase().replace(/[.\s]+/g,' ').replace(/^(the )?(state of )?/,'');if(['il','isr'].includes(c)||c.includes('ישראל'))return true;const w=c.replace(/ /g,'');if(w.length<4||w.length>9)return false;const t='israel',d=[...Array(t.length+1).keys()];for(let i=1;i<=w.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=t.length;j++){const q=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(w[i-1]===t[j-1]?0:1));p=q}}return d[t.length]<=2}
 
 const FUNNEL_STEPS = ['landing', 'product', 'add', 'checkout', 'pay'];
@@ -136,6 +138,10 @@ export async function handleGrow(request, env) {
     if (abroad ? !/^\d{7,15}$/.test(phone) : !/^0?5\d{8}$|^9725\d{8}$/.test(phone)) return json({ error: 'Please enter a valid phone number.' }, 400);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: 'Please enter a valid email address.' }, 400);
     if (!plain(c.country, 60) || !city || !address) return json({ error: 'Please fill in country, city and street address.' }, 400);
+    const region = plain(c.region, 40);
+    if (unitedStates(c.country) && (!region || !/^\d{5}(-\d{4})?$/.test(postal))) return json({ error: 'Please enter the state and a 5-digit ZIP code.' }, 400);
+    // The order table has no country column, so for orders abroad the state and country are kept with the street address.
+    const storedAddress = abroad ? plain([address, region, plain(c.country, 60)].filter(Boolean).join(', '), 220) : address;
     if (body.terms !== true) return json({ error: 'Please accept the terms of sale.' }, 400);
     let order; try { order = priceOrder(body.items, body.coupon, abroad); } catch (e) { return json({ error: e.message }, 400); }
     await ensureOrders(env);
@@ -157,7 +163,7 @@ export async function handleGrow(request, env) {
     }
     await env.DB.prepare(`INSERT INTO grow_orders (id, items, subtotal, discount, total, coupon, full_name, phone, email, city, address, postal_code, status, process_id, process_token, created_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?)`).bind(id, JSON.stringify(order.lines), order.subtotal, order.discount, order.total, order.coupon,
-      fullName, phone, email, city, address, postal, String(result.data.processId), String(result.data.processToken), new Date().toISOString()).run();
+      fullName, phone, email, city, storedAddress, postal, String(result.data.processId), String(result.data.processToken), new Date().toISOString()).run();
     // A wallet pageCode returns authCode (opened in the page by Grow's SDK); a regular payment page returns url.
     return json(result.data.url ? { url: result.data.url } : { authCode: result.data.authCode, orderId: id, sdkEnv: base(env).includes('sandbox') ? 'DEV' : 'PRODUCTION' });
   }

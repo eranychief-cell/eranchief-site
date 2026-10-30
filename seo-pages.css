@@ -165,3 +165,26 @@ html[dir="rtl"] .featured-proof strong{direction:rtl;text-align:right}
   .u1k-sticky.u1k-hide{transform:translateY(110%);opacity:0;pointer-events:none}
   .product-seo:has(~ .u1k-sticky), main:has(.u1k-sticky){padding-bottom:84px}
 }
+/* /he/ shop routes (buyer audit 31.10.2026): paper, canvas, collector editions and every collection */
+.he-home .he-shop{border-top:0;margin-top:8px;padding-top:0}
+.he-home .he-shop>h2{font-size:26px;margin:0 0 16px}
+.he-routes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.he-route{display:grid;grid-template-rows:auto 1fr;background:#f4f1eb;border:1px solid rgba(18,18,18,.12);color:#121212;text-decoration:none}
+.he-route img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:#e8e3db}
+.he-route>span{display:grid;align-content:start;gap:6px;padding:16px 18px 20px}
+.he-route small{color:#77736b;font-size:12.5px;letter-spacing:.04em}
+.he-route strong{font-size:23px;font-weight:600;line-height:1.2}
+.he-route b{font-weight:400;font-size:15.5px;line-height:1.45}
+.he-route em{font-style:normal;font-weight:500;margin-top:6px;text-decoration:underline;text-underline-offset:4px}
+.he-route:focus-visible,.he-collections a:focus-visible{outline:2px solid #121212;outline-offset:2px}
+.he-collections{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:18px}
+.he-collections a{border:1px solid rgba(18,18,18,.28);border-radius:999px;color:#121212;font-size:15px;padding:8px 14px;text-decoration:none}
+.he-home .he-shop+.he-home-actions{margin:34px 0 70px}
+@media(max-width:800px){
+  .he-routes{grid-template-columns:1fr;gap:12px}
+  .he-route{grid-template-columns:118px minmax(0,1fr);grid-template-rows:none}
+  .he-route img{aspect-ratio:auto;height:100%;min-height:150px}
+  .he-route>span{padding:12px 14px 14px;gap:4px}
+  .he-route strong{font-size:20px}
+  .he-route b{font-size:14.5px}
+}

@@ -8,3 +8,8 @@ h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 .submit-order:disabled{background:#9a958c;cursor:not-allowed}
 /* A hidden pricing row (no discount code applied) must stay hidden even though the rows are flex. */
 .checkout-pricing [hidden]{display:none!important}
+.form-grid [hidden]{display:none!important}
+/* Street address (inside #onlinePay) matched to the other checkout fields: it rendered as a thin unstyled box on iPhone */
+.online-pay>label.field-wide{display:grid;gap:7px;font-size:14px;font-weight:500;margin-top:6px}
+.online-pay input[name="address"]{border:1px solid var(--line);background:#fff;padding:13px 14px;font:400 16px Rubik,Arial,sans-serif;color:var(--ink);border-radius:0}
+.online-pay input[name="address"]:focus{outline:2px solid var(--gold);outline-offset:1px}
