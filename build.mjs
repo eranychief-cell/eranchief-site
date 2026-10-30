@@ -323,7 +323,8 @@ for(const v of videos){
 const storeSchema={"@type":"OnlineStore","@id":`${site}/#store`,name:"CHIEF Fine Art Photography",url:`${site}/`,logo:`${site}/assets/chief-logo.jpg`,email:"eranychief@gmail.com",founder:artistSchema,sameAs:["https://www.instagram.com/eranychief/","https://www.facebook.com/chieferanyerushalmi/"]};
 const imageLicense=`${site}/terms/`;
 const acquireLicensePage=`${site}/licensing/`;
-const returnPolicy={"@type":"MerchantReturnPolicy","@id":`${site}/#return-policy`,merchantReturnLink:`${site}/shipping-returns/`};
+// Mirrors the published Shipping & Returns page: every artwork is made to order, so change-of-mind returns are not accepted once production starts (free cancellation within 48 hours before printing; defective or damaged orders are handled under the policy and the law).
+const returnPolicy={"@type":"MerchantReturnPolicy","@id":`${site}/#return-policy`,applicableCountry:["IL","US"],returnPolicyCategory:"https://schema.org/MerchantReturnNotPermitted",merchantReturnLink:`${site}/shipping-returns/`};
 const shippingService={"@type":"ShippingService","@id":`${site}/#shipping-service`,name:"Made-to-order worldwide delivery",description:"Israel: free shipping for Alucobond and Perspex, ILS 69 for canvas, ILS 39 for Paper Edition. International: flat fee per artwork by size from ILS 1,500.",fulfillmentType:"https://schema.org/FulfillmentTypeDelivery",shippingConditions:{"@type":"ShippingConditions"}};
 const shippingDetails={"@type":"OfferShippingDetails",hasShippingService:{"@id":`${site}/#shipping-service`}};
 storeSchema.hasMerchantReturnPolicy=returnPolicy;
