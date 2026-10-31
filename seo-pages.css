@@ -188,3 +188,12 @@ html[dir="rtl"] .featured-proof strong{direction:rtl;text-align:right}
   .he-route strong{font-size:20px}
   .he-route b{font-size:14.5px}
 }
+/* Paper print first on artwork pages that are in the running Paper Edition (31.10.2026) */
+.paper-offer{display:grid;gap:6px;max-width:520px;margin:4px 0 26px;padding:18px 18px 16px;background:#fff;border:1.5px solid #121212}
+.paper-offer p{margin:0}
+.paper-offer__kicker{font-size:13px;font-weight:600;letter-spacing:.04em;color:#8a1c1c}
+.paper-offer__price{font-size:19px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.paper-offer__price strong{font:600 36px/1 "Inter Tight",Rubik,sans-serif}
+.paper-offer__meta{font-size:14.5px;line-height:1.55;color:#57534e}
+.paper-offer .paper-offer__cta{display:block;text-align:center;margin-top:10px;padding:15px 18px;background:#121212;color:#fff;font-weight:600;text-decoration:none}
+.paper-offer__alt{font-size:14.5px;color:#121212;text-underline-offset:4px;margin-top:4px}
