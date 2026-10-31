@@ -4,10 +4,11 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check live return policy
+      - name: Check live paper-first box
         run: |
           t=$(date +%s)
-          a=$(curl -sL "https://eranchief.com/artworks/terminal-3-216/?v=$t")
-          h=$(curl -sL "https://eranchief.com/he/artworks/bad-hair-day-214/?v=$t")
-          r=$(curl -s -o /dev/null -w '%{http_code}' "https://eranchief.com/shipping-returns/?v=$t")
-          echo "::notice::en_notpermitted=$(grep -c 'MerchantReturnNotPermitted' <<<"$a") en_countries=$(grep -o '"applicableCountry":\[[^]]*\]' <<<"$a" | head -1) he_notpermitted=$(grep -c 'MerchantReturnNotPermitted' <<<"$h") returns_page=$r he_routes_still=$(curl -sL "https://eranchief.com/he/?v=$t" | grep -c 'he-route')"
+          he=$(curl -sL "https://eranchief.com/he/artworks/terminal-3-216/?v=$t")
+          en=$(curl -sL "https://eranchief.com/artworks/bad-hair-day-214/?v=$t")
+          bhd=$(curl -sL "https://eranchief.com/he/artworks/bad-hair-day-214/?v=$t")
+          css=$(curl -sL "https://eranchief.com/seo-pages.css?v=4&t=$t")
+          echo "::notice::t3_he_box=$(grep -c 'class="paper-offer"' <<<"$he") t3_he_btn=$(grep -o 'href="/?artwork=217&lang=he"' <<<"$he" | head -1) bhd_he_btn=$(grep -o 'href="/?artwork=215&lang=he"' <<<"$bhd" | head -1) bhd_en_box=$(grep -c 'Order the paper print' <<<"$en") css_v4=$(grep -c 'seo-pages.css?v=4' <<<"$he") css_rule=$(grep -c 'paper-offer' <<<"$css")"
