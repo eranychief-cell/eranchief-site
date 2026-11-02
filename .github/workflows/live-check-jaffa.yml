@@ -1,0 +1,13 @@
+name: live-check-jaffa
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for u in https://eranchief.com/he/jaffa-wall-art/ https://eranchief.com/jaffa-wall-art/; do
+            b=$(curl -s "$u?v=$RANDOM"); c=$(curl -s -o /dev/null -w '%{http_code}' "$u")
+            echo "::notice::$u status=$c h1=$(echo "$b" | grep -o '<h1' | wc -l) cards=$(echo "$b" | grep -o 'class="seo-card"' | wc -l) link15=$(echo "$b" | grep -c 'jaffa-15-years/')"
+          done
+          echo "::notice::sitemap=$(curl -s https://eranchief.com/sitemap.xml | grep -c 'jaffa-wall-art')"
+          echo "::notice::homenav=$(curl -s https://eranchief.com/he/ | grep -c 'he/jaffa-wall-art/')"
