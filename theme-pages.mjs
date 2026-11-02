@@ -85,6 +85,33 @@ export const themePages = {
       ],
     },
   },
+  jaffa: {
+    slug: 'jaffa-wall-art',
+    he: {
+      title: 'תמונות של יפו לסלון — צילומי יפו העתיקה מהחוף',
+      seoTitle: 'תמונות של יפו לסלון | צילומי יפו העתיקה של CHIEF',
+      description: 'תמונות של יפו לסלון: יפו העתיקה מצולמת מאותו חוף בתל אביב, בשקיעה, בסערה ובאור האחרון, מאת CHIEF. קנבס, אלוקובונד או פרספקס, עם תעודת מקוריות.',
+      intro: 'את יפו העתיקה CHIEF מצלם מאותו חוף בתל אביב כבר 15 שנה, מ־2012 ועד 2026. בעמוד הזה מרוכזות היצירות שבהן יפו נמצאת בפריים: קו הרקיע שלה על האופק בשקיעה, ענן גשם שיורד לים מול העיר העתיקה, והאורות שלה משתקפים בחול הרטוב. כל צילום צולם ונערך באייפון, מוצג בפריים המלא שלו בלי חיתוך ומודפס לפי הזמנה.',
+      link: { href: '/he/jaffa-15-years/', text: 'לסדרה "15 שנה, חוף אחד": יפו מאותו חוף, בכל שנה מ־2012 ועד 2026' },
+      faqs: [
+        ['מאיפה צולמו התמונות של יפו?', 'כל הצילומים צולמו מאותו חוף בתל אביב, מול יפו העתיקה. CHIEF חוזר לחוף הזה כבר 15 שנה, ולכן יפו מופיעה בעבודות שלו בעונות, בשעות ובמזג אוויר שונים.'],
+        ['איזו תמונה של יפו מתאימה לסלון?', 'לקיר מרכזי מעל ספה מתאימה בדרך כלל עבודה אופקית שרוחבה כשני שלישים מרוחב הספה. בכל עמוד יצירה יש הדמיה מעל ספה עם השוואת גדלים.'],
+        ['אלו צילומים מקוריים?', 'כן. כל הצילומים הם יצירות מקוריות של CHIEF, שצולמו ונערכו באייפון. כל עבודה מגיעה עם תעודת מקוריות, ובמהדורות המוגבלות גם עם מספר עותק.'],
+      ],
+    },
+    en: {
+      title: 'Jaffa Wall Art — Original Photography of Old Jaffa',
+      seoTitle: 'Jaffa Wall Art | Old Jaffa Photography Prints by CHIEF',
+      description: 'Original Jaffa wall art by CHIEF: Old Jaffa photographed from the same Tel Aviv beach at sunset, in storms and in the last light, on canvas, Alucobond or Perspex with a Certificate of Authenticity.',
+      intro: 'CHIEF has photographed Old Jaffa from the same Tel Aviv beach for 15 years, from 2012 to 2026. This page gathers the works in which Jaffa is in the frame: its skyline on the horizon at sunset, a rain cloud falling into the sea in front of the old city, its lights reflected in the wet sand. Every photograph was taken and edited on iPhone, is shown in its full original frame and is made to order.',
+      link: { href: '/jaffa-15-years/', text: 'See the series "15 Years, One Beach": Jaffa from the same beach, every year from 2012 to 2026' },
+      faqs: [
+        ['Where were the Jaffa photographs taken?', 'All of them were taken from the same Tel Aviv beach, facing Old Jaffa. CHIEF has returned to this beach for 15 years, so Jaffa appears in his work in different seasons, hours and weather.'],
+        ['Which Jaffa photograph suits a living room?', 'Above a sofa, a landscape work about two thirds of the sofa’s width usually works best. Every artwork page has a sofa preview with a size comparison.'],
+        ['Are these original works?', 'Yes. Every photograph is an original work by CHIEF, taken and edited on iPhone, and comes with a Certificate of Authenticity; limited editions are also numbered.'],
+      ],
+    },
+  },
   sea: {
     slug: 'sea-wall-art',
     he: {
