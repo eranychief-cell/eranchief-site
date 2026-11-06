@@ -65,14 +65,14 @@ page = f'''<!doctype html>
 <meta name="description" content="יפו העתיקה מאותו חוף בתל אביב, בכל שנה מ־2012 ועד 2026. מסע בגלילה דרך 15 שנה של צילום באייפון, מאת ערן ירושלמי (CHIEF).">
 <meta name="robots" content="noindex,follow">
 <link rel="canonical" href="https://eranchief.com/he/jaffa-15-years/">
-<meta name="theme-color" content="#0b0907">
+<meta name="theme-color" content="#fbfaf7">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=Heebo:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="preload" as="image" href="{first["src"]}">
 <style>
 :root{{
-  --canvas:#0b0907; --surface:#16120e; --ink:#f4ece0; --ink-soft:#a99d8e; --gold:#e3a548; --line:rgba(244,236,224,.16);
+  --canvas:#fbfaf7; --surface:#f1ede6; --ink:#1c1915; --ink-soft:#6e665d; --gold:#b0731c; --line:rgba(28,25,21,.14);
   --display:"Frank Ruhl Libre",Georgia,serif; --text:"Heebo",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
   --vh:100vh;
 }}
@@ -83,7 +83,7 @@ body{{font-family:var(--text);font-weight:300;line-height:1.6;overflow-x:clip}}
 a{{color:inherit}}
 img{{display:block}}
 .bar{{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;padding-top:max(14px,env(safe-area-inset-top));
-  font-size:13px;letter-spacing:.02em;background:linear-gradient(rgba(11,9,7,.72),rgba(11,9,7,0));pointer-events:none}}
+  font-size:13px;letter-spacing:.02em;background:linear-gradient(rgba(251,250,247,.9),rgba(251,250,247,0));pointer-events:none}}
 .bar a{{pointer-events:auto;text-decoration:none}}
 .logo{{font-family:var(--display);font-weight:700;letter-spacing:.18em;font-size:15px}}
 .bar .back{{color:var(--ink-soft)}}
@@ -92,9 +92,9 @@ img{{display:block}}
 
 /* 1. hero: layered photo */
 .hero{{--span:1.7}}
-.hero .bg{{position:absolute;inset:-12%;background:center/cover no-repeat;filter:blur(38px) saturate(1.2);opacity:.55;will-change:transform}}
-.hero .shade{{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 40%,rgba(11,9,7,0) 0%,rgba(11,9,7,.65) 70%,rgba(11,9,7,.92) 100%)}}
-.hero .photo{{position:absolute;left:50%;top:50%;width:min(88vw,1100px);transform:translate(-50%,-46%);will-change:transform;box-shadow:0 30px 80px rgba(0,0,0,.55)}}
+.hero .bg{{position:absolute;inset:-12%;background:center/cover no-repeat;filter:blur(44px) saturate(1.1);opacity:.28;will-change:transform}}
+.hero .shade{{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 40%,rgba(251,250,247,0) 0%,rgba(251,250,247,.6) 68%,rgba(251,250,247,.95) 100%)}}
+.hero .photo{{position:absolute;left:50%;top:50%;width:min(88vw,1100px);transform:translate(-50%,-46%);will-change:transform;box-shadow:0 24px 60px rgba(28,25,21,.22)}}
 .hero .photo img{{width:100%;height:auto}}
 .hero .copy{{position:absolute;inset-inline:22px;bottom:max(46px,calc(env(safe-area-inset-bottom) + 30px));will-change:transform,opacity}}
 .hero h1{{font-family:var(--display);font-weight:500;font-size:clamp(46px,11vw,128px);line-height:.98;letter-spacing:-.01em}}
@@ -109,7 +109,7 @@ img{{display:block}}
 
 /* 3. peak: fifteen years under the hand */
 .peak{{--span:{N*0.62:.2f}}}
-.peak .stick{{display:grid;grid-template-rows:auto 1fr auto;padding:calc(64px + env(safe-area-inset-top)) 20px max(22px,env(safe-area-inset-bottom))}}
+.peak .stick{{background:linear-gradient(180deg,#fbfaf7 0%,#fde9cf 40%,#f8c99a 70%,#efa27a 100%);display:grid;grid-template-rows:auto 1fr auto;padding:calc(64px + env(safe-area-inset-top)) 20px max(22px,env(safe-area-inset-bottom))}}
 .yearbox{{display:flex;align-items:baseline;gap:14px;justify-content:space-between}}
 .roll{{height:1.08em;overflow:hidden;font-family:var(--mono);font-weight:500;font-size:clamp(64px,19vw,170px);line-height:1.08;letter-spacing:-.04em;direction:ltr}}
 .roll .strip{{display:flex;flex-direction:column;will-change:transform}}
