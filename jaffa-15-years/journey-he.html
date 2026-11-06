@@ -39,7 +39,8 @@ img{display:block}
 .hero{--span:1.7}
 .hero .bg{position:absolute;inset:-12%;background:center/cover no-repeat;filter:blur(44px) saturate(1.1);opacity:.28;will-change:transform}
 .hero .shade{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 40%,rgba(251,250,247,0) 0%,rgba(251,250,247,.6) 68%,rgba(251,250,247,.95) 100%)}
-.hero .photo{position:absolute;left:50%;top:50%;width:min(88vw,1100px);transform:translate(-50%,-46%);will-change:transform;box-shadow:0 24px 60px rgba(28,25,21,.22);overflow:hidden}
+/* the photo sits under the top bar and never reaches the title: its width is capped by the height that is left above the text */
+.hero .photo{position:absolute;left:50%;top:calc(72px + env(safe-area-inset-top));width:min(88vw,1100px,calc((var(--vh) - 400px) * 1.333));transform:translate(-50%,0);will-change:transform;box-shadow:0 24px 60px rgba(28,25,21,.22);overflow:hidden}
 .hero .photo img{width:100%;height:auto;animation:settle 2.6s cubic-bezier(.2,.7,.2,1) both}
 .hero h1 .ln{display:block;animation:rise .8s cubic-bezier(.2,1.35,.4,1) both}
 .hero h1 .ln+.ln{animation-delay:.2s}
@@ -338,7 +339,7 @@ function fitStage(){
 function frame(){
   if(vis(hero)){const p=prog(hero);
     hBg.style.transform=`translate3d(0,${p*8}%,0) scale(1.05)`;
-    hPh.style.transform=`translate(-50%,calc(-46% - ${p*7}vh)) scale(${1-p*.06})`;
+    hPh.style.transform=`translate(-50%,${-p*7}vh) scale(${1-p*.06})`;
     hCopy.style.transform=`translate3d(0,${-p*22}vh,0)`;hCopy.style.opacity=1-ease(clamp(p*1.6-.35));}
   if(vis(say)){const p=prog(say);
     lines.forEach((l,i)=>{const a=ease(clamp((p-.02-i*.22)/.2));l.style.opacity=a;l.style.transform=`translateY(${(1-a)*.35}em)`;});}
