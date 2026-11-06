@@ -327,7 +327,14 @@ const btw=document.querySelector('.between'),track=btw.querySelector('.track');
 const cls=document.querySelector('.close'),cImg=cls.querySelector('.frame img'),hz=cls.querySelector('.horizon'),end=cls.querySelector('.end');
 const N=layers.length, W=0.38; let shown=-1;
 
+// the opening photo sits exactly in the middle between the top bar and the title
+function placeHero(){
+  const st=hero.querySelector('.stick'),bar=document.querySelector('.bar');
+  const top=bar.offsetHeight+8,bottom=hCopy.offsetTop,h=hPh.offsetHeight;
+  hPh.style.top=Math.max(top,top+(bottom-top-h)/2)+'px';
+}
 function fitStage(){
+  placeHero();
   // the stage gets the room that is left; photos keep their full frame (object-fit: contain)
   const st=peak.querySelector('.stick');const cs=getComputedStyle(st);
   if(innerWidth>=900){stage.style.height='';return;}
