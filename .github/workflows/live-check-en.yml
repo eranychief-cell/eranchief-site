@@ -1,0 +1,15 @@
+name: live-check-en
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          sleep 15
+          t=$(date +%s)
+          c1=$(curl -s -o j.html -w "%{http_code}" "https://eranchief.com/jaffa-15-years/journey/?v=$t")
+          echo "::notice::en_journey=$c1 lang_en=$(grep -c '<html lang=\"en\"' j.html) count=$(grep -c 'class=\"pin count\"' j.html) noindex=$(grep -c noindex j.html) title=$(grep -c 'A Jaffa Dream' j.html)"
+          c2=$(curl -s -o s.html -w "%{http_code}" "https://eranchief.com/jaffa-15-years/?v=$t")
+          echo "::notice::en_series=$c2 button=$(grep -c 'Watch: 15 years in 30 seconds' s.html)"
+          c3=$(curl -s -o h.html -w "%{http_code}" "https://eranchief.com/he/jaffa-15-years/journey/?v=$t")
+          echo "::notice::he_journey=$c3 lang_he=$(grep -c '<html lang=\"he\"' h.html)"
