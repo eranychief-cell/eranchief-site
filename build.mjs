@@ -29,6 +29,9 @@ await cp('jaffa-15-years/he.html', 'dist/client/he/jaffa-15-years/index.html');
 // scroll journey (Hebrew, noindex, unlinked draft) at /he/jaffa-15-years/journey/
 await mkdir('dist/client/he/jaffa-15-years/journey', { recursive: true });
 await cp('jaffa-15-years/journey-he.html', 'dist/client/he/jaffa-15-years/journey/index.html');
+// English scroll journey (noindex, made from the Hebrew one by tools/make_journey_en.py) at /jaffa-15-years/journey/
+await mkdir('dist/client/jaffa-15-years/journey', { recursive: true });
+await cp('jaffa-15-years/journey-en.html', 'dist/client/jaffa-15-years/journey/index.html');
 // Temporary font comparison page for the owner (noindex, not in sitemap).
 await mkdir('dist/client/font-preview', { recursive: true });
 await cp('font-preview/index.html', 'dist/client/font-preview/index.html');
