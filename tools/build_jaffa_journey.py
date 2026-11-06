@@ -89,6 +89,10 @@ img{{display:block}}
 .bar .back{{color:var(--ink-soft)}}
 .pin{{position:relative;height:calc(var(--span) * var(--vh))}}
 .stick{{position:sticky;top:0;height:var(--vh);overflow:hidden}}
+/* glowing sunset line through the whole page, in the right third, always behind the photos and text */
+.stick::before{{content:"";position:absolute;top:0;bottom:0;right:33.3%;width:3px;background:#ff8a2a;box-shadow:0 0 6px #ffb066,0 0 16px #ff8a2a,0 0 34px rgba(255,120,40,.55);z-index:1;pointer-events:none}}
+.hero .photo,.hero .copy{{z-index:2}}
+.say .lines,.peak .yearbox,.peak .stage,.peak .caption,.between h2,.between .track,.close .frame,.close .end{{position:relative;z-index:2}}
 
 /* 1. hero: layered photo */
 .hero{{--span:1.7}}
