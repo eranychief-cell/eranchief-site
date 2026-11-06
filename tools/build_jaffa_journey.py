@@ -1,3 +1,5 @@
+# NOTE (6.11.2026): from draft 6 (numbers scene, pops, faster autoplay) on, the page is edited directly in
+# jaffa-15-years/journey-he.html. This generator produced drafts 1-5 and no longer matches the page; don't rerun it.
 import json, os, html, re
 
 ROOT = '/home/claude/eranchief-site'
