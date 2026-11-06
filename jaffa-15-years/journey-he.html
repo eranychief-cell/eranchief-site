@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>15 שנה, חוף אחד · מסע בגלילה | ערן ירושלמי (CHIEF)</title>
+<meta name="description" content="יפו העתיקה מאותו חוף בתל אביב, בכל שנה מ־2012 ועד 2026. מסע בגלילה דרך 15 שנה של צילום באייפון, מאת ערן ירושלמי (CHIEF).">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://eranchief.com/he/jaffa-15-years/">
+<meta name="theme-color" content="#0b0907">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=Heebo:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="preload" as="image" href="/jaffa-15-years/img/scroll/m-jaffa-2012-sunset-over-the-rocky-shore.webp">
+<style>
+:root{
+  --canvas:#0b0907; --surface:#16120e; --ink:#f4ece0; --ink-soft:#a99d8e; --gold:#e3a548; --line:rgba(244,236,224,.16);
+  --display:"Frank Ruhl Libre",Georgia,serif; --text:"Heebo",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --vh:100vh;
+}
+@supports(height:100svh){:root{--vh:100svh}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--canvas);color:var(--ink);-webkit-text-size-adjust:100%}
+body{font-family:var(--text);font-weight:300;line-height:1.6;overflow-x:clip}
+a{color:inherit}
+img{display:block}
+.bar{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;padding-top:max(14px,env(safe-area-inset-top));
+  font-size:13px;letter-spacing:.02em;background:linear-gradient(rgba(11,9,7,.72),rgba(11,9,7,0));pointer-events:none}
+.bar a{pointer-events:auto;text-decoration:none}
+.logo{font-family:var(--display);font-weight:700;letter-spacing:.18em;font-size:15px}
+.bar .back{color:var(--ink-soft)}
+.pin{position:relative;height:calc(var(--span) * var(--vh))}
+.stick{position:sticky;top:0;height:var(--vh);overflow:hidden}
+
+/* 1. hero: layered photo */
+.hero{--span:1.7}
+.hero .bg{position:absolute;inset:-12%;background:center/cover no-repeat;filter:blur(38px) saturate(1.2);opacity:.55;will-change:transform}
+.hero .shade{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 40%,rgba(11,9,7,0) 0%,rgba(11,9,7,.65) 70%,rgba(11,9,7,.92) 100%)}
+.hero .photo{position:absolute;left:50%;top:50%;width:min(88vw,1100px);transform:translate(-50%,-46%);will-change:transform;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.hero .photo img{width:100%;height:auto}
+.hero .copy{position:absolute;inset-inline:22px;bottom:max(46px,calc(env(safe-area-inset-bottom) + 30px));will-change:transform,opacity}
+.hero h1{font-family:var(--display);font-weight:500;font-size:clamp(46px,11vw,128px);line-height:.98;letter-spacing:-.01em}
+.hero p{margin-top:14px;max-width:34ch;font-size:clamp(15px,3.8vw,19px);color:var(--ink-soft)}
+
+/* 2. statement: lines assemble */
+.say{--span:1.5}
+.say .stick{display:grid;place-items:center;padding:0 24px}
+.say .lines{font-family:var(--display);font-size:clamp(34px,8.5vw,84px);line-height:1.15;text-align:start;width:min(100%,900px)}
+.say .lines span{display:block;opacity:0;transform:translateY(.35em);will-change:transform,opacity}
+.say .lines .soft{color:var(--gold);font-style:normal}
+
+/* 3. peak: fifteen years under the hand */
+.peak{--span:9.30}
+.peak .stick{display:grid;grid-template-rows:auto 1fr auto;padding:calc(64px + env(safe-area-inset-top)) 20px max(22px,env(safe-area-inset-bottom))}
+.yearbox{display:flex;align-items:baseline;gap:14px;justify-content:space-between}
+.roll{height:1.08em;overflow:hidden;font-family:var(--mono);font-weight:500;font-size:clamp(64px,19vw,170px);line-height:1.08;letter-spacing:-.04em;direction:ltr}
+.roll .strip{display:flex;flex-direction:column;will-change:transform}
+.roll span{height:1.08em}
+.model{font-family:var(--mono);font-size:clamp(12px,3.2vw,15px);color:var(--ink-soft);direction:ltr;text-align:end;min-height:1.4em}
+.stage{position:relative;margin:14px 0}
+.stage .layer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;will-change:opacity,transform}
+.stage .layer[data-i="0"]{opacity:1}
+.caption{display:flex;flex-direction:column;gap:4px;min-height:5.2em}
+.caption .t{font-family:var(--display);font-size:clamp(26px,6.6vw,44px);line-height:1.15;transition:opacity .25s}
+.caption .d{font-family:var(--mono);font-size:13px;color:var(--ink-soft);direction:ltr;text-align:end;transition:opacity .25s}
+.rail{position:relative;height:18px;margin-top:10px}
+.rail::before{content:"";position:absolute;inset:8px 0 auto;height:1px;background:var(--line)}
+.rail .fill{position:absolute;inset-inline-start:0;top:8px;height:1px;width:calc(var(--p,0) * 100%);background:var(--gold)}
+.rail i{position:absolute;top:5px;inset-inline-start:calc(var(--t) * 100%);width:1px;height:7px;background:var(--line)}
+.rail .ends{position:absolute;inset:14px 0 auto;display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+/* 4. between the years: lateral travel */
+.between{--span:3.2}
+.between .stick{display:flex;flex-direction:column;justify-content:center;gap:22px}
+.between h2{font-family:var(--display);font-weight:500;font-size:clamp(30px,7.5vw,64px);line-height:1.05;padding:0 22px}
+.between h2 small{display:block;margin-top:8px;font-family:var(--text);font-weight:300;font-size:clamp(14px,3.6vw,18px);color:var(--ink-soft)}
+.track{display:flex;gap:14px;padding:0 22px;width:max-content;align-self:flex-start;will-change:transform}
+.card{flex:none;height:min(46vh,420px);display:flex;flex-direction:column;gap:8px}
+.card img{height:calc(100% - 3.2em);width:auto;max-width:none;border-radius:2px}
+.card figcaption{display:flex;justify-content:space-between;gap:12px;font-size:14px;max-width:100%}
+.card .c-t{font-family:var(--display);font-size:17px}
+.card .c-y{font-family:var(--mono);font-size:12px;color:var(--ink-soft);padding-top:3px}
+
+/* 5. close: the horizon opens */
+.close{--span:1.9}
+.close .stick{display:grid;grid-template-rows:1fr auto;padding:calc(70px + env(safe-area-inset-top)) 22px max(26px,env(safe-area-inset-bottom))}
+.close .frame{position:relative;align-self:center}
+.close .frame img{width:100%;height:auto;max-height:52vh;object-fit:contain;clip-path:inset(50% 0 50% 0);will-change:clip-path}
+.close .horizon{position:absolute;inset-inline:0;top:50%;height:1px;background:var(--gold);transform-origin:center;will-change:transform,opacity}
+.close .end{opacity:0;transform:translateY(16px);will-change:opacity,transform}
+.close h2{font-family:var(--display);font-weight:500;font-size:clamp(32px,8vw,70px);line-height:1.05}
+.close .who{margin-top:8px;color:var(--ink-soft);font-size:15px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.cta a{display:inline-flex;align-items:center;min-height:48px;padding:0 20px;text-decoration:none;font-weight:400;font-size:16px;border:1px solid var(--ink)}
+.cta .main{background:var(--ink);color:var(--canvas)}
+footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px solid var(--line);color:var(--ink-soft);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (min-width:900px){
+  .peak .stick{grid-template-columns:1fr 2.2fr;grid-template-rows:1fr auto;column-gap:48px;padding:96px 56px 40px}
+  .yearbox{grid-column:1;grid-row:1;flex-direction:column;align-items:flex-start;justify-content:flex-end}
+  .model{text-align:start}
+  .stage{grid-column:2;grid-row:1 / span 2;margin:0}
+  .caption{grid-column:1;grid-row:2}
+  .caption .d{text-align:start}
+  .rail{display:none}
+  .hero .copy{inset-inline:56px}
+  .close .stick{grid-template-columns:2fr 1fr;grid-template-rows:1fr;align-items:center;column-gap:48px;padding:90px 56px 40px}
+  .close .frame img{max-height:72vh}
+}
+
+/* reduced motion: everything visible, nothing pinned */
+@media (prefers-reduced-motion:reduce){
+  .pin{height:auto}
+  .stick{position:relative;height:auto;min-height:0;overflow:visible;padding-top:90px;padding-bottom:40px}
+  .hero .stick{height:var(--vh)}
+  .say .lines span,.close .end{opacity:1;transform:none}
+  .peak .stick{display:block}
+  .peak .yearbox,.peak .caption,.peak .rail{display:none}
+  .stage{display:grid;gap:28px}
+  .stage .layer{position:static;opacity:1;height:auto}
+  .track{flex-wrap:wrap;width:auto}
+  .card{height:auto;width:min(100%,360px)} .card img{width:100%;height:auto}
+  .close .frame img{clip-path:none} .close .horizon{display:none}
+}
+</style>
+</head>
+<body>
+<header class="bar"><a class="logo" href="/he/">CHIEF</a><a class="back" href="/he/jaffa-15-years/">לסדרה המלאה</a></header>
+<main>
+
+<section class="pin hero" aria-label="פתיחה">
+  <div class="stick">
+    <div class="bg" style="background-image:url('/jaffa-15-years/img/scroll/m-jaffa-2012-sunset-over-the-rocky-shore.webp')"></div>
+    <div class="shade"></div>
+    <figure class="photo"><img src="/jaffa-15-years/img/scroll/m-jaffa-2012-sunset-over-the-rocky-shore.webp" width="1280" height="960" alt="יפו העתיקה בשקיעה מחוף תל אביב: השמש נמוכה מתחת לעננים, סלעים וקצף בחזית. צילום: ערן ירושלמי (CHIEF), 2012" fetchpriority="high"></figure>
+    <div class="copy">
+      <h1>15 שנה.<br>חוף אחד.</h1>
+      <p>יפו העתיקה, מאותו חוף בתל אביב. בכל שנה מ־2012 ועד 2026. הכול באייפון.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pin say" aria-label="אותו חוף">
+  <div class="stick">
+    <p class="lines"><span>אותו חוף.</span><span>אותו צריח.</span><span class="soft">אור אחר בכל פעם.</span></p>
+  </div>
+</section>
+
+<section class="pin peak" aria-label="15 שנה, שנה אחרי שנה">
+  <div class="stick">
+    <div class="yearbox">
+      <div class="roll" aria-hidden="true"><div class="strip"><span>2012</span><span>2013</span><span>2014</span><span>2015</span><span>2016</span><span>2017</span><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>2026</span></div></div>
+      <div class="model" aria-live="polite"></div>
+    </div>
+    <div class="stage">
+<img class="layer" data-i="0" src="/jaffa-15-years/img/scroll/m-jaffa-2012-sunset-over-the-rocky-shore.webp" width="1280" height="960" alt="יפו העתיקה בשקיעה מחוף תל אביב: השמש נמוכה מתחת לעננים, סלעים וקצף בחזית. צילום: ערן ירושלמי (CHIEF), 2012" loading="eager" decoding="async">
+<img class="layer" data-i="1" src="/jaffa-15-years/img/scroll/m-jaffa-2013-diver-in-the-waves.webp" width="1280" height="960" alt="צולל קופץ בראש אל הגלים מתחת לעננים כהים, השמש מאחוריהם, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2013" loading="eager" decoding="async">
+<img class="layer" data-i="2" src="/jaffa-15-years/img/scroll/m-jaffa-2014-surfer-at-sunset.webp" width="1280" height="960" alt="גולש יוצא מהים עם הגלשן בשקיעה, ההשתקפות שלו בחול הרטוב, יפו מאחור. צילום: ערן ירושלמי (CHIEF), 2014" loading="lazy" decoding="async">
+<img class="layer" data-i="3" src="/jaffa-15-years/img/scroll/m-jaffa-2015-family-at-dusk.webp" width="1280" height="960" alt="משפחה הולכת על קו המים בדמדומים, תחת פסי עננים, ויפו מוארת משמאל. צילום: ערן ירושלמי (CHIEF), 2015" loading="lazy" decoding="async">
+<img class="layer" data-i="4" src="/jaffa-15-years/img/scroll/m-jaffa-2016-fire-sky-reflection.webp" width="960" height="1280" alt="שמיים בוערים באדום ובכתום משתקפים בחול הרטוב, יפו צללית כהה משמאל. צילום: ערן ירושלמי (CHIEF), 2016" loading="lazy" decoding="async">
+<img class="layer" data-i="5" src="/jaffa-15-years/img/scroll/m-jaffa-2017-orange-and-red-sky.webp" width="1280" height="960" alt="פס רחב של שמיים כתומים ואדומים מעל הים אחרי השקיעה, יפו נמוכה באופק. צילום: ערן ירושלמי (CHIEF), 2017" loading="lazy" decoding="async">
+<img class="layer" data-i="6" src="/jaffa-15-years/img/scroll/m-jaffa-2018-golden-cloud-carpet.webp" width="1280" height="960" alt="שמיים מכוסים עננים קטנים שהשמש השוקעת צובעת בזהב, גלים על החוף, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2018" loading="lazy" decoding="async">
+<img class="layer" data-i="7" src="/jaffa-15-years/img/scroll/m-jaffa-2019-red-sky-reflection.webp" width="1280" height="960" alt="שמי שקיעה אדומים וזהובים משתקפים בחול הרטוב, יפו בצללית משמאל. צילום: ערן ירושלמי (CHIEF), 2019" loading="lazy" decoding="async">
+<img class="layer" data-i="8" src="/jaffa-15-years/img/scroll/m-jaffa-2020-two-dogs-on-sand-ripples.webp" width="1280" height="960" alt="שני כלבים רצים על החוף תחת שמש לבנה, אדוות של חול רטוב בחזית, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2020" loading="lazy" decoding="async">
+<img class="layer" data-i="9" src="/jaffa-15-years/img/scroll/m-jaffa-2021-dappled-sky-reflection.webp" width="1280" height="960" alt="עננים מנוקדים והשמש מאחוריהם, דמות בודדה על קו המים, כל השמיים משתקפים בחול הרטוב, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2021" loading="lazy" decoding="async">
+<img class="layer" data-i="10" src="/jaffa-15-years/img/scroll/m-jaffa-2022-wave-on-a-rock.webp" width="960" height="1280" alt="גל נשבר על סלע בחזית תחת שמיים סוערים, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2022" loading="lazy" decoding="async">
+<img class="layer" data-i="11" src="/jaffa-15-years/img/scroll/m-jaffa-2023-pink-clouds-reflection.webp" width="960" height="1280" alt="עננים כהים עם שוליים ורודים בשקיעה, משתקפים בחול הרטוב, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2023" loading="lazy" decoding="async">
+<img class="layer" data-i="12" src="/jaffa-15-years/img/scroll/m-jaffa-2024-surfers-and-a-family-at-sunset.webp" width="1280" height="960" alt="גולשים ומשפחה בצללית על קו המים, השמש נמוכה וזהובה, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2024" loading="lazy" decoding="async">
+<img class="layer" data-i="13" src="/jaffa-15-years/img/scroll/m-jaffa-2025-burning-sunset-and-waves.webp" width="960" height="1280" alt="השמש שוקעת בים תחת משיכה כהה של ענן, גלים עולים על החול, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2025" loading="lazy" decoding="async">
+<img class="layer" data-i="14" src="/jaffa-15-years/img/scroll/m-jaffa-2026-burning-sunset-and-a-lone-figure.webp" width="1280" height="960" alt="שקיעה כתומה מעל יפו, דמות בודדה עומדת במים, יפו והשמיים משתקפים בחול הרטוב. צילום: ערן ירושלמי (CHIEF), 2026" loading="lazy" decoding="async">
+    </div>
+    <div class="caption" aria-live="polite">
+      <span class="t" dir="auto">חלום יפואי</span>
+      <span class="d">16/12/2012</span>
+      <div class="rail" aria-hidden="true"><div class="fill"></div><i style="--t:0.0000"></i><i style="--t:0.0714"></i><i style="--t:0.1429"></i><i style="--t:0.2143"></i><i style="--t:0.2857"></i><i style="--t:0.3571"></i><i style="--t:0.4286"></i><i style="--t:0.5000"></i><i style="--t:0.5714"></i><i style="--t:0.6429"></i><i style="--t:0.7143"></i><i style="--t:0.7857"></i><i style="--t:0.8571"></i><i style="--t:0.9286"></i><i style="--t:1.0000"></i><div class="ends"><span>2012</span><span>2026</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="pin between" aria-label="בין השנים">
+  <div class="stick">
+    <h2>ובין השנים<small>עוד 30 רגעים מאותו חוף, וכל אחד עם שם משלו.</small></h2>
+    <div class="track">
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2012-orange-sunset.webp" width="760" height="570" alt="השמש שוקעת בכתום מעל הים, האור שלה עולה על החול הרטוב, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2012" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">שקיעתה של הזריחה</span><span class="c-y">2012</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2013-giant-balloons-at-sunset.webp" width="760" height="570" alt="מיה, בתו של הצלם, בין בלונים ענקיים וזוהרים על החוף בשקיעה. צילום: ערן ירושלמי (CHIEF), 2013" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">ילדות קשורה בחוט</span><span class="c-y">2013</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2013-purple-and-gold-mesh.webp" width="760" height="570" alt="בד רשת סגול וזהוב על החול הרטוב ומשתקף מתחתיו, ויפו בין שתי הצורות. צילום: ערן ירושלמי (CHIEF), 2013" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">Purple Gold</span><span class="c-y">2013</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2013-glass-ball-and-brandy-glass.webp" width="760" height="570" alt="כדור זכוכית וכוס ברנדי על החול הרטוב בשקיעה, עם ההשתקפויות שלהם, יפו מאחור. צילום: ערן ירושלמי (CHIEF), 2013" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">משלוש יוצא אחד</span><span class="c-y">2013</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2014-black-dog-at-sunset.webp" width="760" height="570" alt="כלב שחור שוכב על קו המים בשקיעה, ההשתקפות שלו מתחתיו, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2014" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">מסתכל על השמש מסתכל עליו</span><span class="c-y">2014</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2014-glass-drops-black-and-white.webp" width="760" height="570" alt="שחור־לבן: טיפות זכוכית גבוהות נעוצות בחול הרטוב כמו גבעולים, יפו מאחור. צילום: ערן ירושלמי (CHIEF), 2014" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">כשהגשם נעמד</span><span class="c-y">2014</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2014-two-photographers-at-sunset.webp" width="760" height="570" alt="שני צלמים עם חצובה בצללית מול השמש הנמוכה, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2014" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">Got you.</span><span class="c-y">2014</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2016-sunset-reflection.webp" width="760" height="570" alt="ענני שקיעה משתקפים במים הרדודים, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2016" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">השמיים ירדו לבקר</span><span class="c-y">2016</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2016-golden-retriever-on-the-beach.webp" width="570" height="760" alt="גולדן רטריבר הולך לעבר המצלמה על החוף, הלשון בחוץ, יפו מאחור. צילום: ערן ירושלמי (CHIEF), 2016" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">שעת זהב</span><span class="c-y">2016</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2017-man-and-pigeon-shadow.webp" width="570" height="760" alt="אדם הולך אל השמש הנמוכה, יונה נוחתת והצל הארוך שלה על החול. צילום: ערן ירושלמי (CHIEF), 2017" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">הצל שחשב שהוא נשר</span><span class="c-y">2017</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2017-silhouette-at-sunset.webp" width="570" height="760" alt="צללית של דמות מול שמיים בוערים, משתקפת בחול הרטוב, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2017" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">מתחת למסך</span><span class="c-y">2017</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2017-sun-rays-over-foam.webp" width="570" height="760" alt="קרני שמש פורצות מבין העננים מעל גלים מכוסי קצף, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2017" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">מלאכים בשמי העיר</span><span class="c-y">2017</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2018-model-boat-black-and-white.webp" width="570" height="760" alt="שחור־לבן: דגם של סירה במים הרדודים, קצף בחזית. צילום: ערן ירושלמי (CHIEF), 2018" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">כמה נח</span><span class="c-y">2018</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2018-lone-figure-on-the-shore.webp" width="570" height="760" alt="דמות בודדה על החוף תחת שמש מעורפלת, קצף מנצנץ בחזית, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2018" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">עומד בזה</span><span class="c-y">2018</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2018-orange-sunset-lit-jaffa.webp" width="570" height="760" alt="שקיעה כתומה מתחת לשורת עננים כהים, הצבע מוכפל בחול הרטוב, יפו מוארת משמאל. צילום: ערן ירושלמי (CHIEF), 2018" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">דרך המלך</span><span class="c-y">2018</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2019-dog-digging-in-the-sand.webp" width="570" height="760" alt="דילן, הכלב של הצלם, חופר בחול הרטוב תחת שמיים מנוקדי עננים, ההשתקפות שלו מתחתיו. צילום: ערן ירושלמי (CHIEF), 2019" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">כדור חוזר</span><span class="c-y">2019</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2019-rock-in-the-foam.webp" width="570" height="760" alt="סלע מוקף קצף ים, השמש מאחורי עננים מנוקדים, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2019" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">סלע המחלוקת</span><span class="c-y">2019</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2019-scattered-clouds-reflection.webp" width="570" height="760" alt="שמיים של עננים מפוזרים בשקיעה משתקפים בחול הרטוב, קצף מימין, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2019" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">יפוצ׳ינו</span><span class="c-y">2019</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2020-metal-rose-and-its-shadow.webp" width="570" height="760" alt="פסל של ורד ממתכת עומד בחול, הצל הארוך שלו נמתח לעבר המצלמה, יפו מאחור. צילום: ערן ירושלמי (CHIEF), 2020" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">אין ורד בלי צל</span><span class="c-y">2020</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2020-green-glass-head.webp" width="570" height="760" alt="ראש זכוכית ירוק על החלוקים בקו המים, יפו מאחור תחת השמש השוקעת. צילום: ערן ירושלמי (CHIEF), 2020" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">ראש השנה</span><span class="c-y">2020</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2020-wave-splash-at-sunset.webp" width="570" height="760" alt="גל מתקפל ומתיז בשקיעה, השמש נמוכה באופק. צילום: ערן ירושלמי (CHIEF), 2020" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">גל השלום</span><span class="c-y">2020</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2023-dog-running-at-sunset.webp" width="760" height="570" alt="כלב רץ לאורך החוף מול השמש הנמוכה, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2023" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">הוט דוג</span><span class="c-y">2023</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2023-stormy-blue-sky.webp" width="570" height="760" alt="שמיים כחולים וסוערים של עננים צפופים, יפו קטנה בתחתית הפריים. צילום: ערן ירושלמי (CHIEF), 2023" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">תחת לחץ</span><span class="c-y">2023</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2023-figure-in-the-blue-hour.webp" width="760" height="570" alt="דמות בודדה על קו המים באור הכחול שאחרי השקיעה, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2023" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">בין חלום למציאות</span><span class="c-y">2023</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2024-net-at-sunset.webp" width="760" height="570" alt="רשת מתרוממת על החוף בשקיעה, הצורה שלה משתקפת בחול הרטוב, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2024" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">רשת ביטחון</span><span class="c-y">2024</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2024-wine-glasses-on-the-sand.webp" width="760" height="570" alt="כוסות יין שוכבות על החול הרטוב באור הכחול שאחרי השקיעה, יפו מאחור. צילום: ערן ירושלמי (CHIEF), 2024" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">מזג אוויר</span><span class="c-y">2024</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2024-fisherman-at-dusk.webp" width="760" height="570" alt="דייג עם חכה בדמדומים, קו דק של שקיעה באופק, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2024" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">חכה רגע</span><span class="c-y">2024</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2025-orange-sunset-and-foam.webp" width="760" height="570" alt="רצועת שקיעה כתומה מתחת לעננים כבדים, קצף וההשתקפות שלו על החול, יפו משמאל. צילום: ערן ירושלמי (CHIEF), 2025" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">הבועה</span><span class="c-y">2025</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2025-jaffa-lights-after-sunset.webp" width="760" height="570" alt="האורות של יפו אחרי השקיעה תחת פס ענן כתום, משתקפים בחול הרטוב. צילום: ערן ירושלמי (CHIEF), 2025" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">המשך יבוא...</span><span class="c-y">2025</span></figcaption></figure>
+<figure class="card"><img src="/jaffa-15-years/img/scroll/x-jaffa-2026-feathers-in-the-sand-black-and-white.webp" width="570" height="760" alt="שחור־לבן: נוצות נעוצות בחול הרטוב עם ההשתקפויות שלהן, יפו מאחור. צילום: ערן ירושלמי (CHIEF), 2026" loading="lazy" decoding="async"><figcaption><span class="c-t" dir="auto">שתולים על פלגי מים</span><span class="c-y">2026</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="pin close" aria-label="סיום">
+  <div class="stick">
+    <div class="frame"><img src="/jaffa-15-years/img/scroll/m-jaffa-2026-burning-sunset-and-a-lone-figure.webp" width="1280" height="960" alt="שקיעה כתומה מעל יפו, דמות בודדה עומדת במים, יפו והשמיים משתקפים בחול הרטוב. צילום: ערן ירושלמי (CHIEF), 2026" loading="lazy" decoding="async"><div class="horizon"></div></div>
+    <div class="end">
+      <h2>החוף לא זז.<br>האור תמיד חדש.</h2>
+      <p class="who">ערן ירושלמי (CHIEF) · צילום באייפון בלבד</p>
+      <div class="cta"><a class="main" href="/he/jaffa-wall-art/">לתמונות של יפו להזמנה</a><a href="/he/jaffa-15-years/">לסדרה המלאה</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer><span>© ערן ירושלמי (CHIEF)</span><a href="/he/">eranchief.com</a></footer>
+
+<script>
+(()=>{
+const META=[{"y": "2012", "t": "חלום יפואי", "d": "16/12/2012", "m": ""}, {"y": "2013", "t": "קפיצה אל המחר", "d": "04/12/2013", "m": "iPhone 5s"}, {"y": "2014", "t": "עוד יום.", "d": "16/11/2014", "m": "iPhone 6 Plus"}, {"y": "2015", "t": "משיכת המכחול האחרונה", "d": "24/01/2015", "m": "iPhone 6 Plus"}, {"y": "2016", "t": "יפו כבר ראתה הכול", "d": "10/11/2016", "m": "iPhone 7 Plus"}, {"y": "2017", "t": "מסך כתום", "d": "29/12/2017", "m": "iPhone X"}, {"y": "2018", "t": "השמש סופרת כבשים", "d": "20/02/2018", "m": "iPhone X"}, {"y": "2019", "t": "Liquid Gold", "d": "12/01/2019", "m": "iPhone XS Max"}, {"y": "2020", "t": "טביעות גל", "d": "28/12/2020", "m": "iPhone 12 Pro Max"}, {"y": "2021", "t": "הולך על השקיעה", "d": "04/12/2021", "m": "iPhone 13 Pro Max"}, {"y": "2022", "t": "רוק אנד רול", "d": "01/01/2022", "m": "iPhone 13 Pro Max"}, {"y": "2023", "t": "הענן המעשן", "d": "09/12/2023", "m": "iPhone 14 Pro Max"}, {"y": "2024", "t": "חוף מבטחים", "d": "27/02/2024", "m": "iPhone 15 Pro Max"}, {"y": "2025", "t": "סוף פסוק", "d": "04/01/2025", "m": "iPhone 15 Pro Max"}, {"y": "2026", "t": "זמן מסך", "d": "18/10/2026", "m": "iPhone 16 Pro Max"}];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(reduce) return;
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const ease=t=>t*t*(3-2*t);
+const prog=el=>{const r=el.getBoundingClientRect();const run=r.height-innerHeight;return clamp(-r.top/(run>0?run:1));};
+const vis=el=>{const r=el.getBoundingClientRect();return r.bottom>-50&&r.top<innerHeight+50;};
+
+const hero=document.querySelector('.hero'),hBg=hero.querySelector('.bg'),hPh=hero.querySelector('.photo'),hCopy=hero.querySelector('.copy');
+const say=document.querySelector('.say'),lines=[...say.querySelectorAll('.lines span')];
+const peak=document.querySelector('.peak'),layers=[...peak.querySelectorAll('.layer')],strip=peak.querySelector('.strip'),
+      model=peak.querySelector('.model'),tEl=peak.querySelector('.caption .t'),dEl=peak.querySelector('.caption .d'),rail=peak.querySelector('.rail');
+const stage=peak.querySelector('.stage');
+const btw=document.querySelector('.between'),track=btw.querySelector('.track');
+const cls=document.querySelector('.close'),cImg=cls.querySelector('.frame img'),hz=cls.querySelector('.horizon'),end=cls.querySelector('.end');
+const N=layers.length, W=0.38; let shown=-1;
+
+function fitStage(){
+  // the stage gets the room that is left; photos keep their full frame (object-fit: contain)
+  const st=peak.querySelector('.stick');const cs=getComputedStyle(st);
+  if(innerWidth>=900){stage.style.height='';return;}
+  const used=[...st.children].filter(c=>c!==stage).reduce((s,c)=>s+c.getBoundingClientRect().height,0);
+  const pad=parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom)+28;
+  stage.style.height=Math.max(180,innerHeight-used-pad)+'px';
+}
+
+function frame(){
+  if(vis(hero)){const p=prog(hero);
+    hBg.style.transform=`translate3d(0,${p*8}%,0) scale(1.05)`;
+    hPh.style.transform=`translate(-50%,calc(-46% - ${p*7}vh)) scale(${1-p*.06})`;
+    hCopy.style.transform=`translate3d(0,${-p*22}vh,0)`;hCopy.style.opacity=1-ease(clamp(p*1.6-.35));}
+  if(vis(say)){const p=prog(say);
+    lines.forEach((l,i)=>{const a=ease(clamp((p-.08-i*.24)/.2));l.style.opacity=a;l.style.transform=`translateY(${(1-a)*.35}em)`;});}
+  if(vis(peak)){const p=prog(peak),idx=p*(N-1),f=Math.min(N-2,Math.floor(idx)),t=idx-f;
+    const s=ease(clamp((t-(1-W))/W));
+    layers.forEach((L,i)=>{let o=0,z=1;
+      if(i===f){o=1-ease(clamp((s-.55)/.45));z=1;} else if(i===f+1){o=s;z=2;} else if(i<f&&p>=1){o=0;}
+      if(p>=1&&i===N-1){o=1;}
+      L.style.opacity=o;L.style.zIndex=z;
+      if(i===f) L.style.transform=`scale(${1.0+t*.025})`; else if(i===f+1) L.style.transform=`scale(${1.0+s*.0})`;
+    });
+    const roll=f+s; strip.style.transform=`translate3d(0,${-roll*1.08}em,0)`;
+    rail.style.setProperty('--p',(roll/(N-1)).toFixed(4));
+    const k=s>.5?f+1:f;
+    if(k!==shown){shown=k;const m=META[k];tEl.textContent=m.t;dEl.textContent=m.d;model.textContent=m.m;}
+  }
+  if(vis(btw)){const p=prog(btw);const dist=Math.max(0,track.scrollWidth-innerWidth);
+    track.style.transform=`translate3d(${ease(p)*dist}px,0,0)`;}
+  if(vis(cls)){const p=prog(cls);const o=ease(clamp(p/.55));
+    cImg.style.clipPath=`inset(${(1-o)*50}% 0 ${(1-o)*50}% 0)`;
+    hz.style.transform=`scaleX(${ease(clamp(p/.18))})`;hz.style.opacity=1-o;
+    const e=ease(clamp((p-.5)/.25));end.style.opacity=e;end.style.transform=`translateY(${(1-e)*16}px)`;}
+}
+let raf=0;const req=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;frame();});};
+addEventListener('scroll',req,{passive:true});
+addEventListener('resize',()=>{fitStage();req();});
+fitStage();frame();
+if(document.fonts) document.fonts.ready.then(()=>{fitStage();frame();});
+})();
+</script>
+</body>
+</html>
