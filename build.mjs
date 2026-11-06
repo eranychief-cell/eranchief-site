@@ -26,6 +26,9 @@ await cp('born-and-raised-on-iphone/he.html', 'dist/client/he/born-and-raised-on
 await cp('jaffa-15-years', 'dist/client/jaffa-15-years', { recursive: true, filter: src => !src.endsWith('he.html') });
 await mkdir('dist/client/he/jaffa-15-years', { recursive: true });
 await cp('jaffa-15-years/he.html', 'dist/client/he/jaffa-15-years/index.html');
+// scroll journey (Hebrew, noindex, unlinked draft) at /he/jaffa-15-years/journey/
+await mkdir('dist/client/he/jaffa-15-years/journey', { recursive: true });
+await cp('jaffa-15-years/journey-he.html', 'dist/client/he/jaffa-15-years/journey/index.html');
 // Temporary font comparison page for the owner (noindex, not in sitemap).
 await mkdir('dist/client/font-preview', { recursive: true });
 await cp('font-preview/index.html', 'dist/client/font-preview/index.html');
