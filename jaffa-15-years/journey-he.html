@@ -98,6 +98,11 @@ img{display:block}
 .cta .main{background:var(--ink);color:var(--canvas)}
 footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px solid var(--line);color:var(--ink-soft);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
+.play{position:fixed;left:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:30;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;
+  border:1px solid rgba(28,25,21,.18);border-radius:999px;background:rgba(251,250,247,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  color:var(--ink);font:400 15px/1 var(--text);box-shadow:0 6px 18px rgba(28,25,21,.12);opacity:0;transition:opacity .4s}
+.play.on{opacity:1}
+.play .ic{font-size:13px;width:1em;text-align:center}
 @media (min-width:900px){
   .peak .stick{grid-template-columns:1fr 2.2fr;grid-template-rows:1fr auto;column-gap:48px;padding:96px 56px 40px}
   .yearbox{grid-column:1;grid-row:1;flex-direction:column;align-items:flex-start;justify-content:flex-end}
@@ -113,7 +118,7 @@ footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px
 
 /* reduced motion: everything visible, nothing pinned */
 @media (prefers-reduced-motion:reduce){
-  .glow{display:none}
+  .glow{display:none} .play{display:none}
   .pin{height:auto}
   .stick{position:relative;height:auto;min-height:0;overflow:visible;padding-top:90px;padding-bottom:40px}
   .hero .stick{height:var(--vh)}
@@ -130,6 +135,7 @@ footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px
 </head>
 <body>
 <div class="glow" aria-hidden="true"></div>
+<button class="play" type="button" aria-label="עצירת המצגת"><span class="ic">⏸</span><span class="lb">עצירה</span></button>
 <header class="bar"><a class="logo" href="/he/">CHIEF</a><a class="back" href="/he/jaffa-15-years/">לסדרה המלאה</a></header>
 <main>
 
@@ -311,6 +317,33 @@ function cutGlow(){
   const st=['#000 0px']; for(const [a,b] of m){st.push(`#000 ${a}px`,`transparent ${a+6}px`,`transparent ${b-6}px`,`#000 ${b}px`);} st.push('#000 100%');
   const v=`linear-gradient(to bottom,${st.join(',')})`; glow.style.webkitMaskImage=v; glow.style.maskImage=v;
 }
+
+// the presentation plays by itself; any touch or scroll by the visitor takes over, the button pauses and resumes
+const btn=document.querySelector('.play'),ic=btn.querySelector('.ic'),lb=btn.querySelector('.lb');
+let playing=false,last=0,pos=scrollY,started=false,ended=false;
+const endY=()=>{const r=cls.getBoundingClientRect();return scrollY+r.bottom-innerHeight;};
+function ui(){ic.textContent=playing?'⏸':'▶';lb.textContent=playing?'עצירה':(ended?'מההתחלה':'המשך');btn.setAttribute('aria-label',playing?'עצירת המצגת':'המשך המצגת');}
+function speed(){
+  const base=innerHeight*0.36; // about 2.8 seconds per screen
+  const r=peak.getBoundingClientRect(); const inPeak=r.top<=0&&r.bottom>=innerHeight;
+  const b=btw.getBoundingClientRect(); const inPan=b.top<=0&&b.bottom>=innerHeight;
+  return base*(inPeak?0.8:inPan?1.1:1.25);
+}
+function tick(t){
+  if(!playing) return;
+  const dt=Math.min(0.05,(t-last)/1000||0); last=t;
+  const ramp=Math.min(1,(t-rampStart)/900);
+  pos=Math.min(endY(),pos+speed()*dt*ramp); scrollTo(0,pos);
+  if(pos>=endY()-1){playing=false;ended=true;ui();return;}
+  requestAnimationFrame(tick);
+}
+let rampStart=0;
+function play(){ if(ended){scrollTo(0,0);ended=false;} pos=scrollY;playing=true;last=performance.now();rampStart=last;ui();requestAnimationFrame(tick);}
+function pause(){ if(!playing) return; playing=false;ui();}
+btn.addEventListener('click',e=>{e.stopPropagation();playing?pause():play();});
+['touchstart','wheel','keydown','mousedown'].forEach(ev=>addEventListener(ev,e=>{if(e.target.closest&&e.target.closest('.play'))return;pause();},{passive:true}));
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
+setTimeout(()=>{btn.classList.add('on');if(!started&&scrollY<10){started=true;play();}else ui();},1500);
 let raf=0;const req=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;frame();cutGlow();});};
 addEventListener('scroll',req,{passive:true});
 addEventListener('resize',()=>{fitStage();req();});
