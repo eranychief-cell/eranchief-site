@@ -31,10 +31,9 @@ img{display:block}
 .bar .back{color:var(--ink-soft)}
 .pin{position:relative;height:calc(var(--span) * var(--vh))}
 .stick{position:sticky;top:0;height:var(--vh);overflow:hidden}
-/* glowing sunset line through the whole page, in the right third, always behind the photos and text */
-.stick::before{content:"";position:absolute;top:0;bottom:0;right:33.3%;width:3px;background:#ff8a2a;box-shadow:0 0 6px #ffb066,0 0 16px #ff8a2a,0 0 34px rgba(255,120,40,.55);z-index:1;pointer-events:none}
-.hero .photo,.hero .copy{z-index:2}
-.say .lines,.peak .yearbox,.peak .stage,.peak .caption,.between h2,.between .track,.close .frame,.close .end{position:relative;z-index:2}
+/* glowing sunset line through the whole page, in the right third; JS cuts gaps wherever a photo or text crosses it */
+.glow{position:fixed;top:0;height:100%;right:calc(33.3% - 20px);width:40px;z-index:15;pointer-events:none;
+  background:linear-gradient(90deg,rgba(255,138,42,0) 0%,rgba(255,138,42,.10) 25%,rgba(255,150,70,.45) 44%,#ff8a2a 48%,#ff8a2a 52%,rgba(255,150,70,.45) 56%,rgba(255,138,42,.10) 75%,rgba(255,138,42,0) 100%)}
 
 /* 1. hero: layered photo */
 .hero{--span:1.7}
@@ -114,6 +113,7 @@ footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px
 
 /* reduced motion: everything visible, nothing pinned */
 @media (prefers-reduced-motion:reduce){
+  .glow{display:none}
   .pin{height:auto}
   .stick{position:relative;height:auto;min-height:0;overflow:visible;padding-top:90px;padding-bottom:40px}
   .hero .stick{height:var(--vh)}
@@ -129,6 +129,7 @@ footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px
 </style>
 </head>
 <body>
+<div class="glow" aria-hidden="true"></div>
 <header class="bar"><a class="logo" href="/he/">CHIEF</a><a class="back" href="/he/jaffa-15-years/">לסדרה המלאה</a></header>
 <main>
 
@@ -288,11 +289,34 @@ function frame(){
     hz.style.transform=`scaleX(${ease(clamp(p/.18))})`;hz.style.opacity=1-o;
     const e=ease(clamp((p-.5)/.25));end.style.opacity=e;end.style.transform=`translateY(${(1-e)*16}px)`;}
 }
-let raf=0;const req=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;frame();});};
+
+const glow=document.querySelector('.glow');
+const avoid=[...document.querySelectorAll('footer span,footer a,.bar a,h1,h2,.hero p,.say .lines span,.roll,.model,.caption .t,.caption .d,.rail,.card,.close .who,.cta a,.hero .photo img,.close .frame img,.stage .layer')];
+function seenRect(el){
+  if(el.classList.contains('layer')){
+    if(+getComputedStyle(el).opacity<0.02) return null;
+    const r=el.getBoundingClientRect(),nw=el.naturalWidth||el.width,nh=el.naturalHeight||el.height,k=Math.min(r.width/nw,r.height/nh),w=nw*k,h=nh*k;
+    return {left:r.left+(r.width-w)/2,right:r.left+(r.width+w)/2,top:r.top+(r.height-h)/2,bottom:r.top+(r.height+h)/2};
+  }
+  const o=+getComputedStyle(el).opacity; if(o<0.02) return null;
+  if(el.tagName==='IMG'&&el.closest('.frame')){const r=el.getBoundingClientRect();const cp=getComputedStyle(el).clipPath.match(/inset\(([\d.]+)%/);const f=cp?+cp[1]/100:0;return {left:r.left,right:r.right,top:r.top+r.height*f,bottom:r.bottom-r.height*f};}
+  return el.getBoundingClientRect();
+}
+function cutGlow(){
+  const g=glow.getBoundingClientRect(),cx=g.left+g.width/2,H=innerHeight,gaps=[];
+  for(const el of avoid){const r=seenRect(el); if(!r||r.bottom<0||r.top>H||r.right<cx-14||r.left>cx+14||r.bottom-r.top<2) continue;
+    gaps.push([Math.max(0,r.top-10),Math.min(H,r.bottom+10)]);}
+  gaps.sort((a,b)=>a[0]-b[0]); const m=[]; for(const q of gaps){if(m.length&&q[0]<=m[m.length-1][1]) m[m.length-1][1]=Math.max(m[m.length-1][1],q[1]); else m.push(q.slice());}
+  if(!m.length){glow.style.webkitMaskImage=glow.style.maskImage='none';return;}
+  const st=['#000 0px']; for(const [a,b] of m){st.push(`#000 ${a}px`,`transparent ${a+6}px`,`transparent ${b-6}px`,`#000 ${b}px`);} st.push('#000 100%');
+  const v=`linear-gradient(to bottom,${st.join(',')})`; glow.style.webkitMaskImage=v; glow.style.maskImage=v;
+}
+let raf=0;const req=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;frame();cutGlow();});};
 addEventListener('scroll',req,{passive:true});
 addEventListener('resize',()=>{fitStage();req();});
-fitStage();frame();
-if(document.fonts) document.fonts.ready.then(()=>{fitStage();frame();});
+fitStage();frame();cutGlow();
+if(document.fonts) document.fonts.ready.then(()=>{fitStage();frame();cutGlow();});
+addEventListener('load',()=>{frame();cutGlow();});
 })();
 </script>
 </body>
