@@ -1,0 +1,14 @@
+name: live-check-journey
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          sleep 20
+          u="https://eranchief.com/he/jaffa-15-years/journey/?v=$(date +%s)"
+          code=$(curl -s -o page.html -w "%{http_code}" "$u")
+          echo "::notice::status=$code bytes=$(wc -c < page.html)"
+          echo "::notice::count_scene=$(grep -c 'class="pin count"' page.html) noindex=$(grep -c noindex page.html) speed056=$(grep -c 'innerHeight\*0.56' page.html)"
+          img=$(curl -s -o /dev/null -w "%{http_code}" https://eranchief.com/jaffa-15-years/img/scroll/m-jaffa-2026-burning-sunset-and-a-lone-figure.webp)
+          echo "::notice::img2026=$img"
