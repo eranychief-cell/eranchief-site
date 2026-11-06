@@ -1,0 +1,12 @@
+name: live-check-link
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          sleep 15
+          code=$(curl -s -o p.html -w "%{http_code}" "https://eranchief.com/he/jaffa-15-years/?v=$(date +%s)")
+          echo "::notice::status=$code journey_button=$(grep -c 'class=\"journey\"' p.html) href=$(grep -c 'href=\"/he/jaffa-15-years/journey/\"' p.html)"
+          j=$(curl -s -o /dev/null -w "%{http_code}" "https://eranchief.com/he/jaffa-15-years/journey/")
+          echo "::notice::journey_page=$j"
