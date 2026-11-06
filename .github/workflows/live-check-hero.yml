@@ -1,0 +1,13 @@
+name: live-check-hero
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          sleep 15
+          t=$(date +%s)
+          for u in he/jaffa-15-years/journey jaffa-15-years/journey; do
+            c=$(curl -s -o p.html -w "%{http_code}" "https://eranchief.com/$u/?v=$t")
+            echo "::notice::$u status=$c placeHero=$(grep -c 'function placeHero' p.html)"
+          done
