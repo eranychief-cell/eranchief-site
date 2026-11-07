@@ -8,10 +8,10 @@ jobs:
     steps:
       - run: |
           sleep 20
-          for u in https://eranchief.com/he/jaffa-15-years/ https://eranchief.com/jaffa-15-years/ https://eranchief.com/he/jaffa-15-years/journey/ https://eranchief.com/jaffa-15-years/journey/ https://eranchief.com/jaffa-15-years/img/full/jaffa-2026-lightning-strikes-the-sea.jpg; do
+          for u in https://eranchief.com/he/jaffa-15-years/ https://eranchief.com/jaffa-15-years/ https://eranchief.com/he/jaffa-15-years/journey/ https://eranchief.com/jaffa-15-years/journey/ https://eranchief.com/jaffa-15-years/img/thumb/jaffa-2026-feathers-in-the-sand-black-and-white.jpg; do
             code=$(curl -s -o /tmp/p -w '%{http_code}' -H 'Cache-Control: no-cache' "$u?v=$RANDOM")
             n1=$(grep -c 'lightning-strikes-the-sea' /tmp/p || true)
-            n2=$(grep -o 'הברק מכה פעמיים\|Lightning Strikes Twice' /tmp/p | sort | uniq -c | tr '\n' ' ')
-            n3=$(grep -o 'data-to="46"\|>46<' /tmp/p | head -2 | tr '\n' ' ')
+            n2=$(grep -o 'דיוקן עצמי\|Self-Portrait\|שתולים על פלגי מים\|Planted by the Water' /tmp/p | sort | uniq -c | tr '\n' ' ')
+            n3=$(grep -ao 'Self-Portrait (Jaffa 2026) — Eran Yerushalmi (CHIEF)' /tmp/p | head -1)
             echo "::notice::$u code=$code lightning_refs=$n1 titles=[$n2] count46=[$n3]"
           done
