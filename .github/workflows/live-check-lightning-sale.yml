@@ -1,0 +1,16 @@
+name: live-check-lightning-sale
+on:
+  push:
+    branches: [tmp/live-check-lightning-sale]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          sleep 5
+          for u in https://eranchief.com/he/artworks/lightning-strikes-twice-219/ https://eranchief.com/artworks/lightning-strikes-twice-219/ https://eranchief.com/he/jaffa-15-years/ https://eranchief.com/jaffa-15-years/ https://eranchief.com/assets/work_219_lightning_strikes_twice.jpg https://eranchief.com/he/paper-edition/; do
+            code=$(curl -s -o /tmp/p -w '%{http_code}' -H 'Cache-Control: no-cache' "$u?v=$RANDOM")
+            n1=$(grep -c 'lightning-strikes-twice-219' /tmp/p || true)
+            n2=$(grep -o 'מהדורה מוגבלת של 25\|Limited edition of 25\|₪2,490\|זמין כהדפס חתום\|Available as a signed print\|הברק מכה פעמיים' /tmp/p | sort | uniq -c | tr '\n' ' ')
+            echo "::notice::$u code=$code links219=$n1 [$n2]"
+          done
