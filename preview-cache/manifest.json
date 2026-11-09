@@ -199,6 +199,23 @@
    ]
   ]
  },
+ "assets/work_219_lightning_strikes_twice.jpg": {
+  "hash": "90560d47ecfed33dfc93664d3301a2e2ca4c6fde8825bb8aee9d5963b3299479",
+  "variants": [
+   [
+    480,
+    "/assets/card-previews/work_219_lightning_strikes_twice-480.webp"
+   ],
+   [
+    960,
+    "/assets/card-previews/work_219_lightning_strikes_twice-960.webp"
+   ],
+   [
+    1440,
+    "/assets/card-previews/work_219_lightning_strikes_twice-1440.webp"
+   ]
+  ]
+ },
  "assets/work_218_the_heart_of_the_storm.jpg": {
   "hash": "558370116d0240364f25d9cf049d9ac3495a705cd4ed93c2bc6ddd4d45b603e9",
   "variants": [
