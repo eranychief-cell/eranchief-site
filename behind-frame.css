@@ -1,0 +1,28 @@
+/* Behind the Frame (10.11.2026): the moment behind a photograph, filmed on iPhone. Videos are 9:16, tap to play. */
+.behind-page{max-width:1100px}
+.behind-page h1{font:600 clamp(3rem,8vw,6.5rem)/.9 "Inter Tight",Rubik,sans-serif;margin:.25rem 0 1rem;text-wrap:balance}
+.behind-list{display:grid;gap:clamp(3rem,7vw,6rem);margin-top:2.5rem}
+.behind-card{min-width:0}
+.behind-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.6rem,2vw,1.5rem);align-items:center;max-width:860px}
+.behind-pair figure,.behind-block figure,.behind-jaffa figure{margin:0;min-width:0}
+.behind-pair video,.behind-pair img,.behind-block video,.behind-jaffa video{display:block;width:100%;height:auto;max-width:100%}
+.behind-pair video,.behind-block video,.behind-jaffa video{aspect-ratio:9/16;background:#050505}
+.behind-pair figcaption{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,#777);margin-top:.5rem}
+.behind-card h2{font:600 clamp(1.6rem,3.5vw,2.6rem)/1.05 "Inter Tight",Rubik,sans-serif;margin:1.2rem 0 .35rem;text-wrap:balance}
+.behind-meta{color:var(--muted,#666);font-size:.95rem;margin:0;font-variant-numeric:tabular-nums}
+.behind-links{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;margin:.9rem 0 0}
+.behind-links a{color:inherit;font-weight:600}
+.behind-block{margin:2.2rem 0}
+.behind-block h2{font:600 clamp(1.4rem,3vw,2rem)/1.1 "Inter Tight",Rubik,sans-serif;margin:0 0 .8rem}
+.behind-block figure{max-width:340px}
+.behind-block figcaption{font-size:.95rem;line-height:1.55;color:var(--muted,#555);margin-top:.6rem}
+.behind-block figcaption a{color:inherit;font-weight:600;white-space:nowrap}
+.paper-seo-card .behind-block{margin:1.6rem 0 0}
+.paper-seo-card .behind-block h2{font-size:1.1rem;letter-spacing:.02em}
+.paper-seo-card .behind-block figure{max-width:220px}
+.behind-jaffa{margin-top:22px}
+.behind-jaffa-h{margin:0 0 8px;font:400 11px/1.4 "IBM Plex Mono",ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted,#777)}
+.behind-jaffa-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.behind-jaffa figcaption{margin-top:6px;font:400 11px/1.4 "IBM Plex Mono",ui-monospace,Menlo,monospace;color:var(--muted,#777)}
+.behind-jaffa>a{display:inline-block;margin-top:10px;color:inherit;font-size:13px;font-weight:600}
+@media (max-width:720px){.behind-jaffa-grid{gap:8px}.paper-seo-card .behind-block figure{max-width:180px}}
