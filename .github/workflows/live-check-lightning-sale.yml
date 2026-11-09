@@ -8,9 +8,11 @@ jobs:
     steps:
       - run: |
           sleep 5
-          for u in https://eranchief.com/he/artworks/lightning-strikes-twice-219/ https://eranchief.com/artworks/lightning-strikes-twice-219/ https://eranchief.com/he/jaffa-15-years/ https://eranchief.com/jaffa-15-years/ https://eranchief.com/assets/work_219_lightning_strikes_twice.jpg https://eranchief.com/he/paper-edition/; do
-            code=$(curl -s -o /tmp/p -w '%{http_code}' -H 'Cache-Control: no-cache' "$u?v=$RANDOM")
-            n1=$(grep -c 'lightning-strikes-twice-219' /tmp/p || true)
-            n2=$(grep -o 'מהדורה מוגבלת של 25\|Limited edition of 25\|₪2,490\|זמין כהדפס חתום\|Available as a signed print\|הברק מכה פעמיים' /tmp/p | sort | uniq -c | tr '\n' ' ')
-            echo "::notice::$u code=$code links219=$n1 [$n2]"
+          for u in https://eranchief.com/google-merchant-feed.xml https://eranchief.com/google-merchant-feed-he.xml; do
+            code=$(curl -s -D /tmp/h -o /tmp/p -w '%{http_code}' -H 'Cache-Control: no-cache' "$u?v=$RANDOM")
+            items=$(grep -o '<item>' /tmp/p | wc -l)
+            brand=$(grep -o '<g:brand>[^<]*</g:brand>' /tmp/p | sort | uniq -c | tr '\n' ' ')
+            t1=$(grep -o '<g:title>[^<]*</g:title>' /tmp/p | head -1)
+            robots=$(grep -i 'x-robots-tag' /tmp/h | tr -d '\r')
+            echo "::notice::$u code=$code items=$items brand=[$brand] first=[$t1] robots=[$robots]"
           done
