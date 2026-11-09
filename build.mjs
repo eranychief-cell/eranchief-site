@@ -242,7 +242,7 @@ sitemapUrls.push(`${site}/jaffa-15-years/`,`${site}/he/jaffa-15-years/`);
 const imageSitemapEntries=[];
 for (const image of ['work_186_the_rain_found_the_heart_of_the_city.jpg','work_172_they_never_looked_down.jpg','premium_review_05.jpg']) imageSitemapEntries.push({url:`${site}/stories/tel-aviv-through-chief/`,image:`${site}/assets/${image}`,title:'תל אביב דרך העדשה של ערן ירושלמי (CHIEF)',caption:'צילום אמנותי של תל אביב מאת ערן ירושלמי (CHIEF), צלם אייפון מתל אביב'});
 const videoSitemapEntries=[];
-const merchantFeedItems=[];
+const merchantFeedItems=[], merchantFeedItemsHe=[];
 const artistPortrait=`${site}/assets/eran-yerushalmi-chief-fine-art-photographer-portrait.jpg`;
 const artistPortraits=[
   {image:artistPortrait,title:"Eran Yerushalmi (CHIEF) — Fine Art Photographer",caption:"Eran Yerushalmi, known as CHIEF, fine art photographer in Tel Aviv"},
@@ -409,7 +409,9 @@ const purchaseDetailsEn=`<aside class="purchase-details" aria-label="Purchase de
   const finalHeHtml=heHtml;
   await mkdir(`dist/client/he/artworks/${slug}`,{recursive:true}); await writeFile(`dist/client/he/artworks/${slug}/index.html`,finalHeHtml); sitemapUrls.push(heUrl); imageSitemapEntries.push({url:heUrl,image:`${site}${image}`,title:`${w.title} — צילום של ערן ירושלמי (CHIEF)`,caption:`${w.title}, צילום אמנותי ישראלי מקורי מאת ערן ירושלמי (CHIEF), צלם אייפון מתל אביב`});
   const feedPrice=w.category==='accessible'?canvasPrices[0]:productPrices[0];
-  if(!w.under1000)merchantFeedItems.push(`<item><g:id>CHIEF-${String(w.id).padStart(3,'0')}</g:id><g:title>${esc(w.title)} — CHIEF Fine Art Photography</g:title><g:description>${esc(discoveryDescription)}</g:description><g:link>${url}</g:link><g:image_link>${site}${image}</g:image_link><g:availability>in_stock</g:availability><g:condition>new</g:condition><g:price>${feedPrice} ILS</g:price><g:shipping><g:country>IL</g:country><g:price>${w.category==='accessible'?69:0} ILS</g:price></g:shipping><g:brand>CHIEF</g:brand><g:product_type>Art &amp; Entertainment &gt; Artwork &gt; Photography</g:product_type><g:identifier_exists>no</g:identifier_exists>${(workThemesData.nude||[]).includes(w.id)?'<g:adult>yes</g:adult>':''}</item>`); // Artistic nudes carry the adult attribute (Google adult-content policy, 4.11.2026)
+  if(!w.under1000)merchantFeedItems.push(`<item><g:id>CHIEF-${String(w.id).padStart(3,'0')}</g:id><g:title>${esc(w.title)} — Fine Art Photograph by Eran Yerushalmi (CHIEF)</g:title><g:description>${esc(discoveryDescription)}</g:description><g:link>${url}</g:link><g:image_link>${site}${image}</g:image_link><g:availability>in_stock</g:availability><g:condition>new</g:condition><g:price>${feedPrice} ILS</g:price><g:shipping><g:country>IL</g:country><g:price>${w.category==='accessible'?69:0} ILS</g:price></g:shipping><g:brand>Eran Yerushalmi (CHIEF)</g:brand><g:product_type>Art &amp; Entertainment &gt; Artwork &gt; Photography</g:product_type><g:identifier_exists>no</g:identifier_exists>${(workThemesData.nude||[]).includes(w.id)?'<g:adult>yes</g:adult>':''}</item>`); // Artistic nudes carry the adult attribute (Google adult-content policy, 4.11.2026)
+  // Hebrew Shopping feed (9.11.2026): same offer ids, Hebrew titles and descriptions, links to the Hebrew pages
+  if(!w.under1000){const tHe=w.titleHe||w.title; const dHe=w.discovery?`${tHe} — צילום אמנותי של ערן ירושלמי (CHIEF). ${w.discovery.he} ${w.discovery.roomHe} צולם ונערך באייפון.`:heDescription; merchantFeedItemsHe.push(`<item><g:id>CHIEF-${String(w.id).padStart(3,'0')}</g:id><g:title>${esc(tHe)} — צילום אמנותי חתום של ערן ירושלמי (CHIEF)</g:title><g:description>${esc(dHe)}</g:description><g:link>${heUrl}</g:link><g:image_link>${site}${image}</g:image_link><g:availability>in_stock</g:availability><g:condition>new</g:condition><g:price>${feedPrice} ILS</g:price><g:shipping><g:country>IL</g:country><g:price>${w.category==='accessible'?69:0} ILS</g:price></g:shipping><g:brand>Eran Yerushalmi (CHIEF)</g:brand><g:product_type>אמנות &gt; צילום אמנותי</g:product_type><g:identifier_exists>no</g:identifier_exists>${(workThemesData.nude||[]).includes(w.id)?'<g:adult>yes</g:adult>':''}</item>`);}
 }
 
 for(const [category,slug] of Object.entries(categorySlugs)){
@@ -701,6 +703,7 @@ for (const [file,he] of [['dist/client/he/eran-yerushalmi-photographer/index.htm
 }
 await writeFile('dist/client/video-sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n${videoSitemapEntries.map(v=>`  <url><loc>${v.url}</loc><video:video><video:thumbnail_loc>${v.poster}</video:thumbnail_loc><video:title>${esc(v.title)}</video:title><video:description>${esc(v.description)}</video:description><video:content_loc>${v.content}</video:content_loc><video:duration>${Number(v.duration.match(/\d+/)?.[0]||0)}</video:duration><video:publication_date>${uploadDate}</video:publication_date><video:uploader info="${site}/he/eran-yerushalmi-photographer/">CHIEF</video:uploader></video:video></url>`).join('\n')}\n</urlset>\n`);
 await writeFile('dist/client/google-merchant-feed.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0"><channel><title>CHIEF Fine Art Photography</title><link>${site}/</link><description>Original fine art photography by CHIEF</description>${merchantFeedItems.join('')}</channel></rss>\n`);
+await writeFile('dist/client/google-merchant-feed-he.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0"><channel><title>ערן ירושלמי (CHIEF) — צילום אמנותי</title><link>${site}/he/</link><description>צילומים אמנותיים מקוריים של ערן ירושלמי (CHIEF), חתומים, מתל אביב</description>${merchantFeedItemsHe.join('')}</channel></rss>\n`);
 // IndexNow ownership key (public by design): lets Bing/ChatGPT search be notified the moment pages change.
 await writeFile('dist/client/a7d8eb0f35e3bd466bee048ca351acef.txt','a7d8eb0f35e3bd466bee048ca351acef');
 await writeFile('dist/client/1638609744e2484ce0ceed4c72fa1bf1.txt','1638609744e2484ce0ceed4c72fa1bf1');
@@ -832,7 +835,7 @@ async function route(request, env) {
     return new Response(assetResponse.body, { status: assetResponse.status, statusText: assetResponse.statusText, headers });
   }
   // The Google Merchant feed (Shopping only) and /?artwork=N chooser links (copies of the homepage) stay out of search results; the full artwork pages are the indexed ones.
-  if (url.pathname === '/google-merchant-feed.xml' || (url.pathname === '/' && url.searchParams.has('artwork'))) {
+  if (url.pathname === '/google-merchant-feed.xml' || url.pathname === '/google-merchant-feed-he.xml' || (url.pathname === '/' && url.searchParams.has('artwork'))) {
     const headers = new Headers(assetResponse.headers); headers.set('x-robots-tag', 'noindex');
     return new Response(assetResponse.body, { status: assetResponse.status, statusText: assetResponse.statusText, headers });
   }
