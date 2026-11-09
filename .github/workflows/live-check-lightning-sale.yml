@@ -12,7 +12,9 @@ jobs:
             code=$(curl -s -D /tmp/h -o /tmp/p -w '%{http_code}' -H 'Cache-Control: no-cache' "$u?v=$RANDOM")
             items=$(grep -o '<item>' /tmp/p | wc -l)
             brand=$(grep -o '<g:brand>[^<]*</g:brand>' /tmp/p | sort | uniq -c | tr '\n' ' ')
-            t1=$(grep -o '<g:title>[^<]*</g:title>' /tmp/p | head -1)
+            paper=$(grep -o '<g:id>CHIEF-PAPER-[0-9]*</g:id>' /tmp/p | wc -l)
+            t1=$(grep -o '<g:title>[^<]*Paper[^<]*</g:title>\|<g:title>[^<]*הדפס נייר[^<]*</g:title>' /tmp/p | head -1)
+            exp=$(grep -o '<g:expiration_date>[^<]*</g:expiration_date>' /tmp/p | sort -u | tr '\n' ' ')
             robots=$(grep -i 'x-robots-tag' /tmp/h | tr -d '\r')
-            echo "::notice::$u code=$code items=$items brand=[$brand] first=[$t1] robots=[$robots]"
+            echo "::notice::$u code=$code items=$items paper=$paper exp=[$exp] brand=[$brand] paperTitle=[$t1] robots=[$robots]"
           done
