@@ -266,7 +266,7 @@ const paperItems=paperWorks.map((w,i)=>{
     alternateName:w.titleHe,
     description:`${w.title} — a signed ${w.year?`${w.year} `:''}fine art photograph by CHIEF, offered unframed on archival Fine Art paper during the ${paperMonthEn.split(' ')[0]} Paper Edition.`,
     image:`${site}/${w.image}`,
-    sku:`CHIEF-PAPER-${String(position).padStart(2,'0')}`,
+    sku:`CHIEF-PAPER-${w.id}`, // stable per work (9.11.2026); the position-based id was reused by every new drop
     brand:{"@type":"Brand",name:"CHIEF"},
     creator:{"@id":`${site}/#artist`},
     material:"Archival Fine Art paper",
@@ -276,6 +276,15 @@ const paperItems=paperWorks.map((w,i)=>{
     ]
   };
   return {"@type":"ListItem",position,item:product};
+});
+// Paper Edition in both Shopping feeds (9.11.2026): one item per work at the smaller size, the same stable id as the page sku,
+// landing on the work's card on the paper page; it expires with the drop, so Shopping never shows a closed drop.
+paperWorks.forEach((w,i)=>{
+  const anchor=`work-${String(i+1).padStart(2,'0')}`, id=`CHIEF-PAPER-${w.id}`, sizeHe=x=>String(x).replace('cm','ס״מ');
+  const common=`<g:image_link>${site}/${w.image}</g:image_link><g:availability>in_stock</g:availability><g:condition>new</g:condition><g:price>${w.prices[0]} ILS</g:price><g:shipping><g:country>IL</g:country><g:price>39 ILS</g:price></g:shipping><g:brand>Eran Yerushalmi (CHIEF)</g:brand><g:size>${esc(paperConfig.sizes[0])}</g:size><g:identifier_exists>no</g:identifier_exists><g:expiration_date>${paperConfig.closesAt}</g:expiration_date>`;
+  merchantFeedItems.push(`<item><g:id>${id}</g:id><g:title>${esc(w.title)} — Signed Paper Print by Eran Yerushalmi (CHIEF)</g:title><g:description>${esc(`${w.title} by Eran Yerushalmi (CHIEF). A signed fine art photograph, shot and edited on iPhone, printed unframed on archival Fine Art paper, ${paperConfig.sizes[0]} or ${paperConfig.sizes[1]}. Paper Edition, available only until ${paperDateEn}.`)}</g:description><g:link>${paperUrl}#${anchor}</g:link>${common}<g:product_type>Art &amp; Entertainment &gt; Artwork &gt; Photography &gt; Paper Prints</g:product_type></item>`);
+  const tHe=w.titleHe||w.title;
+  merchantFeedItemsHe.push(`<item><g:id>${id}</g:id><g:title>${esc(tHe)} — הדפס נייר חתום של ערן ירושלמי (CHIEF)</g:title><g:description>${esc(`${tHe} — צילום אמנותי חתום של ערן ירושלמי (CHIEF), צולם ונערך באייפון, מודפס ללא מסגרת על נייר Fine Art ארכיוני, ${sizeHe(paperConfig.sizes[0])} או ${sizeHe(paperConfig.sizes[1])}. מהדורת הנייר, רק עד ${paperDateHe}.`)}</g:description><g:link>${site}/he/paper-edition/#${anchor}</g:link>${common}<g:product_type>אמנות &gt; צילום אמנותי &gt; הדפסי נייר</g:product_type></item>`);
 });
 const paperSchema={"@context":"https://schema.org","@graph":[
   {"@type":["CollectionPage","ImageGallery"],"@id":`${paperUrl}#page`,url:paperUrl,name:`CHIEF Paper Edition — ${paperCountEnCap} Photographs, ${paperDurationEnCap.replace(/ (\w)/,(m,c)=>" "+c.toUpperCase())}`,description:paperDescription,dateModified:paperOpen,expires:paperEnd,about:{"@id":`${site}/#artist`},mainEntity:{"@type":"ItemList",numberOfItems:paperWorks.length,itemListElement:paperItems}},
