@@ -61,6 +61,7 @@ rep = [
  ('<b data-to="1">1</b><span>חוף</span>', '<b data-to="1">1</b><span>beach</span>'),
  ('aria-label="15 שנה, שנה אחרי שנה"', 'aria-label="15 years, year by year"'),
  ('aria-label="בין השנים"', 'aria-label="Between the years"'),
+ ('<span class="ai-note">הצילומים באייפון · המעברים ביניהם נוצרו ב־AI</span>', '<span class="ai-note">Photos shot on iPhone · the transitions between them were made with AI</span>'),
  ('<h2>ובין השנים<small>עוד 32 רגעים מאותו חוף, וכל אחד עם שם משלו.</small></h2>', '<h2>Between the years<small>32 more moments from the same beach, each with its own name.</small></h2>'),
  ('aria-label="סיום"', 'aria-label="Ending"'),
  ('<h2>החוף לא זז.<br>האור תמיד חדש.</h2>', '<h2>The beach doesn\'t move.<br>The light is always new.</h2>'),
