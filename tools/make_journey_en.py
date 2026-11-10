@@ -82,6 +82,7 @@ rep = [
   "function ui(){ic.textContent=playing?'⏸':'▶';lb.textContent=playing?'Pause':(ended?'Replay':'Play');btn.setAttribute('aria-label',playing?'Pause the journey':'Play the journey');}"),
  ('<button class="play sound" type="button" aria-label="הפעלת המסע עם סאונד"><span class="ic">🔊</span><span class="lb">הפעלה עם סאונד</span></button>',
   '<button class="play sound" type="button" aria-label="Play the journey with sound"><span class="ic">🔊</span><span class="lb">Play with sound</span></button>'),
+ ('.ctl{position:fixed;left:16px;', '.ctl{position:fixed;right:16px;'),
  ('<div class="sv" role="dialog" aria-label="המסע עם סאונד" hidden><button class="sv-x" type="button" aria-label="סגירה">',
   '<div class="sv" role="dialog" aria-label="The journey with sound" hidden><button class="sv-x" type="button" aria-label="Close">'),
  ('<source src="/jaffa-15-years/video/journey-sound.mp4" type="video/mp4">', '<source src="/jaffa-15-years/video/journey-sound-en.mp4" type="video/mp4">'),

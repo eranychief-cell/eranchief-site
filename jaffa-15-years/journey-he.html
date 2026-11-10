@@ -84,7 +84,7 @@ img{display:block}
 
 /* 3. peak: fifteen years under the hand */
 .peak{--span:17.7}
-.peak .stick{background:linear-gradient(180deg,#fbfaf7 0%,#fde9cf 40%,#f8c99a 70%,#efa27a 100%);display:grid;grid-template-rows:auto 1fr auto;padding:calc(64px + env(safe-area-inset-top)) 20px max(22px,env(safe-area-inset-bottom))}
+.peak .stick{background:linear-gradient(180deg,#fbfaf7 0%,#fde9cf 40%,#f8c99a 70%,#efa27a 100%);display:grid;grid-template-rows:auto 1fr auto;padding:calc(64px + env(safe-area-inset-top)) 20px calc(max(16px,env(safe-area-inset-bottom)) + 58px)}
 .yearbox{display:flex;align-items:baseline;gap:14px;justify-content:space-between}
 .roll{height:1.08em;overflow:hidden;font-family:var(--mono);font-weight:500;font-size:clamp(64px,19vw,170px);line-height:1.08;letter-spacing:-.04em;direction:ltr}
 .roll .strip{display:flex;flex-direction:column;will-change:transform}
@@ -155,8 +155,10 @@ footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px
   color:var(--ink);font:400 15px/1 var(--text);box-shadow:0 6px 18px rgba(28,25,21,.12);opacity:0;transition:opacity .4s}
 .play.on{opacity:1}
 .play .ic{font-size:13px;width:1em;text-align:center}
+/* the two buttons sit in one row at the bottom, clear of the photo's title */
+.ctl{position:fixed;left:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:30;display:flex;gap:8px;align-items:center}
+.ctl .play{position:static}
 /* the same journey as a video with Kling's sound and a shutter click on every photo */
-.play.sound{bottom:calc(max(16px,env(safe-area-inset-bottom)) + 54px)}
 .sv{position:fixed;inset:0;z-index:60;background:#0d0b0a;display:flex;align-items:center;justify-content:center}
 .sv[hidden]{display:none}
 .sv video{display:block;width:100%;max-height:100%;background:#0d0b0a}
@@ -178,7 +180,7 @@ footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px
 /* reduced motion: everything visible, nothing pinned */
 @media (prefers-reduced-motion:reduce){
   .glow{display:none} .play{display:none}
-  .play.sound{display:inline-flex;opacity:1;bottom:max(16px,env(safe-area-inset-bottom))}
+  .play.sound{display:inline-flex;opacity:1}
   .pin{height:auto}
   .stick{position:relative;height:auto;min-height:0;overflow:visible;padding-top:90px;padding-bottom:40px}
   .hero .stick{height:var(--vh)}
@@ -197,8 +199,7 @@ footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px
 </head>
 <body>
 <div class="glow" aria-hidden="true"></div>
-<button class="play" type="button" aria-label="עצירת המצגת"><span class="ic">⏸</span><span class="lb">עצירה</span></button>
-<button class="play sound" type="button" aria-label="הפעלת המסע עם סאונד"><span class="ic">🔊</span><span class="lb">הפעלה עם סאונד</span></button>
+<div class="ctl"><button class="play" type="button" aria-label="עצירת המצגת"><span class="ic">⏸</span><span class="lb">עצירה</span></button><button class="play sound" type="button" aria-label="הפעלת המסע עם סאונד"><span class="ic">🔊</span><span class="lb">הפעלה עם סאונד</span></button></div>
 <div class="sv" role="dialog" aria-label="המסע עם סאונד" hidden><button class="sv-x" type="button" aria-label="סגירה">✕</button><video controls playsinline preload="none" poster="/jaffa-15-years/img/scroll/m-jaffa-2012-sunset-over-the-rocky-shore.webp"><source src="/jaffa-15-years/video/journey-sound.mp4" type="video/mp4"></video></div>
 <header class="bar"><a class="logo" href="/he/">CHIEF</a><a class="back" href="/he/jaffa-15-years/">לסדרה המלאה</a></header>
 <main>
@@ -451,7 +452,7 @@ function frame(){
 }
 
 const glow=document.querySelector('.glow');
-const avoid=[...document.querySelectorAll('footer span,footer a,.bar a,h1,h2,.hero p,.say .lines span,.nums .n,.ph,.dots,.roll,.model,.caption .t,.caption .d,.rail,.card,.close .who,.cta a,.hero .photo img,.close .frame img,.stage .layer,.stage canvas.ai')];
+const avoid=[...document.querySelectorAll('footer span,footer a,.bar a,h1,h2,.hero p,.say .lines span,.nums .n,.ph,.dots,.roll,.model,.caption .t,.caption .d,.caption .ai-note,.rail,.card,.close .who,.cta a,.hero .photo img,.close .frame img,.stage .layer,.stage canvas.ai')];
 function seenRect(el){
   if(el.tagName==='CANVAS'){const r=el.getBoundingClientRect();if(!box.w)return null;return {left:r.left+box.x,right:r.left+box.x+box.w,top:r.top+box.y,bottom:r.top+box.y+box.h};}
   if(el.classList.contains('layer')){
