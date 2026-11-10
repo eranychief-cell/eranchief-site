@@ -83,7 +83,7 @@ img{display:block}
 @keyframes pop{0%{transform:scale(.85)}55%{transform:scale(1.12)}100%{transform:none}}
 
 /* 3. peak: fifteen years under the hand */
-.peak{--span:13}
+.peak{--span:17.7}
 .peak .stick{background:linear-gradient(180deg,#fbfaf7 0%,#fde9cf 40%,#f8c99a 70%,#efa27a 100%);display:grid;grid-template-rows:auto 1fr auto;padding:calc(64px + env(safe-area-inset-top)) 20px max(22px,env(safe-area-inset-bottom))}
 .yearbox{display:flex;align-items:baseline;gap:14px;justify-content:space-between}
 .roll{height:1.08em;overflow:hidden;font-family:var(--mono);font-weight:500;font-size:clamp(64px,19vw,170px);line-height:1.08;letter-spacing:-.04em;direction:ltr}
@@ -155,6 +155,13 @@ footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px
   color:var(--ink);font:400 15px/1 var(--text);box-shadow:0 6px 18px rgba(28,25,21,.12);opacity:0;transition:opacity .4s}
 .play.on{opacity:1}
 .play .ic{font-size:13px;width:1em;text-align:center}
+/* the same journey as a video with Kling's sound and a shutter click on every photo */
+.play.sound{bottom:calc(max(16px,env(safe-area-inset-bottom)) + 54px)}
+.sv{position:fixed;inset:0;z-index:60;background:#0d0b0a;display:flex;align-items:center;justify-content:center}
+.sv[hidden]{display:none}
+.sv video{display:block;width:100%;max-height:100%;background:#0d0b0a}
+.sv-x{position:absolute;top:max(12px,env(safe-area-inset-top));right:12px;z-index:2;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.35);
+  background:rgba(13,11,10,.6);color:#fff;font:400 20px/1 var(--text);cursor:pointer}
 @media (min-width:900px){
   .peak .stick{grid-template-columns:1fr 2.2fr;grid-template-rows:1fr auto;column-gap:48px;padding:96px 56px 40px}
   .yearbox{grid-column:1;grid-row:1;flex-direction:column;align-items:flex-start;justify-content:flex-end}
@@ -171,6 +178,7 @@ footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px
 /* reduced motion: everything visible, nothing pinned */
 @media (prefers-reduced-motion:reduce){
   .glow{display:none} .play{display:none}
+  .play.sound{display:inline-flex;opacity:1;bottom:max(16px,env(safe-area-inset-bottom))}
   .pin{height:auto}
   .stick{position:relative;height:auto;min-height:0;overflow:visible;padding-top:90px;padding-bottom:40px}
   .hero .stick{height:var(--vh)}
@@ -190,6 +198,8 @@ footer{padding:28px 22px calc(28px + env(safe-area-inset-bottom));border-top:1px
 <body>
 <div class="glow" aria-hidden="true"></div>
 <button class="play" type="button" aria-label="עצירת המצגת"><span class="ic">⏸</span><span class="lb">עצירה</span></button>
+<button class="play sound" type="button" aria-label="הפעלת המסע עם סאונד"><span class="ic">🔊</span><span class="lb">הפעלה עם סאונד</span></button>
+<div class="sv" role="dialog" aria-label="המסע עם סאונד" hidden><button class="sv-x" type="button" aria-label="סגירה">✕</button><video controls playsinline preload="none" poster="/jaffa-15-years/img/scroll/m-jaffa-2012-sunset-over-the-rocky-shore.webp"><source src="/jaffa-15-years/video/journey-sound.mp4" type="video/mp4"></video></div>
 <header class="bar"><a class="logo" href="/he/">CHIEF</a><a class="back" href="/he/jaffa-15-years/">לסדרה המלאה</a></header>
 <main>
 
@@ -337,16 +347,19 @@ const btw=document.querySelector('.between'),track=btw.querySelector('.track');
 const cls=document.querySelector('.close'),cImg=cls.querySelector('.frame img'),hz=cls.querySelector('.horizon'),end=cls.querySelector('.end');
 const N=layers.length, W=0.38; let shown=-1;
 
-// AI transitions (Kling 3.0, start and end frame = his photos): 10 clips between the 11 landscape years.
-// The vertical years stay in the static list (reduced motion) and on the series page; here no frame is ever cropped.
-const AI=[0,1,2,3,5,6,7,8,9,12,14], NP=AI.length, NC=NP-1, NF=48, HOLD=0.45, CLIP=1, T=NP*HOLD+NC*CLIP, FLASH_AT=46.2;
+// AI transitions (Kling 3.0, start and end frame = his photos): 14 clips between all 15 years.
+// Where a year's main photo is vertical, the journey uses that year's horizontal photo (ALT), so no frame is ever cropped;
+// the vertical main photos stay in the static list (reduced motion) and on the series page.
+const ALT={"4": {"f": "jaffa-2016-sunset-reflection", "t": "השמיים ירדו לבקר", "d": "10/11/2016", "m": "iPhone 7 Plus"}, "10": {"f": "jaffa-2022-wave-on-a-rock-wide"}, "11": {"f": "jaffa-2023-dog-running-at-sunset", "t": "הוט דוג", "d": "29/10/2023", "m": "iPhone 14 Pro Max"}, "13": {"f": "jaffa-2025-orange-sunset-and-foam", "t": "הבועה", "d": "04/01/2025", "m": "iPhone 15 Pro Max"}};
+const AI=META.map((_,i)=>i), NP=AI.length, NC=NP-1, NF=48, HOLD=0.45, CLIP=1, T=NP*HOLD+NC*CLIP, FLASH_AT=46.2;
+const AM=AI.map(i=>{const a=ALT[i]||{};return {y:META[i].y,t:a.t||META[i].t,d:a.d||META[i].d,m:a.m||META[i].m,src:a.f?`/jaffa-15-years/img/scroll/m-${a.f}.webp`:layers[i].getAttribute('src')};});
 const cv=peak.querySelector('canvas.ai'), g2=cv.getContext('2d');
 peak.classList.add('ai-on');
-strip.innerHTML=AI.map(i=>`<span>${META[i].y}</span>`).join('');
+strip.innerHTML=AM.map(m=>`<span>${m.y}</span>`).join('');
 rail.querySelectorAll('i').forEach(e=>e.remove());
 AI.forEach((_,k)=>{const e=document.createElement('i');e.style.setProperty('--t',((k*(HOLD+CLIP)+HOLD/2)/T).toFixed(4));rail.insertBefore(e,rail.querySelector('.ends'));});
-const aiPh=AI.map(i=>{const im=new Image();im.decoding='async';im.src=layers[i].getAttribute('src');return im;});
-const clipDir=c=>`/jaffa-15-years/img/ai/${META[AI[c]].y}-${META[AI[c+1]].y}/`;
+const aiPh=AM.map(m=>{const im=new Image();im.decoding='async';im.src=m.src;return im;});
+const clipDir=c=>`/jaffa-15-years/img/ai/${AM[c].y}-${AM[c+1].y}/`;
 const clips=[];
 function loadClip(c){ if(c<0||c>=NC||clips[c]) return; const a=clips[c]=[];
   for(let f=0;f<NF;f++){const im=new Image();im.decoding='async';im.onload=()=>{a[f]=im;req();};im.src=clipDir(c)+String(f).padStart(2,'0')+'.webp';} }
@@ -362,14 +375,23 @@ function aiDraw(p){
   const d=Math.min(devicePixelRatio||1,3),cw=Math.round(Wd*d),ch=Math.round(Hd*d);
   if(cv.width!==cw||cv.height!==ch){cv.width=cw;cv.height=ch;}
   g2.setTransform(d,0,0,d,0,0); g2.globalAlpha=1; g2.clearRect(0,0,Wd,Hd);
-  const put=(im,a)=>{ if(!im||!im.complete||!im.naturalWidth||a<=0) return; g2.globalAlpha=Math.min(1,a); g2.drawImage(im,box.x,box.y,box.w,box.h); };
+  // a photo that isn't 4:3 (2022 is 16:10) is drawn whole inside the box, never cropped
+  const put=(im,a)=>{ if(!im||!im.complete||!im.naturalWidth||a<=0) return; g2.globalAlpha=Math.min(1,a);
+    const r=im.naturalWidth/im.naturalHeight; let w=box.w,h=box.h; if(Math.abs(r-4/3)>0.03){ if(r>4/3) h=w/r; else w=h*r; }
+    g2.drawImage(im,box.x+(box.w-w)/2,box.y+(box.h-h)/2,w,h); };
+  // while such a photo fades into or out of a clip, the clip's edge above and below it fades too (no jump at the cut)
+  const bands=(im,a)=>{ if(!im||!im.naturalWidth||a<=0) return; const r=im.naturalWidth/im.naturalHeight; if(Math.abs(r-4/3)<=0.03) return;
+    g2.save(); g2.globalCompositeOperation='destination-out'; g2.globalAlpha=Math.min(1,a);
+    if(r>4/3){ const h=box.w/r,y=box.y+(box.h-h)/2; g2.fillRect(box.x,box.y,box.w,y-box.y); g2.fillRect(box.x,y+h,box.w,box.y+box.h-y-h); }
+    else { const w=box.h*r,x=box.x+(box.w-w)/2; g2.fillRect(box.x,box.y,x-box.x,box.h); g2.fillRect(x+w,box.y,box.x+box.w-x-w,box.h); }
+    g2.restore(); };
   const u=p*T, L=locate(u);
   if(!L.clip){ put(aiPh[L.k],1); }
   else { const c=L.k,t=L.t; manage(c);
     const fr=t*(NF-1),f0=Math.floor(fr),fx=fr-f0,A=frameOf(c,f0),B=frameOf(c,Math.min(NF-1,f0+1));
     if(A){ put(A,1); if(B&&fx>.02) put(B,fx); } else { put(aiPh[c],1); put(aiPh[c+1],t); }
-    if(t<.1) put(aiPh[c],1-t/.1);
-    if(t>.9) put(aiPh[c+1],(t-.9)/.1);
+    if(t<.1){ put(aiPh[c],1-t/.1); bands(aiPh[c],1-t/.1); }
+    if(t>.9){ put(aiPh[c+1],(t-.9)/.1); bands(aiPh[c+1],(t-.9)/.1); }
     if(c===NC-1){ const fl=Math.max(0,1-Math.abs(fr-FLASH_AT)/1.2)*.55; if(fl>0){ g2.globalAlpha=fl; g2.fillStyle='#fff6f8'; g2.fillRect(box.x,box.y,box.w,box.h); } }
   }
   g2.globalAlpha=1;
@@ -411,9 +433,9 @@ function frame(){
       strip.style.transform=`translate3d(0,${-roll*1.08}em,0)`;
       rail.style.setProperty('--p',(u/T).toFixed(4));
       const k=L.clip?(L.t<.5?L.k:L.k+1):L.k;
-      if(k!==shown){const prev=shown;shown=k;const m=META[AI[k]];tEl.textContent=m.t;dEl.textContent=m.d;model.textContent=m.m;
+      if(k!==shown){const prev=shown;shown=k;const m=AM[k];tEl.textContent=m.t;dEl.textContent=m.d;model.textContent=m.m;
         if(prev>=0){kick(rollEl,'pop');kick(tEl,'in');kick(dEl,'in');kick(sun,'pop');
-          if(m.m&&META[AI[prev]].m!==m.m)kick(model,'pop');}}
+          if(m.m&&AM[prev].m!==m.m)kick(model,'pop');}}
     }
   }
   if(vis(btw)){const p=prog(btw);const dist=Math.max(0,track.scrollWidth-innerWidth);
@@ -455,7 +477,7 @@ function cutGlow(){
 const btn=document.querySelector('.play'),ic=btn.querySelector('.ic'),lb=btn.querySelector('.lb');
 let playing=false,last=0,pos=scrollY,started=false,ended=false;
 const endY=()=>{const r=cls.getBoundingClientRect();return scrollY+r.bottom-innerHeight;};
-function ui(){ic.textContent=playing?'⏸':'▶';lb.textContent=playing?'עצירה':(ended?'מההתחלה':'המשך');btn.setAttribute('aria-label',playing?'עצירת המצגת':'המשך המצגת');}
+function ui(){ic.textContent=playing?'⏸':'▶';lb.textContent=playing?'עצירה':(ended?'מההתחלה':'הפעלה');btn.setAttribute('aria-label',playing?'עצירת המצגת':'הפעלת המצגת');}
 function speed(){
   const base=innerHeight*0.56; // about 1.8 seconds per screen; in the 15 years about 1.1 seconds per year
   const r=peak.getBoundingClientRect(); const inPeak=r.top<=0&&r.bottom>=innerHeight;
@@ -477,7 +499,7 @@ let rampStart=0;
 function play(){ if(ended){scrollTo(0,0);ended=false;} pos=scrollY;playing=true;last=performance.now();rampStart=last;ui();requestAnimationFrame(tick);}
 function pause(){ if(!playing) return; playing=false;ui();}
 btn.addEventListener('click',e=>{e.stopPropagation();playing?pause():play();});
-['touchstart','wheel','keydown','mousedown'].forEach(ev=>addEventListener(ev,e=>{if(e.target.closest&&e.target.closest('.play'))return;pause();},{passive:true}));
+['touchstart','wheel','keydown','mousedown'].forEach(ev=>addEventListener(ev,e=>{if(e.target.closest&&e.target.closest('.play:not(.sound)'))return;pause();},{passive:true}));
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
 setTimeout(()=>{btn.classList.add('on');if(!started&&scrollY<10){started=true;play();}else ui();},1500);
 let raf=0;const req=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;frame();cutGlow();});};
@@ -488,6 +510,18 @@ if(document.fonts) document.fonts.ready.then(()=>{fitStage();frame();cutGlow();}
 addEventListener('load',()=>{frame();cutGlow();});
 // keep the glow clear of the title while the opening animation moves it
 let warm=0;const warmT=setInterval(()=>{cutGlow();if(++warm>24)clearInterval(warmT);},100);
+})();
+</script>
+<script>
+// "play with sound": the same journey as a video; a tap is needed so the phone allows sound (it also pauses the scroll presentation)
+(()=>{
+const b=document.querySelector('.play.sound'),sv=document.querySelector('.sv'),v=sv.querySelector('video'),x=sv.querySelector('.sv-x');
+const close=()=>{v.pause();sv.hidden=true;document.documentElement.style.overflow='';b.focus();};
+b.addEventListener('click',e=>{e.stopPropagation();sv.hidden=false;document.documentElement.style.overflow='hidden';
+  try{v.currentTime=0;}catch(_){} const p=v.play(); if(p&&p.catch)p.catch(()=>{}); x.focus();});
+x.addEventListener('click',close);
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!sv.hidden)close();});
+setTimeout(()=>b.classList.add('on'),1500);
 })();
 </script>
 </body>

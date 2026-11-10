@@ -38,6 +38,13 @@ for row, name in zip(meta, mains):
 s = re.sub(r'const META=\[.*?\];', lambda m: 'const META=' + json.dumps(meta, ensure_ascii=False) + ';', s, count=1)
 first = D[mains[0]]
 
+# ALT: the horizontal photo the AI journey uses where a year's main photo is vertical
+alt = json.loads(re.search(r'const ALT=(\{.*?\});\n', s).group(1))
+for row in alt.values():
+    if row['f'] in D:
+        row['t'] = D[row['f']]['t']; row['d'] = en_date(D[row['f']]['cap']); row['m'] = D[row['f']]['m'] or row.get('m', '')
+s = re.sub(r'const ALT=\{.*?\};\n', lambda m: 'const ALT=' + json.dumps(alt, ensure_ascii=False) + ';\n', s, count=1)
+
 rep = [
  ('<html lang="he" dir="rtl">', '<html lang="en" dir="ltr">'),
  ('<title>15 שנה, חוף אחד · מסע בגלילה | ערן ירושלמי (CHIEF)</title>', '<title>15 Years, One Beach · The Journey | Eran Yerushalmi (CHIEF)</title>'),
@@ -71,8 +78,13 @@ rep = [
  ('.play{position:fixed;left:16px;', '.play{position:fixed;right:16px;'),
  ('.card .c-t{font-family:var(--display);font-size:17px}', '.card .c-t{font-family:var(--display);font-size:16px;line-height:1.25}'),
  ("track.style.transform=`translate3d(${ease(p)*dist}px,0,0)`;", "track.style.transform=`translate3d(${-ease(p)*dist}px,0,0)`;"),
- ("function ui(){ic.textContent=playing?'⏸':'▶';lb.textContent=playing?'עצירה':(ended?'מההתחלה':'המשך');btn.setAttribute('aria-label',playing?'עצירת המצגת':'המשך המצגת');}",
+ ("function ui(){ic.textContent=playing?'⏸':'▶';lb.textContent=playing?'עצירה':(ended?'מההתחלה':'הפעלה');btn.setAttribute('aria-label',playing?'עצירת המצגת':'הפעלת המצגת');}",
   "function ui(){ic.textContent=playing?'⏸':'▶';lb.textContent=playing?'Pause':(ended?'Replay':'Play');btn.setAttribute('aria-label',playing?'Pause the journey':'Play the journey');}"),
+ ('<button class="play sound" type="button" aria-label="הפעלת המסע עם סאונד"><span class="ic">🔊</span><span class="lb">הפעלה עם סאונד</span></button>',
+  '<button class="play sound" type="button" aria-label="Play the journey with sound"><span class="ic">🔊</span><span class="lb">Play with sound</span></button>'),
+ ('<div class="sv" role="dialog" aria-label="המסע עם סאונד" hidden><button class="sv-x" type="button" aria-label="סגירה">',
+  '<div class="sv" role="dialog" aria-label="The journey with sound" hidden><button class="sv-x" type="button" aria-label="Close">'),
+ ('<source src="/jaffa-15-years/video/journey-sound.mp4" type="video/mp4">', '<source src="/jaffa-15-years/video/journey-sound-en.mp4" type="video/mp4">'),
 ]
 for a, b in rep:
     if s.count(a) != 1:
