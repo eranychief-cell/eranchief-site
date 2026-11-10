@@ -138,7 +138,7 @@ img{display:block}
 
 /* 5. close: the horizon opens */
 .close{--span:1.9}
-.close .stick{display:grid;grid-template-rows:1fr auto;padding:calc(70px + env(safe-area-inset-top)) 22px max(26px,env(safe-area-inset-bottom))}
+.close .stick{display:grid;grid-template-rows:1fr auto;padding:calc(70px + env(safe-area-inset-top)) 22px calc(max(16px,env(safe-area-inset-bottom)) + 62px)}
 .close .frame{position:relative;align-self:center}
 .close .frame img{width:100%;height:auto;max-height:52vh;object-fit:contain;clip-path:inset(50% 0 50% 0);will-change:clip-path}
 .close .horizon{position:absolute;inset-inline:0;top:50%;height:1px;background:var(--gold);transform-origin:center;will-change:transform,opacity}
