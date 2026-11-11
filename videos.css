@@ -3,3 +3,7 @@
 
 /* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
 h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
+
+/* Wide (16:9) films, e.g. the 15-year Jaffa journey */
+.video-card.wide{grid-column:1/-1}.video-card.wide img{aspect-ratio:16/9}
+.video-detail.wide article{grid-template-columns:1fr;gap:1.6rem;align-items:start}.video-detail.wide video{aspect-ratio:16/9;max-width:none}.video-detail.wide h1{font-size:clamp(2.4rem,6vw,4.8rem)}
