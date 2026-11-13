@@ -379,7 +379,7 @@ storeSchema.hasShippingService=shippingService;
 
 // Preview image proportions differ from listed print dimensions for these works.
 // Keep the room viewer implementation; omit its entry point until each is reviewed.
-const roomPreviewHoldIds=new Set([1,3,7,9,11,12,13,14,16,17,28,30,31,32,35,60,61,65,68,70,75,78,80,82,85,87,91,93,96,97,98,101,104,107,109,171,174,176,177,180,186,187]);
+const roomPreviewHoldIds=new Set([1,3,7,9,11,12,13,14,16,17,28,30,31,32,35,60,61,65,68,70,75,78,80,82,87,91,93,96,97,98,101,104,107,109,171,174,176,177,180,186,187]);
 const artworkSlugById={};
 for(const w of works){
   artworkSlugById[w.id]=artworkSlug(w);
@@ -871,7 +871,10 @@ async function route(request, env) {
     '/he/artworks/rain-check-161/': '/he/artworks/the-rain-left-one-color-behind-161/',
     // Work 205 was the same photograph as work 1 (limited edition of 25); its pages now lead to work 1 (28 Oct 2026).
     '/artworks/color-before-the-storm-205/': '/artworks/colors-before-the-storm-1/',
-    '/he/artworks/color-before-the-storm-205/': '/he/artworks/colors-before-the-storm-1/'
+    '/he/artworks/color-before-the-storm-205/': '/he/artworks/colors-before-the-storm-1/',
+    // Work 204 was the same photograph as work 85; 85 is now the only listing, as an open Art Edition (13 Nov 2026).
+    '/artworks/marbles-of-the-sun-204/': '/artworks/the-sun-s-children-85/',
+    '/he/artworks/marbles-of-the-sun-204/': '/he/artworks/the-sun-s-children-85/'
   };
   if (redirects[url.pathname]) return Response.redirect(new URL(redirects[url.pathname], url.origin), 301);
   const assetResponse = await env.ASSETS.fetch(request);
