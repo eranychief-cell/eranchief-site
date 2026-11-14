@@ -3,3 +3,24 @@
 
 /* Type refresh (Oct 2026): Inter Tight headings + Heebo text */
 h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
+
+/* Wide (16:9) films, e.g. the 15-year Jaffa journey */
+.video-card.wide{grid-column:1/-1}.video-card.wide img{aspect-ratio:16/9}
+.video-detail.wide article{grid-template-columns:1fr;gap:1.6rem;align-items:start}.video-detail.wide video{aspect-ratio:16/9;max-width:none}.video-detail.wide h1{font-size:clamp(2.4rem,6vw,4.8rem)}
+
+/* 4:3 films (Chain Reaction) and the strip of works seen in the film */
+.video-detail.wide.r43 video{aspect-ratio:4/3;max-width:980px}
+.film-works{margin:3.2rem 0 1rem}.film-works h2{font:600 clamp(1.5rem,3.4vw,2.2rem)/1.1 "Inter Tight",Rubik,sans-serif;margin:0 0 1.2rem}
+.film-works-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem}
+.film-works-grid a{display:block;color:inherit;text-decoration:none}.film-works-grid img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:#f3f1ec}
+.film-works-grid span{display:block;padding:.5rem 0 0;font-size:.95rem;line-height:1.3}
+@media(max-width:520px){.film-works-grid{grid-template-columns:1fr 1fr}}
+.film-work-soon img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:#f3f1ec}.film-work-soon span{display:block;padding:.5rem 0 0;font-size:.85rem;color:#8a8478;letter-spacing:.02em}
+
+/* Homepage feature: the newest film (Chain Reaction), above the film grid */
+.home-film-feature{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(1rem,3vw,2.5rem);align-items:center;color:#fff;text-decoration:none;margin:0 0 2.2rem}
+.home-film-feature img{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#050505}
+.home-film-feature span{display:flex;flex-direction:column;gap:.6rem}.home-film-feature small{font-size:.66rem;letter-spacing:.14em;color:#aaa}
+.home-film-feature strong{font-family:"Inter Tight",Rubik,sans-serif;font-size:clamp(2rem,4.5vw,3.6rem);font-weight:500;line-height:.95}
+.home-film-feature em{font-style:normal;color:#ccc;line-height:1.5}.home-film-feature b{font-weight:500;font-size:.85rem;letter-spacing:.06em;border-bottom:1px solid #777;align-self:flex-start;padding-bottom:.3rem}
+@media(max-width:800px){.home-film-feature{grid-template-columns:1fr}}

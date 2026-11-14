@@ -54,7 +54,7 @@ const newlyCuratedWorks = [
   {id:82,title:'The Last Stop of Autumn',titleHe:'התחנה האחרונה של הסתיו',category:'accessible',image:'assets/the-last-stop-of-autumn.jpg'},
   {id:83,title:'The Sky Threw First',titleHe:'השמיים זרקו ראשונים',category:'accessible',image:'assets/the-sky-threw-first.jpg'},
   {id:84,title:'Where Colors Are Born',titleHe:'המקום שבו צבעים נולדים',category:'premium',image:'assets/where-colors-are-born.jpg'},
-  {id:85,title:"The Sun's Children",titleHe:'ילדי השמש',category:'premium',image:'assets/the-suns-children.jpg'},
+  {id:85,title:"The Sun's Children",titleHe:'ילדי השמש',category:'accessible',image:'assets/work_204_marbles_of_the_sun.jpg',sizes:['60 × 45 cm','80 × 60 cm','120 × 90 cm']},
   {id:86,title:'Strangers Above, Twins Below',titleHe:'זרים למעלה, תאומים למטה',category:'premium',image:'assets/strangers-above-twins-below.jpg'},
   {id:87,title:'One Order, Two Addresses',titleHe:'הזמנה אחת, שתי כתובות',category:'premium',image:'assets/one-order-two-addresses.jpg'},
   {id:88,title:'Night Waits Above',titleHe:'הלילה מחכה למעלה',category:'accessible',image:'assets/night-waits-above.jpg'},
@@ -224,7 +224,6 @@ const discoveryCopy={
   "191": {"en": "A busy pedestrian street of shops, trees and passers-by is reflected in a single puddle, a thousand small stories in one frame.", "he": "רחוב הולכי רגל עמוס בחנויות, עצים ועוברים ושבים משתקף בשלולית אחת, אלף סיפורים קטנים בפריים אחד.", "roomEn": "For a living room, a hallway or anyone who loves the city.", "roomHe": "לסלון, למסדרון או לכל מי שאוהב את העיר."},
   "192": {"en": "An old white building and the trees beside it are mirrored in a dark puddle under a grey sky, with a single fallen leaf floating in the water.", "he": "בניין לבן ישן והעצים שלידו משתקפים בשלולית כהה תחת שמיים אפורים, ועלה אחד שנשר צף במים.", "roomEn": "A calm work for a hallway, a study or a monochrome living room.", "roomHe": "עבודה רגועה למסדרון, לחדר עבודה או לסלון מונוכרומטי."},
   "193": {"en": "A small street kiosk with its awning and customers is reflected in a puddle on the boulevard, a daily scene of the city.", "he": "קיוסק רחוב קטן עם הסוכך והלקוחות שלו משתקף בשלולית בשדרה, סצנה יומיומית של העיר.", "roomEn": "For a kitchen, a café or a dining area.", "roomHe": "למטבח, לבית קפה או לפינת אוכל."},
-  "204": {"en": "Colourful water beads glow on the wet sand at sunset, each one catching the low sun like a small marble of light.", "he": "כדורי מים צבעוניים זוהרים על החול הרטוב בשקיעה, וכל אחד תופס את השמש הנמוכה כמו גולה קטנה של אור.", "roomEn": "For a children's room, a kitchen or a happy living room.", "roomHe": "לחדר ילדים, למטבח או לסלון שמח."},
   "137": {"en": "A small yellow toy car with surfboards on its roof sits in the sand in front of a lifeguard tower painted with a colourful cartoon face.", "he": "מכונית צעצוע צהובה קטנה עם גלשנים על הגג עומדת בחול מול סוכת מציל מצוירת בפרצוף מצויר וצבעוני.", "roomEn": "A happy work for a children's room, a beach house or a playroom.", "roomHe": "עבודה שמחה לחדר ילדים, לבית ליד הים או לחדר משחקים."},
   "138": {"en": "A wave rolls white onto the sand while kitesurfers fly their colourful kites over the sea under a sky of small clouds.", "he": "גל מתגלגל בלבן אל החול, וגולשי קייט מעיפים עפיפונים צבעוניים מעל הים תחת שמיים של עננים קטנים.", "roomEn": "A fresh, sporty work for a beach house, a gym or a teenager's room.", "roomHe": "עבודה רעננה וספורטיבית לבית ליד הים, לחדר כושר או לחדר של נער."},
   "140": {"en": "A piece of paper burns in bright flames on the wet sand under a stormy sky: fire, water, earth and air in one image.", "he": "פיסת נייר בוערת בלהבות עזות על החול הרטוב תחת שמיים סוערים: אש, מים, אדמה ואוויר בתמונה אחת.", "roomEn": "A striking work for a study, a living room or an office.", "roomHe": "עבודה מרשימה לחדר עבודה, לסלון או למשרד."},
@@ -442,7 +441,6 @@ const discoveryCopy={
   }
 };
 const lobbyWorks = [
-  {id:204,title:'Marbles of the Sun',titleHe:'גולות השמש',category:'accessible',image:'assets/work_204_marbles_of_the_sun.jpg',sizes:['60 × 45 cm','80 × 60 cm','120 × 90 cm']}
 ];
 // Works listed at the Under1000 gallery (פחות מאלף). By agreement with the gallery (Oct 2026) they are sold there only,
 // so on this site they show a link to Under1000 instead of a bag button. Remove an id to make a work purchasable here again.
