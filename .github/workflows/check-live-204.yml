@@ -1,0 +1,12 @@
+name: check-live-204
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for p in /he/artworks/marbles-of-the-sun-204/ /artworks/marbles-of-the-sun-204/ /he/artworks/the-sun-s-children-85/; do
+            r=$(curl -s -o /dev/null -w "%{http_code} %{redirect_url}" "https://eranchief.com$p")
+            echo "::notice::$p -> $r"
+          done
+          echo "::notice::sitemap has 204: $(curl -s https://eranchief.com/sitemap.xml | grep -c marbles-of-the-sun-204)"
