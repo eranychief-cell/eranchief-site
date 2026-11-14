@@ -1496,20 +1496,20 @@
    ]
   ]
  },
- "assets/the-suns-children.jpg": {
-  "hash": "6292f552eebc05a129bcfad39fe9266bcbc0c3b9da8a83fad0146c513f478a89",
+ "assets/work_204_marbles_of_the_sun.jpg": {
+  "hash": "19439f6161c82a88e1d22d0cc73a46f2104d5fb45790d00f0e342e9f138e14b4",
   "variants": [
    [
     480,
-    "/assets/card-previews/the-suns-children-480.webp"
+    "/assets/card-previews/work_204_marbles_of_the_sun-480.webp"
    ],
    [
     960,
-    "/assets/card-previews/the-suns-children-960.webp"
+    "/assets/card-previews/work_204_marbles_of_the_sun-960.webp"
    ],
    [
     1440,
-    "/assets/card-previews/the-suns-children-1440.webp"
+    "/assets/card-previews/work_204_marbles_of_the_sun-1440.webp"
    ]
   ]
  },
@@ -3308,23 +3308,6 @@
    [
     1151,
     "/assets/card-previews/work_192_the_rain_dreamed_of_being_inside-1151.webp"
-   ]
-  ]
- },
- "assets/work_204_marbles_of_the_sun.jpg": {
-  "hash": "19439f6161c82a88e1d22d0cc73a46f2104d5fb45790d00f0e342e9f138e14b4",
-  "variants": [
-   [
-    480,
-    "/assets/card-previews/work_204_marbles_of_the_sun-480.webp"
-   ],
-   [
-    960,
-    "/assets/card-previews/work_204_marbles_of_the_sun-960.webp"
-   ],
-   [
-    1440,
-    "/assets/card-previews/work_204_marbles_of_the_sun-1440.webp"
    ]
   ]
  }
