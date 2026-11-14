@@ -5,8 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          for p in /he/artworks/marbles-of-the-sun-204/ /artworks/marbles-of-the-sun-204/ /he/artworks/the-sun-s-children-85/; do
-            r=$(curl -s -o /dev/null -w "%{http_code} %{redirect_url}" "https://eranchief.com$p")
-            echo "::notice::$p -> $r"
+          for i in $(seq 1 24); do
+            c=$(curl -s -o /dev/null -w "%{http_code}" https://eranchief.com/he/behind-the-frame/)
+            [ "$c" = "200" ] && break; sleep 15
           done
-          echo "::notice::sitemap has 204: $(curl -s https://eranchief.com/sitemap.xml | grep -c marbles-of-the-sun-204)"
+          for p in /he/behind-the-frame/ /behind-the-frame/ /he/artworks/the-four-elements-140/ /he/artworks/terminal-3-216/ /assets/behind-the-four-elements.mp4 /assets/behind-terminal-3.mp4 /assets/behind-learning-to-fly.mp4 /assets/behind-jaffa-2025-end-of-story.mp4 /assets/behind-jaffa-2025-to-be-continued.mp4; do
+            echo "::notice::$p -> $(curl -s -o /dev/null -w '%{http_code} %{size_download}' https://eranchief.com$p)"
+          done
+          echo "::notice::four-elements page has video: $(curl -s https://eranchief.com/he/artworks/the-four-elements-140/ | grep -c behind-the-four-elements.mp4)"
+          echo "::notice::btf page cards: $(curl -s https://eranchief.com/he/behind-the-frame/ | grep -o 'class=\"behind-card' | wc -l)"
+          echo "::notice::sitemap has btf: $(curl -s https://eranchief.com/sitemap.xml | grep -c behind-the-frame)"
