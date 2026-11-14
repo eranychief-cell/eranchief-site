@@ -5,11 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
+          set +e
           for i in $(seq 1 30); do
-            n=$(curl -s https://eranchief.com/he/artworks/the-gentle-keeper-55/ | grep -c 'youtube.com/shorts/-Bn0NJeQr44')
+            n=$(curl -s https://eranchief.com/he/artworks/the-gentle-keeper-55/ | grep -c 'youtube.com/shorts/-Bn0NJeQr44' || true)
             [ "$n" != "0" ] && break; sleep 15
           done
-          echo "::notice::work55 HE yt link: $(curl -s https://eranchief.com/he/artworks/the-gentle-keeper-55/ | grep -o 'צפו ביוטיוב' | wc -l)"
-          echo "::notice::work55 EN yt link: $(curl -s https://eranchief.com/artworks/the-gentle-keeper-55/ | grep -o 'Watch on YouTube' | wc -l)"
-          echo "::notice::btf HE yt link: $(curl -s https://eranchief.com/he/behind-the-frame/ | grep -o 'צפו ביוטיוב' | wc -l)"
+          echo "::notice::work55 HE yt link: $(curl -s https://eranchief.com/he/artworks/the-gentle-keeper-55/ | grep -o 'צפו ביוטיוב' | wc -l || true)"
+          echo "::notice::work55 EN yt link: $(curl -s https://eranchief.com/artworks/the-gentle-keeper-55/ | grep -o 'Watch on YouTube' | wc -l || true)"
+          echo "::notice::btf HE yt link: $(curl -s https://eranchief.com/he/behind-the-frame/ | grep -o 'צפו ביוטיוב' | wc -l || true)"
           echo "::notice::btf HE status: $(curl -s -o /dev/null -w '%{http_code}' https://eranchief.com/he/behind-the-frame/)"
