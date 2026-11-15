@@ -24,3 +24,14 @@ h1,h2,h3{letter-spacing:-.025em}h1 em,h2 em{font-style:normal;opacity:.55}
 .home-film-feature strong{font-family:"Inter Tight",Rubik,sans-serif;font-size:clamp(2rem,4.5vw,3.6rem);font-weight:500;line-height:.95}
 .home-film-feature em{font-style:normal;color:#ccc;line-height:1.5}.home-film-feature b{font-weight:500;font-size:.85rem;letter-spacing:.06em;border-bottom:1px solid #777;align-self:flex-start;padding-bottom:.3rem}
 @media(max-width:800px){.home-film-feature{grid-template-columns:1fr}}
+
+/* 3:4 portrait films (The City Below): the film beside the text; the song version plays from YouTube only when tapped */
+.video-detail.wide.r34 article{grid-template-columns:minmax(280px,480px) 1fr;gap:clamp(2rem,5vw,4.5rem)}
+.video-detail.wide.r34 video{aspect-ratio:3/4;max-width:480px}
+.film-stage{min-width:0}
+.film-song{margin-top:1rem}
+.film-song button{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.3rem;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:500 1rem/1 Heebo,Rubik,sans-serif;cursor:pointer}
+.film-song button span{font-size:.8rem}
+.film-song small{display:block;margin-top:.5rem;color:#777;font-size:.82rem}
+.film-song-frame{margin-top:1rem;width:100%;max-width:480px;aspect-ratio:3/4;background:#050505}.film-song-frame iframe{display:block;width:100%;height:100%;border:0}
+@media(max-width:800px){.video-detail.wide.r34 article{grid-template-columns:1fr}.video-detail.wide.r34 video,.video-detail.wide.r34 .film-song-frame{margin:auto}.video-detail.wide.r34 .film-song{text-align:center}}
