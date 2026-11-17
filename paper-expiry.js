@@ -9,7 +9,7 @@
     root.document.querySelectorAll('.paper-seo-room-link,.paper-seo-choose,.paper-seo-buy,.paper-seo-footer > a').forEach(link=>{
       link.outerHTML=notice(root.document.documentElement.lang==='he');
     });
-    root.document.querySelectorAll('.paper-seo-room').forEach(link=>link.remove());
+    root.document.querySelectorAll('.paper-seo-room,.paper-seo-gift').forEach(link=>link.remove());
   }
   if(root.document.readyState==='loading')root.document.addEventListener('DOMContentLoaded',closeLanding);
   else closeLanding();
