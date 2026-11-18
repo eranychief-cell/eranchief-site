@@ -508,7 +508,7 @@ if(heroSlides.length>1&&!window.matchMedia('(prefers-reduced-motion: reduce)').m
 }
 const cardPicture=(work,alt)=>{const variants=(window.chiefCardPreviews?.[work.image]||[]).filter(([width])=>width>=480),srcset=variants.map(([width,url])=>`${url} ${width}w`).join(', ');return srcset?`<picture><source type="image/webp" srcset="${srcset}" sizes="(max-width: 520px) 90vw, (max-width: 850px) 45vw, 32vw"><img loading="lazy" decoding="async" src="${work.image}" alt="${alt}"></picture>`:`<img loading="lazy" src="${work.image}" alt="${alt}">`};
 const paperThumb=work=>{const variants=(window.chiefCardPreviews?.[work.image]||[]).filter(([width])=>width<=320),srcset=variants.map(([width,url])=>`${url} ${width}w`).join(', ');return variants.length?`<img loading="lazy" decoding="async" src="${variants[variants.length-1][1]}" srcset="${srcset}" sizes="92px" alt="">`:`<img loading="lazy" src="${work.image}" alt="">`};
-const shippingIncluded=c=>c==='premium'||c==='super'; // Free shipping in Israel on Premium / Super Premium (Alucobond, Perspex).
+const shippingIncluded=c=>c==='premium'||c==='super'||c==='square'||c==='late-night'; // Free shipping in Israel on every limited edition (Alucobond, Perspex only; no canvas).
 // Shipping in Israel: Alucobond / Perspex free; Canvas ₪69, Paper ₪39 — charged once per order (the highest). Mirrors grow-worker.js.
 const SHIP_FEE={canvas:69,paper:39};
 const cartShippingFee=()=>cart.reduce((m,x)=>Math.max(m,SHIP_FEE[x.finish]||0),0);
