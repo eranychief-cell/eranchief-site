@@ -3,6 +3,7 @@ const standardWorks = [
 ].map((w,i)=>({id:i+1,title:w[0],category:w[1],image:`assets/site_work_${String(i+1).padStart(2,'0')}.jpg`,soldEditions:i+1===11?1:0}));
 // Work 20 renamed 15.11.2026 (was The City Beneath, too close to the film The City Below); the slug keeps its URL.
 Object.assign(standardWorks.find(w=>w.id===20),{titleHe:'הפוך בשינקין',slug:'the-city-beneath-20'});
+Object.assign(standardWorks.find(w=>w.id===21),{title:'Touched the Sky',titleHe:'נגעה בשמיים',slug:'reaching-higher-21'});
 standardWorks.find(w=>w.id===2).featured={publisher:'State of Israel',reactions:'8,207',primaryLabel:'likes',secondary:'114',secondaryLabel:'comments',url:'https://www.instagram.com/p/BuZDjnPlIOV/'};
 standardWorks.find(w=>w.id===16).featured={publisher:'Tel Aviv',reactions:'5,700+',primaryLabel:'likes',secondary:'85',secondaryLabel:'comments',url:'https://www.instagram.com/p/Bi7S6Axj_sR/'};
 standardWorks.find(w=>w.id===19).featured={publisher:'Tel Aviv',reactions:'3,755',primaryLabel:'likes',secondary:'47',secondaryLabel:'comments',url:'https://www.instagram.com/p/BsWF7UxBfzZ/'};
@@ -51,7 +52,7 @@ const premiumReviewWorks = [
   {id:78,title:'It Dreamed the City Awake',titleHe:'העיר התעוררה מתוך חלום',category:'premium',image:'assets/premium_review_26.jpg'}
 ];
 const newlyCuratedWorks = [
-  {id:79,title:'The Dog Knows the Way',titleHe:'הכלב יודע את הדרך',category:'premium',image:'assets/the-dog-knows-the-way.jpg'},
+  {id:79,title:'Six Legs',titleHe:'שש רגליים',slug:'the-dog-knows-the-way-79',category:'premium',image:'assets/the-dog-knows-the-way.jpg'},
   {id:80,title:'Two of a Kind',titleHe:'שניים מאותו סוג',category:'premium',image:'assets/two-of-a-kind.jpg'},
   {id:82,title:'The Last Stop of Autumn',titleHe:'התחנה האחרונה של הסתיו',category:'accessible',image:'assets/the-last-stop-of-autumn.jpg'},
   {id:83,title:'The Sky Threw First',titleHe:'השמיים זרקו ראשונים',category:'accessible',image:'assets/the-sky-threw-first.jpg'},
@@ -152,14 +153,14 @@ const thirdCuratedWorks = [
 ];
 const fourthCuratedWorks = [
   {id:171,title:'The Game Goes On',titleHe:'המשחק נמשך',category:'premium',image:'assets/work_171_the_game_goes_on.jpg'},
-  {id:172,title:'They Never Looked Down',titleHe:'הם מעולם לא הביטו מטה',category:'accessible',image:'assets/work_172_they_never_looked_down.jpg'},
+  {id:172,title:'Crossing on Red',titleHe:'עוברות באדום',slug:'they-never-looked-down-172',category:'accessible',image:'assets/work_172_they_never_looked_down.jpg'},
   {id:173,title:'The Last Parking Lot',titleHe:'מגרש החניה האחרון',category:'accessible',image:'assets/work_173_the_last_parking_lot.jpg'},
   {id:174,title:'The Reflection Went First',titleHe:'ההשתקפות הלכה ראשונה',category:'premium',image:'assets/work_174_the_reflection_went_first.jpg'},
   {id:175,title:'Hope, Barely Visible',titleHe:'תקווה, כמעט בלתי נראית',category:'accessible',image:'assets/work_175_hope_barely_visible.jpg'},
   {id:176,title:'One Rider, Two Destinations',titleHe:'רוכב אחד, שני יעדים',category:'premium',image:'assets/work_176_one_rider_two_destinations.jpg'},
   {id:177,title:'The City Walked Between Them',titleHe:'העיר הלכה ביניהם',category:'accessible',image:'assets/work_177_the_city_walked_between_them.jpg'},
   {id:178,title:'The Balcony Was Watching',titleHe:'המרפסת התבוננה',category:'premium',image:'assets/work_178_the_balcony_was_watching.jpg'},
-  {id:179,title:'A Shortcut to the Underworld',titleHe:'קיצור דרך לעולם התחתון',category:'accessible',image:'assets/work_179_a_shortcut_to_the_underworld.jpg'},
+  {id:179,title:'Still Riding',titleHe:'עדיין רוכב',slug:'a-shortcut-to-the-underworld-179',category:'accessible',image:'assets/work_179_a_shortcut_to_the_underworld.jpg'},
   {id:180,title:'The Wall Has Eyes',titleHe:'לקירות יש עיניים',slug:'the-city-never-knew-it-was-being-watched-180',category:'premium',image:'assets/work_180_the_city_never_knew_it_was_being_watched.jpg'},
   {id:181,title:'A Million Pieces of Heaven',titleHe:'מיליון חתיכות של גן עדן',category:'premium',image:'assets/work_181_a_million_pieces_of_heaven.jpg'},
   {id:182,title:'The Past Rode Beneath Him',titleHe:'העבר רכב תחתיו',category:'accessible',image:'assets/work_182_the_past_rode_beneath_him.jpg'},
